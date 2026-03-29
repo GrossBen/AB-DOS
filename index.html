@@ -7,9 +7,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mon Programme">
 <meta name="theme-color" content="#2d6a4f">
+<title>Mon Programme</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
-<title>Mon Programme</title>
 <style>
 :root {
   --bg: #f8f6f2; --surface: #fff; --accent: #2d6a4f; --accent2: #52b788;
@@ -555,6 +555,23 @@ function fmtDur(s) { return s >= 60 ? Math.floor(s/60)+'m'+(s%60?s%60+'s':'') : 
 function fmtMins(ms) { const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000); return m+'min'+(s?s+'s':''); }
 function uid() { return 'ex_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
 
+function getWeekKey() {
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const diffToMonday = (dayOfWeek === 0 ? -6 : 1 - dayOfWeek);
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMonday);
+  return monday.toISOString().slice(0,10);
+}
+
+function saveWorkState() {
+  const weekKey = getWeekKey();
+  if (!DB.weekStates) DB.weekStates = {};
+  if (!DB.weekStates[weekKey]) DB.weekStates[weekKey] = {};
+  DB.weekStates[weekKey][currentDayIdx] = workExercises.map(ex => ({ doneSet: ex.doneSet, weights: ex.weights }));
+  saveDB();
+}
+
 function exMeta(ex) {
   const parts = [];
   if (ex.type === 'reps') parts.push(`${ex.sets}×${ex.reps} reps`);
@@ -592,12 +609,20 @@ function buildHome() {
   $('hero-meta').textContent = countMeta(today);
   $('hero-start-btn').onclick = () => launchWorkout(today);
 
-  // Week strip
+  // Week strip — show actual calendar dates
   const strip = $('week-strip'); strip.innerHTML = '';
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const diffToMonday = (dayOfWeek === 0 ? -6 : 1 - dayOfWeek);
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMonday);
   DB.days.forEach((d, i) => {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    const dateStr = date.getDate() + '/' + (date.getMonth()+1);
     const p = document.createElement('div');
     p.className = 'wpill' + (i===today?' today':'') + (d.exercises.length===0?' rest':'');
-    p.innerHTML = `<div class="wd">${d.short}</div><div class="dd">${i+1}</div>`;
+    p.innerHTML = `<div class="wd">${d.short}</div><div class="dd">${dateStr}</div>`;
     p.onclick = () => launchWorkout(i);
     strip.appendChild(p);
   });
@@ -625,9 +650,20 @@ function launchWorkout(dayIdx) {
   $('w-dn').textContent = day.name;
   $('w-sn').textContent = day.session;
 
+  // Load saved state for this day (current week)
+  const weekKey = getWeekKey();
+  const savedState = (DB.weekStates && DB.weekStates[weekKey] && DB.weekStates[weekKey][dayIdx]) || null;
+
   workExercises = [
-    ...DB.routine.map(e => ({ ...e, isRoutine:true,  doneSet:0, weights:[] })),
-    ...day.exercises.map(e => ({ ...e, isRoutine:false, doneSet:0, weights:[] })),
+    ...DB.routine.map((e, i) => {
+      const saved = savedState && savedState[i];
+      return { ...e, isRoutine:true, doneSet: saved ? saved.doneSet : 0, weights: saved ? saved.weights : [] };
+    }),
+    ...day.exercises.map((e, i) => {
+      const ri = DB.routine.length + i;
+      const saved = savedState && savedState[ri];
+      return { ...e, isRoutine:false, doneSet: saved ? saved.doneSet : 0, weights: saved ? saved.weights : [] };
+    }),
   ];
 
   renderWorkoutList();
@@ -883,6 +919,7 @@ function afterWork(weight) {
     row.querySelector('.arr').textContent = ex.doneSet>=ex.sets?'✅':'›';
   }
   updateProgress();
+  saveWorkState();
 
   if (ex.doneSet>=ex.sets) {
     killTimer(); resetRing();
@@ -944,6 +981,16 @@ function finishWorkout() {
   };
   DB.history.unshift(record);
   if (DB.history.length>100) DB.history = DB.history.slice(0,100);
+
+  // Save weekly state (coches) for this day
+  const weekKey = getWeekKey();
+  if (!DB.weekStates) DB.weekStates = {};
+  if (!DB.weekStates[weekKey]) DB.weekStates[weekKey] = {};
+  DB.weekStates[weekKey][currentDayIdx] = workExercises.map(ex => ({ doneSet: ex.doneSet, weights: ex.weights }));
+  // Clean old weeks (keep only last 4)
+  const keys = Object.keys(DB.weekStates).sort();
+  if (keys.length > 4) keys.slice(0, keys.length-4).forEach(k => delete DB.weekStates[k]);
+
   saveDB();
 
   $('fin-sub').textContent = `${day.session} — bien joué !`;
