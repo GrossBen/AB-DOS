@@ -239,9 +239,14 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
     <div class="today-hero">
       <div class="hero-body">
         <div class="hero-tag" id="hero-tag"></div>
+        <div id="hero-done-badge" style="display:none;align-items:center;gap:8px;background:#eaf4ee;border:1.5px solid var(--accent2);border-radius:12px;padding:10px 14px;margin-bottom:12px">
+          <span style="font-size:22px">🎉</span>
+          <div><div style="font-weight:700;font-size:14px;color:var(--accent)">Séance terminée !</div><div style="font-size:12px;color:var(--muted)">Tu peux la refaire ou passer à demain</div></div>
+        </div>
         <div class="hero-title" id="hero-title"></div>
         <div class="hero-meta" id="hero-meta"></div>
         <button class="btn-primary" id="hero-start-btn">Commencer →</button>
+        <button class="btn-secondary" id="hero-express-btn" style="display:none" onclick="launchExpress()">⚡ Mode express (5–10 min)</button>
       </div>
     </div>
 
@@ -272,9 +277,13 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
 <div id="page-timer">
   <div class="timer-header">
     <button class="back-btn" id="timer-back-btn">←</button>
-    <div>
+    <div style="flex:1">
       <div style="font-size:19px;font-weight:700;line-height:1.2" id="t-name"></div>
       <div style="font-size:13px;color:var(--muted);margin-top:3px" id="t-set"></div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Séance</div>
+      <div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums" id="global-chrono">00:00</div>
     </div>
   </div>
   <div class="timer-body">
@@ -305,6 +314,7 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
 
     <button class="ts-btn p" id="t-main-btn">Démarrer</button>
     <button class="ts-btn s" id="t-skip-btn">Passer →</button>
+    <button class="ts-btn s" id="t-allsets-btn" style="font-size:13px;padding:10px;color:var(--muted)" onclick="validateAllSets()">✅ Valider toutes les séries</button>
   </div>
 </div>
 
@@ -376,11 +386,25 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
       </div>
     </div>
 
-    <div class="sec-title">Données</div>
+    <div class="sec-title">Import / Export programme</div>
+    <div class="card">
+      <div class="card-row" onclick="showImportModal()">
+        <span style="font-size:20px">📥</span>
+        <div style="flex:1"><div style="font-weight:600">Importer un programme JSON</div><div style="font-size:12px;color:var(--muted)">Remplace tout le programme</div></div>
+        <span style="color:var(--muted)">›</span>
+      </div>
+      <div class="card-row" onclick="exportProgram()">
+        <span style="font-size:20px">📤</span>
+        <div style="flex:1"><div style="font-weight:600">Exporter le programme actuel</div><div style="font-size:12px;color:var(--muted)">Obtenir le JSON du programme</div></div>
+        <span style="color:var(--muted)">›</span>
+      </div>
+    </div>
+
+    <div class="sec-title">Données d'entraînement</div>
     <div class="card">
       <div class="card-row" onclick="exportData()">
-        <span style="font-size:20px">📤</span>
-        <div style="flex:1"><div style="font-weight:600">Exporter mes données</div><div style="font-size:12px;color:var(--muted)">Copier en JSON</div></div>
+        <span style="font-size:20px">📊</span>
+        <div style="flex:1"><div style="font-weight:600">Exporter l'historique</div><div style="font-size:12px;color:var(--muted)">Copier en JSON</div></div>
       </div>
     </div>
     <button class="danger-btn" onclick="confirmReset()">🗑 Réinitialiser toutes les données</button>
@@ -395,6 +419,41 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
   <button class="nav-btn" data-page="history" onclick="switchTab('history')"><span class="ico">📊</span>Historique</button>
   <button class="nav-btn" data-page="editor" onclick="switchTab('editor')"><span class="ico">✏️</span>Programme</button>
   <button class="nav-btn" data-page="settings" onclick="switchTab('settings')"><span class="ico">⚙️</span>Réglages</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: IMPORT JSON                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Importer un programme</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Colle ton JSON ci-dessous. Le programme actuel sera remplacé. L'historique est conservé.</p>
+    <div class="field">
+      <label>JSON du programme</label>
+      <textarea id="import-json-input" rows="10" style="width:100%;border:2px solid var(--border);border-radius:11px;padding:11px 14px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--text);resize:vertical" placeholder='{"routine":[...],"days":[...]}'></textarea>
+    </div>
+    <div id="import-error" style="color:var(--danger);font-size:13px;margin-bottom:12px;display:none"></div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeImportModal()" style="flex:1;padding:14px;border:1px solid var(--border);border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;background:var(--bg)">Annuler</button>
+      <button onclick="previewImport()" style="flex:2;padding:14px;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;background:var(--accent);color:white">Prévisualiser →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  MODAL: IMPORT PREVIEW                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="import-preview-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Aperçu du programme</div>
+    <div id="import-preview-content" style="margin-bottom:18px;max-height:50vh;overflow-y:auto"></div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeImportPreview()" style="flex:1;padding:14px;border:1px solid var(--border);border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;background:var(--bg)">← Retour</button>
+      <button onclick="confirmImport()" style="flex:2;padding:14px;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;background:var(--accent);color:white">✅ Valider et importer</button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -442,8 +501,12 @@ body { font-family: -apple-system, 'Helvetica Neue', sans-serif; background: var
       </div>
     </div>
     <div class="field">
-      <label>Poids (optionnel)</label>
+      <label>Poids de référence (optionnel)</label>
       <input type="text" id="f-weight" placeholder="ex: 8–12 kg">
+    </div>
+    <div class="toggle-row">
+      <div><div class="toggle-lbl">Demander le poids utilisé</div><div class="toggle-sub">Affiché après chaque série</div></div>
+      <input type="checkbox" id="f-askWeight" style="width:20px;height:20px;cursor:pointer">
     </div>
     <div style="display:flex;gap:10px;margin-top:4px">
       <button onclick="closeModal()" style="flex:1;padding:14px;border:1px solid var(--border);border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;background:var(--bg)">Annuler</button>
@@ -464,17 +527,17 @@ const DEFAULT_ROUTINE = [
 
 const DEFAULT_DAYS = [
   { name:"Lundi",    short:"Lu", session:"Abdos + Posture", exercises:[
-    { id:'e1',  name:"Crunch lesté",             type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"8–12 kg" },
+    { id:'e1',  name:"Crunch lesté",             type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"8–12 kg", askWeight:true },
     { id:'e2',  name:"Knee raises",              type:"reps",     sets:4, reps:"8–10", rest:45, prep:0 },
-    { id:'e3',  name:"Pallof press (élastique)", type:"reps",     sets:3, reps:"12",   rest:30, prep:0 },
-    { id:'e4',  name:"Reverse fly banc 30°",     type:"reps",     sets:4, reps:"15",   rest:45, prep:0, weight:"4–6 kg" },
+    { id:'e3',  name:"Pallof press (élastique)", type:"reps",     sets:3, reps:"12",   rest:30, prep:0, askWeight:true },
+    { id:'e4',  name:"Reverse fly banc 30°",     type:"reps",     sets:4, reps:"15",   rest:45, prep:0, weight:"4–6 kg", askWeight:true },
     { id:'e5',  name:"Vacuum",                   type:"duration", sets:3, duration:25, rest:20, prep:5 },
   ]},
   { name:"Mardi",    short:"Ma", session:"Lombaires + Dos", exercises:[
-    { id:'e6',  name:"Extension lombaire lente", type:"reps",     sets:3, reps:"5",    rest:60, prep:0, weight:"1–3 kg" },
+    { id:'e6',  name:"Extension lombaire lente", type:"reps",     sets:3, reps:"5",    rest:60, prep:0, weight:"1–3 kg", askWeight:true },
     { id:'e7',  name:"Dead bug",                 type:"reps",     sets:4, reps:"10",   rest:30, prep:0 },
-    { id:'e8',  name:"Rowing haltères",          type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"10–14 kg" },
-    { id:'e9',  name:"Y-raise banc",             type:"reps",     sets:3, reps:"12",   rest:45, prep:0, weight:"2–4 kg" },
+    { id:'e8',  name:"Rowing haltères",          type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"10–14 kg", askWeight:true },
+    { id:'e9',  name:"Y-raise banc",             type:"reps",     sets:3, reps:"12",   rest:45, prep:0, weight:"2–4 kg", askWeight:true },
     { id:'e10', name:"Planche",                  type:"duration", sets:3, duration:45, rest:30, prep:5 },
   ]},
   { name:"Mercredi", short:"Me", session:"Bas abdos + Obliques", exercises:[
@@ -485,17 +548,17 @@ const DEFAULT_DAYS = [
     { id:'e15', name:"Vacuum",                   type:"duration", sets:3, duration:25, rest:20, prep:5 },
   ]},
   { name:"Jeudi",    short:"Je", session:"Posture Épaules", exercises:[
-    { id:'e16', name:"Reverse fly",              type:"reps",     sets:4, reps:"15",   rest:45, prep:0, weight:"4–6 kg" },
-    { id:'e17', name:"Rowing haltères",          type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"10–14 kg" },
-    { id:'e18', name:"Y-raise",                  type:"reps",     sets:3, reps:"12",   rest:45, prep:0, weight:"2–4 kg" },
+    { id:'e16', name:"Reverse fly",              type:"reps",     sets:4, reps:"15",   rest:45, prep:0, weight:"4–6 kg", askWeight:true },
+    { id:'e17', name:"Rowing haltères",          type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"10–14 kg", askWeight:true },
+    { id:'e18', name:"Y-raise",                  type:"reps",     sets:3, reps:"12",   rest:45, prep:0, weight:"2–4 kg", askWeight:true },
     { id:'e19', name:"Planche",                  type:"duration", sets:3, duration:60, rest:30, prep:5 },
     { id:'e20', name:"Dead bug",                 type:"reps",     sets:3, reps:"10",   rest:30, prep:0 },
   ]},
   { name:"Vendredi", short:"Ve", session:"Mix Complet", exercises:[
-    { id:'e21', name:"Crunch lesté",             type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"8–12 kg" },
+    { id:'e21', name:"Crunch lesté",             type:"reps",     sets:4, reps:"12",   rest:45, prep:0, weight:"8–12 kg", askWeight:true },
     { id:'e22', name:"Reverse crunch",           type:"reps",     sets:4, reps:"15",   rest:30, prep:0 },
-    { id:'e23', name:"Extension lombaire",       type:"reps",     sets:3, reps:"5",    rest:60, prep:0, weight:"1–3 kg" },
-    { id:'e24', name:"Reverse fly",              type:"reps",     sets:3, reps:"15",   rest:45, prep:0, weight:"4–6 kg" },
+    { id:'e23', name:"Extension lombaire",       type:"reps",     sets:3, reps:"5",    rest:60, prep:0, weight:"1–3 kg", askWeight:true },
+    { id:'e24', name:"Reverse fly",              type:"reps",     sets:3, reps:"15",   rest:45, prep:0, weight:"4–6 kg", askWeight:true },
     { id:'e25', name:"Vacuum",                   type:"duration", sets:3, duration:30, rest:20, prep:5 },
   ]},
   { name:"Samedi",   short:"Sa", session:"Routine posture", exercises:[] },
@@ -528,18 +591,31 @@ function loadDB() {
     const saved = localStorage.getItem('workout_db');
     if (saved) {
       DB = JSON.parse(saved);
-      if (!DB.history) DB.history = [];
-    } else {
-      DB.days = JSON.parse(JSON.stringify(DEFAULT_DAYS));
-      DB.routine = JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
-      DB.history = [];
-      saveDB();
     }
-  } catch(e) {
+  } catch(e) {}
+  // Always ensure all required fields exist
+  if (!DB.days || !Array.isArray(DB.days) || DB.days.length !== 7) {
     DB.days = JSON.parse(JSON.stringify(DEFAULT_DAYS));
-    DB.routine = JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
-    DB.history = [];
   }
+  if (!DB.routine || !Array.isArray(DB.routine)) {
+    DB.routine = JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
+  }
+  if (!DB.history) DB.history = [];
+  if (!DB.weekStates) DB.weekStates = {};
+  // Ensure each exercise has required fields
+  DB.days.forEach(day => {
+    if (!day.exercises) day.exercises = [];
+    day.exercises.forEach(ex => {
+      if (ex.prep === undefined) ex.prep = 0;
+      if (ex.rest === undefined) ex.rest = 30;
+      if (ex.askWeight === undefined) ex.askWeight = false;
+    });
+  });
+  DB.routine.forEach(ex => {
+    if (ex.prep === undefined) ex.prep = 0;
+    if (ex.rest === undefined) ex.rest = 0;
+  });
+  saveDB();
 }
 
 function saveDB() {
@@ -608,6 +684,31 @@ function buildHome() {
   $('hero-title').textContent = day.session;
   $('hero-meta').textContent = countMeta(today);
   $('hero-start-btn').onclick = () => launchWorkout(today);
+  $('hero-express-btn').style.display = po ? 'none' : '';
+
+  // Check if today's session is already done this week
+  const weekKey = getWeekKey();
+  const todayState = DB.weekStates && DB.weekStates[weekKey] && DB.weekStates[weekKey][today];
+  // allExCount used below for done badge
+
+  const doneEl = $('hero-done-badge');
+  const allExList = DB.routine.concat(day.exercises);
+  if (todayState && Object.keys(todayState).length > 0) {
+    const stateArr = Object.values(todayState);
+    const fullyDone = allExList.length > 0 && stateArr.length === allExList.length &&
+      stateArr.every((e, i) => allExList[i] && e.doneSet >= allExList[i].sets);
+    const doneEx = stateArr.filter(e => e.doneSet > 0).length;
+    if (fullyDone) {
+      doneEl.style.display = 'flex';
+      $('hero-start-btn').textContent = '🔁 Refaire la séance';
+    } else {
+      doneEl.style.display = 'none';
+      $('hero-start-btn').textContent = doneEx > 0 ? `▶ Continuer (${doneEx}/${allExList.length})` : 'Commencer →';
+    }
+  } else {
+    doneEl.style.display = 'none';
+    $('hero-start-btn').textContent = 'Commencer →';
+  }
 
   // Week strip — show actual calendar dates
   const strip = $('week-strip'); strip.innerHTML = '';
@@ -620,9 +721,16 @@ function buildHome() {
     const date = new Date(monday);
     date.setDate(monday.getDate() + i);
     const dateStr = date.getDate() + '/' + (date.getMonth()+1);
+    const wk = getWeekKey();
+    const dayState = DB.weekStates && DB.weekStates[wk] && DB.weekStates[wk][i];
+    const isDayDone = dayState && Object.values(dayState).length === (DB.routine.length + d.exercises.length) &&
+      Object.values(dayState).every((e, idx) => {
+        const ex = DB.routine.concat(d.exercises)[idx];
+        return ex && e.doneSet >= ex.sets;
+      });
     const p = document.createElement('div');
     p.className = 'wpill' + (i===today?' today':'') + (d.exercises.length===0?' rest':'');
-    p.innerHTML = `<div class="wd">${d.short}</div><div class="dd">${dateStr}</div>`;
+    p.innerHTML = `<div class="wd">${d.short}</div><div class="dd">${isDayDone ? '✅' : dateStr}</div>`;
     p.onclick = () => launchWorkout(i);
     strip.appendChild(p);
   });
@@ -731,6 +839,55 @@ function goHome() {
 const TCOL = { prep:'#e9a824', work:'#2d6a4f', rest:'#457b9d' };
 const TLBL = { prep:'PRÉPARE', work:'EN ACTION', rest:'REPOS' };
 
+let globalChronoInterval = null;
+
+function startGlobalChrono() {
+  if (globalChronoInterval) return;
+  globalChronoInterval = setInterval(() => {
+    if (!workStart) return;
+    const elapsed = Date.now() - workStart;
+    const m = Math.floor(elapsed / 60000);
+    const s = Math.floor((elapsed % 60000) / 1000);
+    $('global-chrono').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+
+function stopGlobalChrono() {
+  if (globalChronoInterval) { clearInterval(globalChronoInterval); globalChronoInterval = null; }
+}
+
+function validateAllSets() {
+  const ex = workExercises[activeExIdx];
+  if (ex.doneSet >= ex.sets) return;
+  killTimer();
+  $('weight-panel').style.display = 'none';
+  // If askWeight, show weight panel once for all remaining sets
+  if (ex.askWeight) {
+    $('weight-panel').style.display = 'block';
+    const lastW = ex.weights.length ? ex.weights[ex.weights.length-1] : '';
+    $('weight-input').value = lastW;
+    $('ring-num').textContent = '💪'; $('ring-lbl').textContent = 'POIDS';
+    $('ring-fg').style.stroke = TCOL.work; setRing(1, TCOL.work);
+    $('t-desc').textContent = 'Poids pour toutes les séries restantes';
+    setMainBtn('✅ Valider tout', false);
+    tPhase = 'weight_input_all';
+  } else {
+    const remaining = ex.sets - ex.doneSet;
+    for (let i = 0; i < remaining; i++) {
+      ex.doneSet++;
+      totalSeries++;
+    }
+    refreshTimerDots(); refreshTimerSetLabel();
+    updateProgress(); saveWorkState();
+    beep('work_done'); vibrate([60,20,60]);
+    $('t-desc').textContent = 'Toutes les séries validées 🎉';
+    setMainBtn('Exercice terminé ✅', true);
+    $('t-skip-btn').textContent = '← Retour aux exercices';
+    $('t-allsets-btn').style.display = 'none';
+    if (workExercises.every(e => e.doneSet >= e.sets)) setTimeout(finishWorkout, 900);
+  }
+}
+
 function openTimer(idx) {
   killTimer();
   activeExIdx = idx;
@@ -742,6 +899,7 @@ function openTimer(idx) {
   resetRing();
   $('t-desc').textContent = '';
   $('weight-panel').style.display = 'none';
+  $('t-allsets-btn').style.display = ex.doneSet >= ex.sets ? 'none' : '';
 
   const lbl = ex.type==='duration' ? `▶  Lancer (${fmtDur(ex.duration)})` : '▶  Démarrer la série';
   setMainBtn(lbl, ex.doneSet>=ex.sets);
@@ -753,6 +911,7 @@ function openTimer(idx) {
 
   $('nav-bar').style.display = 'none';
   $('page-timer').classList.add('active');
+  startGlobalChrono();
 }
 
 $('timer-back-btn').onclick = () => {
@@ -806,16 +965,35 @@ function startPhase(phase, secs, onDone) {
   tPhase=phase; tDuration=secs*1000; tEnd=Date.now()+tDuration; tDone=onDone;
   $('ring-lbl').textContent = TLBL[phase]||'';
   $('ring-fg').style.stroke = TCOL[phase]||TCOL.work;
-  let lastBeep=-1;
+  let lastBeepSec = -1;
+
   function frame() {
-    const rem=Math.max(0,tEnd-Date.now()), s=Math.ceil(rem/1000);
-    $('ring-num').textContent=s;
-    setRing(rem/tDuration, TCOL[phase]||TCOL.work);
-    if(s<=3&&s>0&&s!==lastBeep){lastBeep=s;beep('tick');vibrate([18]);}
-    if(rem<=0){tRAF=null;tPhase='idle';setRing(0,TCOL[phase]);$('ring-num').textContent='0';const cb=tDone;tDone=null;cb&&cb();return;}
-    tRAF=requestAnimationFrame(frame);
+    const rem = Math.max(0, tEnd - Date.now());
+    const s   = Math.ceil(rem / 1000);
+    $('ring-num').textContent = s;
+    setRing(rem / tDuration, TCOL[phase] || TCOL.work);
+
+    // Countdown sounds for 'work' phase only (5 last seconds)
+    if (phase === 'work' && s !== lastBeepSec) {
+      lastBeepSec = s;
+      if (s >= 1 && s <= 4) {
+        beep('countdown_tick'); vibrate([25]);
+      }
+    }
+
+    if (rem <= 0) {
+      tRAF = null; tPhase = 'idle';
+      setRing(0, TCOL[phase]);
+      $('ring-num').textContent = '0';
+      // Final high beep on work end
+      if (phase === 'work') { beep('countdown_last'); vibrate([80,30,80]); }
+      else if (phase === 'rest') { beep('rest_done'); vibrate([40]); }
+      const cb = tDone; tDone = null; cb && cb();
+      return;
+    }
+    tRAF = requestAnimationFrame(frame);
   }
-  tRAF=requestAnimationFrame(frame);
+  tRAF = requestAnimationFrame(frame);
 }
 
 function killTimer(){if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}tPhase='idle';tDone=null;}
@@ -856,6 +1034,7 @@ function onMainBtn() {
 
 function beginWork() {
   const ex = workExercises[activeExIdx];
+  beep('prep_start'); // distinct beep: prep over, chrono starts
   if (ex.type==='duration') {
     setMainBtn('⏸ Pause',false); $('t-desc').textContent='Tiens la position !';
     startPhase('work',ex.duration,()=>confirmWork());
@@ -872,7 +1051,7 @@ function confirmWork() {
   // Show weight input if exercise has weight
   const ex = workExercises[activeExIdx];
   killTimer();
-  if (ex.weight || ex.type==='reps') {
+  if (ex.askWeight) {
     $('weight-panel').style.display='block';
     // Pre-fill with last used weight
     const lastW = ex.weights.length ? ex.weights[ex.weights.length-1] : '';
@@ -890,10 +1069,29 @@ function confirmWork() {
 // Override main btn for weight_input
 const origOnMain = onMainBtn;
 $('t-main-btn').onclick = function() {
-  if (tPhase==='weight_input') {
+  if (tPhase === 'weight_input') {
     const w = parseFloat($('weight-input').value)||0;
     $('weight-panel').style.display='none';
     afterWork(w);
+  } else if (tPhase === 'weight_input_all') {
+    const w = parseFloat($('weight-input').value)||0;
+    $('weight-panel').style.display='none';
+    const ex = workExercises[activeExIdx];
+    const remaining = ex.sets - ex.doneSet;
+    for (let i = 0; i < remaining; i++) {
+      ex.doneSet++;
+      ex.weights.push(w);
+      totalSeries++;
+    }
+    refreshTimerDots(); refreshTimerSetLabel();
+    updateProgress(); saveWorkState();
+    beep('work_done'); vibrate([60,20,60]);
+    $('t-desc').textContent = 'Toutes les séries validées 🎉';
+    setMainBtn('Exercice terminé ✅', true);
+    $('t-skip-btn').textContent = '← Retour aux exercices';
+    $('t-allsets-btn').style.display = 'none';
+    tPhase = 'idle';
+    if (workExercises.every(e => e.doneSet >= e.sets)) setTimeout(finishWorkout, 900);
   } else {
     onMainBtn();
   }
@@ -905,7 +1103,7 @@ function adjustWeight(delta) {
 }
 
 function afterWork(weight) {
-  beep('work_done'); vibrate([100,50,100]);
+  beep('work_done'); vibrate([60,20,60]);
   const ex = workExercises[activeExIdx];
   ex.doneSet++;
   if (weight>0 || ex.type==='reps') ex.weights.push(weight);
@@ -921,12 +1119,26 @@ function afterWork(weight) {
   updateProgress();
   saveWorkState();
 
-  if (ex.doneSet>=ex.sets) {
-    killTimer(); resetRing();
-    $('t-desc').textContent='Exercice terminé ! 🎉';
-    setMainBtn('Exercice terminé ✅',true);
-    $('t-skip-btn').textContent='← Retour aux exercices';
-    if (workExercises.every(e=>e.doneSet>=e.sets)) setTimeout(finishWorkout,900);
+  if (ex.doneSet >= ex.sets) {
+    killTimer();
+    if (workExercises.every(e => e.doneSet >= e.sets)) {
+      setTimeout(finishWorkout, 900);
+      return;
+    }
+    // Auto-advance to next incomplete exercise after 1.2s
+    setTimeout(() => {
+      let next = activeExIdx + 1;
+      while (next < workExercises.length && workExercises[next].doneSet >= workExercises[next].sets) next++;
+      if (next < workExercises.length) {
+        openTimer(next);
+      }
+    }, 1200);
+    // Show brief "done" feedback while waiting
+    resetRing();
+    $('t-desc').textContent = 'Exercice terminé ! 🎉 → Suivant…';
+    setMainBtn('Exercice terminé ✅', true);
+    $('t-skip-btn').textContent = '← Retour aux exercices';
+    $('t-allsets-btn').style.display = 'none';
     return;
   }
 
@@ -940,14 +1152,27 @@ function afterWork(weight) {
 }
 
 function afterRest() {
-  beep('rest_done'); vibrate([50]); killTimer();
+  killTimer();
   const ex = workExercises[activeExIdx];
   resetRing(); refreshTimerDots();
   $('weight-panel').style.display='none';
-  $('t-desc').textContent=`Prêt pour la série ${ex.doneSet+1}`;
-  const lbl = ex.type==='duration'?`▶  Lancer (${fmtDur(ex.duration)})`:'▶  Démarrer la série';
-  setMainBtn(lbl,false);
   $('t-skip-btn').textContent='Passer cette série →';
+  $('t-allsets-btn').style.display = '';
+
+  if (ex.type === 'duration') {
+    // Auto-play: start next duration set automatically after rest
+    $('t-desc').textContent = `Série ${ex.doneSet+1} — c'est parti !`;
+    setMainBtn('⏸ Pause', false);
+    if (ex.prep > 0) {
+      startPhase('prep', ex.prep, () => beginWork());
+    } else {
+      beginWork();
+    }
+  } else {
+    $('t-desc').textContent = `Prêt pour la série ${ex.doneSet+1}`;
+    const lbl = '▶  Démarrer la série';
+    setMainBtn(lbl, false);
+  }
 }
 
 function onSkipBtn() {
@@ -968,6 +1193,7 @@ function onSkipBtn() {
 // ══════════════════════════════════════════════
 function finishWorkout() {
   killTimer();
+  stopGlobalChrono();
   const elapsed = Date.now()-workStart;
   const day = DB.days[currentDayIdx];
 
@@ -1164,6 +1390,7 @@ function openModal(title,ex){
   $('f-rest').value=ex.rest!==undefined?ex.rest:30;
   $('f-prep').value=ex.prep!==undefined?ex.prep:5;
   $('f-weight').value=ex.weight||'';
+  $('f-askWeight').checked=ex.askWeight||false;
   onTypeChange();
   $('ex-modal').classList.add('open');
 }
@@ -1192,6 +1419,7 @@ function saveExercise(){
     rest: parseInt($('f-rest').value)||0,
     prep: parseInt($('f-prep').value)||0,
     weight: $('f-weight').value.trim()||undefined,
+    askWeight: $('f-askWeight').checked,
   };
   if (ex.type==='reps') delete ex.duration;
   else delete ex.reps;
@@ -1218,12 +1446,59 @@ function deleteRoutineExercise(i){
 }
 
 // ══════════════════════════════════════════════
-// AUDIO
+// AUDIO — bypasses iPhone silent mode via AudioContext
 // ══════════════════════════════════════════════
 let actx;
-function getActx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
-function beep(type){try{const ctx=getActx();if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);const t=ctx.currentTime;if(type==='work_done'){o.frequency.setValueAtTime(880,t);o.frequency.setValueAtTime(1100,t+.12);g.gain.setValueAtTime(.35,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);o.start(t);o.stop(t+.5);}else if(type==='rest_done'){o.frequency.setValueAtTime(660,t);g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.35);}else if(type==='tick'){o.frequency.setValueAtTime(1100,t);g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);o.start(t);o.stop(t+.07);}}catch(e){}}
-function vibrate(p){navigator.vibrate&&navigator.vibrate(p);}
+function getActx() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  // Always resume — this is what bypasses silent mode on iOS
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+
+function playTone(freq, duration, gainVal, type='sine', startTime=0) {
+  try {
+    const ctx = getActx();
+    const t = ctx.currentTime + startTime;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(gainVal, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+    o.start(t); o.stop(t + duration);
+  } catch(e) {}
+}
+
+function beep(type) {
+  try {
+    const ctx = getActx();
+    if (type === 'work_done') {
+      // Double bip montant — fin d'exercice
+      playTone(660, 0.15, 0.4, 'sine', 0);
+      playTone(880, 0.25, 0.4, 'sine', 0.18);
+    } else if (type === 'rest_done') {
+      // Bip court grave — fin de repos, go !
+      playTone(440, 0.2, 0.35, 'sine', 0);
+    } else if (type === 'countdown_tick') {
+      // Bip grave — 4 dernières secondes (4,3,2,1)
+      playTone(330, 0.12, 0.35, 'sine', 0);
+    } else if (type === 'countdown_last') {
+      // Bip aigu final — 0, le chrono s'arrête
+      playTone(880, 0.3, 0.45, 'sine', 0);
+    } else if (type === 'prep_start') {
+      // Bip court distinct — prep terminée, c'est parti !
+      playTone(550, 0.08, 0.3, 'square', 0);
+      playTone(750, 0.15, 0.35, 'sine', 0.1);
+    }
+  } catch(e) {}
+}
+
+function vibrate(p) { navigator.vibrate && navigator.vibrate(p); }
+
+// Keep AudioContext alive on every user touch (required by iOS)
+document.addEventListener('touchstart', () => { try { getActx(); } catch(e){} }, { passive: true });
 
 // ══════════════════════════════════════════════
 // SETTINGS
@@ -1262,6 +1537,198 @@ $('ex-modal').onclick=function(e){if(e.target===this)closeModal();};
 
 // Unlock audio
 document.addEventListener('touchstart',()=>{try{getActx().resume();}catch(e){}},{once:true});
+
+// ══════════════════════════════════════════════
+// EXPRESS MODE (5–10 min adapted session)
+// ══════════════════════════════════════════════
+
+// Pre-defined express adaptations for each day (index 0-6)
+const EXPRESS_PLANS = [
+  // Lundi — Abdos + Posture express
+  { label:"Abdos express", exercises:[
+    { ref:'e1',  sets:2, reps:"10",  rest:30 }, // Crunch lesté
+    { ref:'e2',  sets:2, reps:"8",   rest:30 }, // Knee raises
+    { ref:'e5',  sets:2, duration:20, rest:15 }, // Vacuum
+  ]},
+  // Mardi — Lombaires express
+  { label:"Dos express", exercises:[
+    { ref:'e6',  sets:2, reps:"5",   rest:45 }, // Extension lombaire
+    { ref:'e8',  sets:2, reps:"10",  rest:30 }, // Rowing
+    { ref:'e10', sets:2, duration:30, rest:20 }, // Planche
+  ]},
+  // Mercredi — Obliques express
+  { label:"Obliques express", exercises:[
+    { ref:'e11', sets:2, reps:"12",  rest:20 }, // Reverse crunch
+    { ref:'e12', sets:2, reps:"8",   rest:30 }, // Knee raises
+    { ref:'e15', sets:2, duration:20, rest:15 }, // Vacuum
+  ]},
+  // Jeudi — Posture express
+  { label:"Épaules express", exercises:[
+    { ref:'e16', sets:2, reps:"12",  rest:30 }, // Reverse fly
+    { ref:'e17', sets:2, reps:"10",  rest:30 }, // Rowing
+    { ref:'e19', sets:2, duration:30, rest:20 }, // Planche
+  ]},
+  // Vendredi — Mix express
+  { label:"Mix express", exercises:[
+    { ref:'e21', sets:2, reps:"10",  rest:30 }, // Crunch lesté
+    { ref:'e22', sets:2, reps:"12",  rest:20 }, // Reverse crunch
+    { ref:'e25', sets:2, duration:20, rest:15 }, // Vacuum
+  ]},
+  // Samedi — posture only, no express
+  null,
+  // Dimanche — posture only, no express
+  null,
+];
+
+function launchExpress() {
+  const today = todayIdx();
+  const plan = EXPRESS_PLANS[today];
+  if (!plan) return;
+
+  const day = DB.days[today];
+  currentDayIdx = today;
+  workStart = Date.now();
+  totalSeries = 0;
+
+  // Routine stays, but exercises are replaced by express version
+  const routineExs = DB.routine.map(e => ({ ...e, isRoutine:true, doneSet:0, weights:[], express:true }));
+
+  // Build express exercises by matching ref IDs to current program
+  const allDayExs = day.exercises;
+  const expressExs = plan.exercises.map(p => {
+    // Find matching exercise by ref id OR by position
+    const base = allDayExs.find(e => e.id === p.ref) || allDayExs[plan.exercises.indexOf(p)] || allDayExs[0];
+    if (!base) return null;
+    return {
+      ...base,
+      sets: p.sets,
+      reps: p.reps || base.reps,
+      duration: p.duration || base.duration,
+      rest: p.rest,
+      isRoutine: false,
+      doneSet: 0,
+      weights: [],
+      express: true,
+    };
+  }).filter(Boolean);
+
+  workExercises = [...routineExs, ...expressExs];
+
+  $('w-dn').textContent = day.name;
+  $('w-sn').textContent = `⚡ ${plan.label}`;
+
+  renderWorkoutList();
+  updateProgress();
+  showPage('workout');
+}
+
+// ══════════════════════════════════════════════
+// IMPORT / EXPORT PROGRAM
+// ══════════════════════════════════════════════
+let importedProgram = null;
+
+function showImportModal() {
+  $('import-json-input').value = '';
+  $('import-error').style.display = 'none';
+  $('import-modal').classList.add('open');
+}
+function closeImportModal() { $('import-modal').classList.remove('open'); }
+function closeImportPreview() {
+  $('import-preview-modal').classList.remove('open');
+  $('import-modal').classList.add('open');
+}
+
+function exportProgram() {
+  const prog = { routine: DB.routine, days: DB.days };
+  const json = JSON.stringify(prog, null, 2);
+  try { navigator.clipboard.writeText(json).then(() => alert('Programme copié ! Colle-le dans un fichier .json')); }
+  catch(e) { prompt('Copie ton programme JSON :', json); }
+}
+
+function previewImport() {
+  const raw = $('import-json-input').value.trim();
+  const errEl = $('import-error');
+  errEl.style.display = 'none';
+  try {
+    const parsed = JSON.parse(raw);
+    // Validate structure
+    if (!parsed.days || !Array.isArray(parsed.days) || parsed.days.length !== 7) {
+      throw new Error('Le JSON doit contenir "days" avec exactement 7 jours (Lundi→Dimanche)');
+    }
+    if (!parsed.routine || !Array.isArray(parsed.routine)) {
+      throw new Error('Le JSON doit contenir "routine" (tableau exercices quotidiens)');
+    }
+    parsed.days.forEach((d, i) => {
+      if (!d.name || !d.exercises) throw new Error(`Jour ${i+1} invalide : manque "name" ou "exercises"`);
+    });
+
+    // Add IDs if missing
+    parsed.routine = parsed.routine.map((e,i) => ({ ...e, id: e.id||uid() }));
+    parsed.days = parsed.days.map(d => ({
+      ...d,
+      exercises: d.exercises.map(e => ({ ...e, id: e.id||uid(), prep: e.prep||0, rest: e.rest||30 }))
+    }));
+
+    importedProgram = parsed;
+
+    // Build preview
+    const preview = $('import-preview-content');
+    preview.innerHTML = '';
+
+    // Routine
+    const rtitle = document.createElement('div');
+    rtitle.style.cssText = 'font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px';
+    rtitle.textContent = '🧱 Routine posture';
+    preview.appendChild(rtitle);
+    parsed.routine.forEach(ex => {
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:8px 12px;background:var(--bg);border-radius:10px;margin-bottom:6px;font-size:13px';
+      row.innerHTML = `<strong>${ex.name}</strong> — ${ex.type==='reps'?ex.sets+'×'+ex.reps+' reps':ex.sets+'×'+fmtDur(ex.duration)}`;
+      preview.appendChild(row);
+    });
+
+    parsed.days.forEach(day => {
+      const dtitle = document.createElement('div');
+      dtitle.style.cssText = 'font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px';
+      dtitle.textContent = '💪 ' + day.name + (day.session ? ' — ' + day.session : '');
+      preview.appendChild(dtitle);
+      if (!day.exercises.length) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'font-size:13px;color:var(--muted);padding:6px 0';
+        empty.textContent = 'Routine posture uniquement';
+        preview.appendChild(empty);
+      }
+      day.exercises.forEach(ex => {
+        const row = document.createElement('div');
+        row.style.cssText = 'padding:8px 12px;background:var(--bg);border-radius:10px;margin-bottom:6px;font-size:13px';
+        row.innerHTML = `<strong>${ex.name}</strong> — ${ex.type==='reps'?ex.sets+'×'+ex.reps+' reps':ex.sets+'×'+fmtDur(ex.duration)}${ex.weight?' · '+ex.weight:''}`;
+        preview.appendChild(row);
+      });
+    });
+
+    closeImportModal();
+    $('import-preview-modal').classList.add('open');
+  } catch(e) {
+    errEl.textContent = '❌ ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+function confirmImport() {
+  if (!importedProgram) return;
+  DB.routine = importedProgram.routine;
+  DB.days = importedProgram.days;
+  DB.weekStates = {}; // reset week states since exercises changed
+  saveDB();
+  closeImportPreview();
+  buildHome();
+  buildEditor();
+  alert('✅ Programme importé avec succès !');
+  importedProgram = null;
+}
+
+$('import-modal').onclick = function(e) { if(e.target===this) closeImportModal(); };
+$('import-preview-modal').onclick = function(e) { if(e.target===this) closeImportPreview(); };
 
 // ══════════════════════════════════════════════
 // INIT
