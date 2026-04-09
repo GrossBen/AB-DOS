@@ -66,9 +66,8 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .reco-meta{font-size:13px;color:var(--muted);padding:0 16px 14px}
 
 /* TIME SELECTOR */
-.time-sel{display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none}
-.time-sel::-webkit-scrollbar{display:none}
-.tpill{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);white-space:nowrap;transition:all .15s}
+.time-sel{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 14px}
+.tpill{flex:1;min-width:0;padding:8px 6px;border-radius:12px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);white-space:nowrap;transition:all .15s;text-align:center}
 .tpill.sel{background:var(--accent);color:white;border-color:var(--accent)}
 .tpill:active{transform:scale(.94)}
 
@@ -108,9 +107,9 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 #page-timer.active{display:flex}
 .timer-hdr{background:var(--surface);padding:52px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .back-btn{background:var(--bg);border:none;width:36px;height:36px;border-radius:10px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.timer-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 24px;overflow-y:auto}
+.timer-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:14px 20px;overflow-y:auto;padding-top:20px}
 
-.ring-wrap{position:relative;width:200px;height:200px;margin-bottom:18px}
+.ring-wrap{position:relative;width:180px;height:180px;margin-bottom:14px}
 .ring-wrap svg{transform:rotate(-90deg);display:block}
 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring-num{font-size:64px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
@@ -128,12 +127,12 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .ts-btn.secondary{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
 .ts-btn.small{font-size:13px;padding:10px}
 
-.weight-panel{background:var(--surface);border-radius:var(--r);padding:14px;margin-bottom:12px;width:100%;max-width:300px;box-shadow:var(--shadow)}
-.weight-panel .wlbl{font-size:13px;font-weight:600;margin-bottom:10px}
+.weight-panel{background:var(--surface);border-radius:14px;padding:12px 14px;margin-bottom:10px;width:100%;max-width:300px;box-shadow:var(--shadow);border:1.5px solid var(--border)}
+.weight-panel .wlbl{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
 .weight-row{display:flex;align-items:center;gap:8px}
-.weight-input{flex:1;border:2px solid var(--border);border-radius:10px;padding:10px;font-size:22px;font-weight:700;text-align:center;background:var(--bg);color:var(--text)}
+.weight-input{flex:1;border:2px solid var(--border);border-radius:10px;padding:8px 6px;font-size:26px;font-weight:700;text-align:center;background:var(--bg);color:var(--text);min-width:0}
 .weight-input:focus{outline:none;border-color:var(--accent)}
-.w-adj{background:var(--bg);border:1px solid var(--border);border-radius:10px;width:40px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.w-adj{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;width:38px;height:38px;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
 
 /* FINISH */
 #page-finish{position:fixed;inset:0;z-index:95;background:var(--accent);color:white;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 28px}
@@ -259,10 +258,10 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
   <div class="timer-body">
     <div class="ring-wrap" id="ring-wrap">
-      <svg width="200" height="200" viewBox="0 0 200 200">
-        <circle cx="100" cy="100" r="86" fill="none" stroke="var(--border)" stroke-width="10"/>
-        <circle id="ring-fg" cx="100" cy="100" r="86" fill="none" stroke="#2d6a4f"
-          stroke-width="10" stroke-linecap="round" stroke-dasharray="540" stroke-dashoffset="0"/>
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <circle cx="90" cy="90" r="76" fill="none" stroke="var(--border)" stroke-width="9"/>
+        <circle id="ring-fg" cx="90" cy="90" r="76" fill="none" stroke="#2d6a4f"
+          stroke-width="9" stroke-linecap="round" stroke-dasharray="478" stroke-dashoffset="0"/>
       </svg>
       <div class="ring-center">
         <div class="ring-num" id="ring-num">—</div>
@@ -511,47 +510,47 @@ const SESSIONS = {
       '10': { equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:25, rest:45,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'10',   rest:45,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:25, rest:45,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'10',   rest:45,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
               ]},
       '15': { equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:25, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
                 {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:true, weight:'8–12 kg'},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:25, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
                 {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'15',   rest:60,  askWeight:false},
               ]},
       '20': { equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
                 {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'12',   rest:75,  askWeight:true, weight:'8–12 kg'},
                 {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
                 {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'15',   rest:75,  askWeight:false},
                 {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
               ]},
       'full':{ equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
                 {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'15',   rest:75,  askWeight:true, weight:'8–12 kg'},
                 {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
                 {id:'fin',   name:'Planche max (finisher)',type:'duration', sets:1, duration:60, rest:0,   askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
                 {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
                 {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'20',   rest:75,  askWeight:false},
                 {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
                 {id:'fin',   name:'Planche max (finisher)',type:'duration', sets:1, duration:60, rest:0,   askWeight:false},
@@ -707,24 +706,24 @@ const SESSIONS = {
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
               ]},
       '15': { equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
                 {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
                 {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
               ]},
       '20': { equipped: [
@@ -733,14 +732,14 @@ const SESSIONS = {
                 {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'yr',   name:'Y-raise banc',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:true, weight:'2–4 kg'},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
                 {id:'dbug', name:'Dead bug',              type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
                 {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
                 {id:'ysol', name:'Y-raise sol',           type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
               ]},
       'full':{ equipped: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
@@ -748,7 +747,7 @@ const SESSIONS = {
                 {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
                 {id:'yr',   name:'Y-raise banc',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:true, weight:'2–4 kg'},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
                 {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
               ], bodyweight: [
                 {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
@@ -756,7 +755,7 @@ const SESSIONS = {
                 {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
                 {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
                 {id:'ysol', name:'Y-raise sol',           type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche frontale',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
+                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
                 {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
               ]},
     }
@@ -785,7 +784,7 @@ const TIME_OPTIONS = [
 // STATE & DB
 // ═══════════════════════════════════════════
 const $=id=>document.getElementById(id);
-const CIRC=2*Math.PI*86;
+const CIRC=2*Math.PI*76;
 
 let DB={};
 let workExercises=[], workStart=null, totalSeries=0, activeIdx=-1;
@@ -800,6 +799,28 @@ function loadDB(){
   if(!DB.history)  DB.history=[];
   if(!DB.weekLog)  DB.weekLog={};
   if(!DB.routine)  DB.routine=JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
+
+  // Migrate history from previous versions
+  if(!DB._migrated){
+    const prevKeys=['workout_db_v4','workout_db'];
+    prevKeys.forEach(key=>{
+      try{
+        const old=localStorage.getItem(key);
+        if(!old) return;
+        const oldDB=JSON.parse(old);
+        if(oldDB.history&&Array.isArray(oldDB.history)&&oldDB.history.length){
+          // Merge: add old entries not already in current history
+          const existingDates=new Set(DB.history.map(r=>r.date));
+          const toAdd=oldDB.history.filter(r=>r.date&&!existingDates.has(r.date));
+          DB.history=[...DB.history,...toAdd];
+          DB.history.sort((a,b)=>new Date(b.date)-new Date(a.date));
+          console.log('Migrated '+toAdd.length+' entries from '+key);
+        }
+      }catch(e){}
+    });
+    DB._migrated=true;
+  }
+
   saveDB();
 }
 function saveDB(){try{localStorage.setItem('mp_v5',JSON.stringify(DB));}catch(e){}}
@@ -886,23 +907,31 @@ function buildHome(){
   const log=getWeekLog();
   const wkDots=$('week-dots'); wkDots.innerHTML='';
 
-  const dow=now.getDay(); const dm=dow===0?-6:1-dow;
-  const mon=new Date(now); mon.setDate(now.getDate()+dm);
-
-  for(let i=0;i<7;i++){
-    const dt=new Date(mon); dt.setDate(mon.getDate()+i);
-    const ds=dt.getDate()+'/'+(dt.getMonth()+1);
-    const isToday=i===today;
-    const sessPlanIdx=i<plan.length?i:-1; // which session is planned for this slot
-    const isDone=i<log.length;
-    const d=document.createElement('div');
-    let cls='wdot';
-    if(isToday) cls+=' today';
-    if(isDone) cls+=' done-day';
-    d.className=cls;
-    d.innerHTML=`<div class="wdn">${['Lu','Ma','Me','Je','Ve','Sa','Di'][i]}</div><div class="wdd">${isDone?'✅':ds}</div>`;
+  // Show séance slots (A, B, C, D...) not calendar days
+  // Each dot = one planned session, colored by status
+  plan.forEach((sessKey, i) => {
+    const isDone = i < log.length;
+    const isCurrent = i === log.length; // next to do
+    const sesh = SESSIONS[sessKey];
+    const d = document.createElement('div');
+    let cls = 'wdot';
+    if (isDone) cls += ' done-day';
+    if (isCurrent) cls += ' today';
+    d.className = cls;
+    // Show date if done, session letter if upcoming
+    const doneEntry = log[i];
+    let dateLabel = sessKey; // fallback: A, B, C, D
+    if (doneEntry && doneEntry.date) {
+      const dt = new Date(doneEntry.date);
+      dateLabel = dt.getDate()+'/'+(dt.getMonth()+1);
+    }
+    d.innerHTML = `<div class="wdd" style="font-size:${isDone?'14px':'16px'}">${isDone ? '✅' : sessKey}</div>`;
+    if (isDone && doneEntry) {
+      const dt = new Date(doneEntry.date);
+      d.title = dt.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+    }
     wkDots.appendChild(d);
-  }
+  });
 
   // Week status
   $('week-status').textContent=`${log.length}/${plan.length} séances réalisées cette semaine`;
@@ -1152,7 +1181,10 @@ function startPhase(phase,secs,onDone){
   $('ring-lbl').textContent=TLBL[phase]||'';
   $('ring-fg').style.stroke=TCOL[phase]||TCOL.work;
   // Schedule countdown beeps for both work AND rest phases (>=5s)
-  if((phase==='work'||phase==='rest')&&secs>=5) scheduleCountdown(secs);
+  // Schedule countdown only for 'work' phase (tenue) — called at phase start
+  if(phase==='work'&&secs>=5) scheduleCountdown(secs);
+  // For 'rest' phase: schedule countdown relative to rest duration
+  if(phase==='rest'&&secs>=5) scheduleCountdown(secs);
   function frame(){
     const rem=Math.max(0,tEnd-Date.now()),s=Math.ceil(rem/1000);
     $('ring-num').textContent=s;
@@ -1162,7 +1194,11 @@ function startPhase(phase,secs,onDone){
   }
   tRAF=requestAnimationFrame(frame);
 }
-function killTimer(){if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}tPhase='idle';tDone=null;}
+function killTimer(){
+  clearCountdownTimers(); // always clear first
+  if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}
+  tPhase='idle';tDone=null;
+}
 function pausePhase(){
   if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}
   tPausedMs=Math.max(0,tEnd-Date.now()); tPausedPhase=tPhase; tPhase='paused';
@@ -1280,7 +1316,8 @@ function afterWork(weight){
 }
 
 function afterRest(){
-  beepRest(); vibrate([40]); killTimer();
+  killTimer(); // clears countdown timers + RAF
+  beepRest(); vibrate([40]);
   const ex=workExercises[activeIdx];
   refreshDots(); $('weight-panel').style.display='none';
   $('t-skip').textContent='Passer →'; $('t-all').style.display='';
