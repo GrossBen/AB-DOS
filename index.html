@@ -7,9 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mon Programme">
 <meta name="theme-color" content="#2d6a4f">
-<title>Mon Programme</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
+<title>Mon Programme v6</title>
 <style>
 :root{
   --bg:#f8f6f2;--surface:#fff;--accent:#2d6a4f;--accent2:#52b788;
@@ -44,19 +42,15 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .card-row:last-child{border-bottom:none}
 .card-row:active{background:var(--bg)}
 
-/* WEEK DOTS */
 .week-dots{display:flex;gap:8px;padding:0 18px;margin-bottom:4px;align-items:center}
 .wdot{width:36px;height:36px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;flex-shrink:0}
-.wdot .wdn{font-size:8px;font-weight:700;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
 .wdot .wdd{font-size:11px;font-weight:700}
 .wdot.today{border-color:var(--accent);background:#eaf4ee}
 .wdot.today .wdd{color:var(--accent)}
 .wdot.done-day{background:var(--accent);border-color:var(--accent)}
-.wdot.done-day .wdn,.wdot.done-day .wdd{color:white}
-.wdot.skipped{background:var(--bg);border-color:var(--border)}
+.wdot.done-day .wdd{color:white}
 .wdot:active{transform:scale(.9)}
 
-/* RECOMMENDATION CARD */
 .reco-card{background:var(--surface);border-radius:var(--r);margin:8px 16px 12px;box-shadow:var(--shadow);overflow:hidden}
 .reco-header{padding:14px 16px 10px;display:flex;align-items:center;gap:10px}
 .reco-badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--accent2);color:white;flex-shrink:0}
@@ -65,13 +59,11 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .reco-session-name{font-size:19px;font-weight:700;padding:0 16px 4px}
 .reco-meta{font-size:13px;color:var(--muted);padding:0 16px 14px}
 
-/* TIME SELECTOR */
 .time-sel{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 14px}
 .tpill{flex:1;min-width:0;padding:8px 6px;border-radius:12px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);white-space:nowrap;transition:all .15s;text-align:center}
 .tpill.sel{background:var(--accent);color:white;border-color:var(--accent)}
 .tpill:active{transform:scale(.94)}
 
-/* GEAR SELECTOR */
 .gear-sel{display:flex;gap:6px;padding:0 16px 16px}
 .gpill{flex:1;padding:8px 6px;border-radius:12px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--muted);text-align:center;transition:all .15s}
 .gpill.sel{background:var(--accent);color:white;border-color:var(--accent)}
@@ -80,7 +72,6 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .btn-start:active{background:#1e4d38}
 .btn-secondary{display:block;width:calc(100% - 32px);margin:0 16px 8px;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:13px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;text-align:center}
 
-/* SESSION ITEMS */
 .sesh-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border-radius:var(--r);margin:0 16px 9px;box-shadow:var(--shadow);border-left:4px solid var(--border);cursor:pointer;transition:all .2s}
 .sesh-item.done{opacity:.4;border-left-color:var(--accent2)}
 .sesh-item.active-ex{border-left-color:var(--accent);box-shadow:0 4px 20px rgba(45,106,79,.18)}
@@ -91,18 +82,12 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--text)}
 .chip.w{background:#fff8e1;border-color:#f0d060;color:#7a5c00}
 .chip.r{background:#dce8f7;border-color:#aac4e8;color:#1a4971}
-.chip.circuit{background:#fce4ec;border-color:#f48fb1;color:#880e4f}
-
-.phase-lbl{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;margin:4px 16px 10px}
-.phase-lbl.routine{background:#fff3cd;color:#7a5200}
-.phase-lbl.main{background:#d1e7dd;color:#0a3622}
-.phase-lbl.circuit-lbl{background:#fce4ec;color:#880e4f}
+.chip.side{background:#fce4ec;border-color:#f48fb1;color:#880e4f}
 
 .prog-outer{height:3px;background:var(--border)}
 .prog-inner{height:100%;background:var(--accent);transition:width .4s}
 .prog-txt{font-size:11px;color:var(--muted);text-align:right;padding:5px 16px 0}
 
-/* TIMER */
 #page-timer{position:fixed;inset:0;z-index:90;background:var(--bg);flex-direction:column;display:none}
 #page-timer.active{display:flex}
 .timer-hdr{background:var(--surface);padding:52px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
@@ -119,6 +104,8 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .dot{width:11px;height:11px;border-radius:50%;background:var(--border);transition:all .3s;flex-shrink:0}
 .dot.done{background:var(--accent)}
 .dot.active-dot{background:var(--accent2);transform:scale(1.3)}
+.dot.left-dot{background:var(--prep)}
+.dot.right-dot{background:#e63946}
 
 .t-desc{font-size:15px;color:var(--muted);margin-bottom:18px;text-align:center;min-height:20px}
 .ts-btn{width:100%;max-width:300px;border:none;border-radius:15px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px}
@@ -134,7 +121,9 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .weight-input:focus{outline:none;border-color:var(--accent)}
 .w-adj{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;width:38px;height:38px;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
 
-/* FINISH */
+.reps-edit-panel{background:var(--surface);border-radius:14px;padding:12px 14px;margin-bottom:10px;width:100%;max-width:300px;box-shadow:var(--shadow);border:1.5px solid var(--accent2)}
+.reps-edit-panel .wlbl{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+
 #page-finish{position:fixed;inset:0;z-index:95;background:var(--accent);color:white;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 28px}
 #page-finish.active{display:flex}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:280px;margin:18px 0 26px}
@@ -142,7 +131,6 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .stat-v{font-size:26px;font-weight:700}
 .stat-l{font-size:12px;opacity:.8;margin-top:2px}
 
-/* HISTORY */
 .hist-item{padding:14px 16px}
 .hist-date{font-size:13px;font-weight:700;margin-bottom:2px}
 .hist-meta{font-size:12px;color:var(--muted)}
@@ -151,19 +139,16 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .hist-ex .hn{font-weight:600;color:var(--text);flex:1}
 .hist-ex .hw{color:var(--accent);font-weight:700;flex-shrink:0}
 
-/* ROUTINE PAGE */
 .routine-ex-row{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border-radius:var(--r);margin:0 16px 9px;box-shadow:var(--shadow);cursor:pointer;border-left:4px solid var(--prep);transition:all .2s}
 .routine-ex-row.done{opacity:.4;border-left-color:var(--accent2)}
 .routine-ex-row:active{transform:scale(.98)}
 
-/* SETTINGS */
 .settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
 .settings-row .lbl{font-size:15px;font-weight:600}
 .settings-row .sub{font-size:12px;color:var(--muted);margin-top:2px}
 .settings-row select,.settings-row input[type=number]{border:2px solid var(--border);border-radius:10px;padding:8px 10px;font-size:15px;background:var(--bg);color:var(--text);-webkit-appearance:none;width:90px;text-align:center}
 .danger-btn{display:block;width:calc(100% - 32px);margin:8px 16px;background:#fff0f0;color:var(--danger);border:1.5px solid #ffcdd2;border-radius:13px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;text-align:center}
 
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal-sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom));width:100%;max-width:500px;max-height:88vh;overflow-y:auto}
@@ -173,22 +158,19 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .field label{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
 .field input,.field select,.field textarea{width:100%;border:2px solid var(--border);border-radius:11px;padding:10px 14px;font-size:15px;background:var(--bg);color:var(--text);-webkit-appearance:none}
 .field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
-.field-row{display:flex;gap:10px}
-.field-row .field{flex:1}
-.field .hint{font-size:11px;color:var(--muted);margin-top:4px}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
-.toggle-row:last-child{border:none}
-.toggle-lbl{font-size:14px;font-weight:600}
-.toggle-sub{font-size:12px;color:var(--muted)}
 
 .empty{text-align:center;padding:40px 20px;color:var(--muted)}
 .empty .eico{font-size:48px;margin-bottom:12px}
 .empty p{font-size:14px}
+
+.side-indicator{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-left:6px}
+.side-indicator.left{background:#fff3cd;color:#7a5200}
+.side-indicator.right{background:#fce4ec;color:#880e4f}
 </style>
 </head>
 <body>
 
-<!-- ═══ HOME ═══ -->
+<!-- HOME -->
 <div id="page-home" class="page active">
   <div class="scroll" style="padding-bottom:80px">
     <div class="page-header">
@@ -196,11 +178,9 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
       <h1 id="h-greeting">Mon Programme</h1>
       <div class="sub" id="h-sub"></div>
     </div>
-
     <div class="sec">Cette semaine</div>
     <div class="week-dots" id="week-dots"></div>
     <div style="font-size:12px;color:var(--muted);padding:6px 18px 2px" id="week-status"></div>
-
     <div class="sec">Séance recommandée</div>
     <div class="reco-card" id="reco-card">
       <div class="reco-header">
@@ -214,18 +194,17 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
       <div style="padding:0 16px 10px;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">🏋 Matériel</div>
       <div class="gear-sel" id="gear-sel">
         <button class="gpill sel" id="g-full" onclick="selectGear('full')">Tout le matériel</button>
-        <button class="gpill" id="g-elastic" onclick="selectGear('elastic')">Élastique seul</button>
+        <button class="gpill" id="g-elastic" onclick="selectGear('elastic')">Élastique + PDC</button>
         <button class="gpill" id="g-body" onclick="selectGear('body')">Poids du corps</button>
       </div>
       <button class="btn-start" id="btn-start">Commencer →</button>
     </div>
-
     <div class="sec">Routine posture quotidienne</div>
     <div class="card" id="routine-preview"></div>
   </div>
 </div>
 
-<!-- ═══ WORKOUT ═══ -->
+<!-- WORKOUT -->
 <div id="page-workout" class="page">
   <div style="background:var(--surface);padding:52px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0">
     <button class="back-btn" onclick="goHome()">←</button>
@@ -243,7 +222,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   <div class="scroll" id="ex-list" style="padding:12px 0 80px"></div>
 </div>
 
-<!-- ═══ TIMER ═══ -->
+<!-- TIMER -->
 <div id="page-timer">
   <div class="timer-hdr">
     <button class="back-btn" id="t-back">←</button>
@@ -270,6 +249,16 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
     </div>
     <div class="dots" id="t-dots"></div>
     <div class="t-desc" id="t-desc"></div>
+    <div class="reps-edit-panel" id="reps-edit-panel" style="display:none">
+      <div class="wlbl">Modifier les reps :</div>
+      <div class="weight-row">
+        <button class="w-adj" onclick="adjReps(-1)">−</button>
+        <input type="number" class="weight-input" id="reps-input" placeholder="0" step="1" min="1">
+        <button class="w-adj" onclick="adjReps(1)">+</button>
+        <span style="font-size:14px;color:var(--muted);font-weight:600">reps</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center">Sera mémorisé pour la prochaine séance</div>
+    </div>
     <div class="weight-panel" id="weight-panel" style="display:none">
       <div class="wlbl">Poids utilisé :</div>
       <div class="weight-row">
@@ -285,7 +274,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
 </div>
 
-<!-- ═══ FINISH ═══ -->
+<!-- FINISH -->
 <div id="page-finish">
   <div style="font-size:64px;margin-bottom:14px">🎯</div>
   <div style="font-size:30px;font-weight:700;margin-bottom:5px">Séance terminée !</div>
@@ -300,7 +289,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   <button style="background:white;color:var(--accent);border:none;border-radius:13px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer" onclick="finishToHome()">Retour à l'accueil</button>
 </div>
 
-<!-- ═══ ROUTINE ═══ -->
+<!-- ROUTINE -->
 <div id="page-routine" class="page">
   <div class="page-header">
     <h1>Routine posture</h1>
@@ -308,7 +297,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
   <div class="scroll" style="padding-bottom:80px">
     <div style="padding:16px 18px;font-size:14px;color:var(--muted);background:var(--surface);border-bottom:1px solid var(--border)">
-      Ces exercices maintiennent ta posture au quotidien. Lance-les dans l'ordre, indépendamment de ta séance du jour.
+      Ces exercices maintiennent ta posture au quotidien.
     </div>
     <div id="routine-list" style="padding:12px 0 20px"></div>
     <div style="padding:0 16px">
@@ -317,7 +306,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
 </div>
 
-<!-- ═══ HISTORY ═══ -->
+<!-- HISTORY -->
 <div id="page-history" class="page">
   <div class="page-header">
     <h1>Historique</h1>
@@ -329,7 +318,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   <div class="scroll" id="hist-list" style="padding-bottom:80px"></div>
 </div>
 
-<!-- ═══ SETTINGS ═══ -->
+<!-- SETTINGS -->
 <div id="page-settings" class="page">
   <div class="page-header light">
     <h1>Réglages</h1>
@@ -349,7 +338,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
         <div><div class="lbl">Matériel par défaut</div><div class="sub">Pré-sélection à l'ouverture</div></div>
         <select id="set-gear" onchange="saveSetting('gear',this.value)">
           <option value="full" selected>Tout</option>
-          <option value="elastic">Élastique</option>
+          <option value="elastic">Élastique + PDC</option>
           <option value="body">Poids du corps</option>
         </select>
       </div>
@@ -399,386 +388,564 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 <script>
 'use strict';
 
-
 // ═══════════════════════════════════════════
-// AUDIO — WAV base64 embedded, bypasses iOS silent mode
+// AUDIO — AudioContext to NOT interrupt music
 // ═══════════════════════════════════════════
+let audioCtx=null;
+const decodedBuffers={};
+const SOUND_VOLUME=0.35; // moderate volume to overlay with music
 
-// Pre-decoded audio buffers
-const SND = {
-  grave: 'data:audio/wav;base64,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',
-  aigu:  'data:audio/wav;base64,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',
-  done1: 'data:audio/wav;base64,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',
-  done2: 'data:audio/wav;base64,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',
-  rest:  'data:audio/wav;base64,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',
-  prep:  'data:audio/wav;base64,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',
+const SND={
+  grave:'data:audio/wav;base64,UklGRtAUAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YawUAAAAABYAWQDIAGEBIAIDAwUEIgVUBpYH4QgwCnoLugzpDf8O9g/IEG8R5BEjEigS7hFyEbEQrA9gDs8M+QrhCIoG+AMxATr+GvvY9330EfGe7S3qyeZ841DgUN2G2vvXutXM0znSCdFC0OvPCdCg0LHRQNNL1dPX1NpK3jHiguY160HwnfU9+xMBFQc0DWITjhmrH6gldSsDMUM2JjudP5pDEUf2ST5M4E3UThRPm05mTXNLw0hYRTZBYzzoNs0wHyrpIjsbJBO1CgECHfka8A/nEN441ZDMOsRGvMu0ma4gqWykhqB5nUqb/5mbmR+aiZvWnQKhBKXUqWevsLWivCvEPMzD1Kvd4OZP8OH5gAMYDZIW2R/YKHsxrjlfQXtI9E66VMBZ+11iYe1jlWVYZjNmJ2U2Y2VguVw8WPhS90xJRvs+IDfHLgUm7BySEwwKcADT9krt6+PM2gHSnsm2wVu6nbOMrTaop6PonwKd/ZrcmaKZUJrjm1qeraHVpcmqfrDntva9mcXBzVrWUt+U6AryoPs/BdQORhiCIXIqAjMeO7VCtUkOULJVlFqqXulhS2TKZWJmE2bdZMNiyl/4W1ZX7lHNSwBFmD2kNTctYyQ9G9oRTgiw/hX1kus94izZctAkyFTAFbl2soasU6cholGflJy3msCZsZmImkWc5J5eoq2mxaucsSS4T78Mx0nP9df84Enqx/Ng/f8GjhD5GSgjCCyENIo8B0TpSiNRpFZiW1FfaGKhZPZlZWbsZYxkSWIoXy9baFbeUJ1Ks0MvPCQ0oyu/IowZIBCPBvD8WPPb6ZHgjtfnzq/G+L7Ut1Sxhat2pjGiwZ4snHearJnHmciar5x2nxeji6fHrL+yZrmswILI1dCT2ajiAOyE9SD/vghIEqkbzCSbLQM28T1TRRhMMVKQVylc8V/hYvBkHGZgZr1lNGTIYX9eYFp1VchPZ0lgQsM6oDIMKhgh2RdlDtAEMPub8Sfo6N741WDNPcWgvZm2OLCLqqClgaE4nsybQ5qgmTSZEJsfnQ+g16NwqM+t6LOtug/C/cll0jTbV+S47UL34AB8CgAUWB1tJisvfjdUP5pGQU5xUjpWPVbySXJMukymP+Eq/BPf+wrk/c0Wu4WsMKOsny+ijqpCuG/K799q92YPZSb3OtJL6leAXitf4ln9Tis/aiv5FED9ueXfzw29ca70pCqhT6NAq3q4Kcow3z724A2dJAk53kkPVttc1l30WINOLT/oK+sVl/5g57rRAL9dsLimrKJ3pPqrvLjuyXzeHPVjDNwiITfsRzNUM1t8XP1X/00kP1ss0hbk//7oj9PvwEayfqgypKWlvawHub7J1N0G9O8KIyE+Nf5FWFKIWR1b/1ZyTRA/wiyuFyUBk+pd1dnCLrRFqryl2aaIrV25mck23fryhQlyH2EzEkR9UNtXuFn5VdxM8z4fLX8YXQIe7CTXv8QUtg2sSqcTqFyuvbl/yaTc+PElCModijEqQqJOLFZPWO1UPEzKPnAtRBmLA6Ht5Nigxvi31q3bqFSpOK8aunDJHdwC8c8GKRy5L0ZAyUx7VOJW2VOUS5g+ti3/Ga4EG++d2nzI2rmfr2+qmqobsJq6a8mh2xfwgwWRGu4tZT7wSshSb1W/UuNKWz7yLa8axwWM8E7cU8q5u2mxBqzlqwexFrtxyTDbNu9BBAEZKiyJPBlJE1H5U55RKUoUPiIuUxvWBvPx+N0kzJW9MrOhrTat+rGdu4LJytph7gkDehdsKrA6REdeT39SdlBnScM9SC7tG9kHUfOZ3/DNbr/7tDyvjK70siu8nclx2pbt2wH7FbUo3DhwRadNAVFJT59IaT1iLnsc0gil9DPhts9EwcS227Dnr/Wzw7zCySDa1uy3AAA=',
+  aigu:'data:audio/wav;base64,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',
+  done1:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAACcAmgBRAT8CUQN1BJEFjwZXB9QH8QehB9sGmgXiA7wBOv9v/Hj5dPaG89Pwfu6q7HTr9+pG62zsbe5B8dn0Hfnr/RkDegjaDQMTvRfUGxcfWyF9ImQiAiFWHmsaWhVGD18I4AAM+Sfxf+lf4hDc1dbr0oLQwM+50HPT49fu3WjlFu6w9+IBUgygFmkgTyn4MBM3XDuePbY9lTs/N88wcihqHgoTsgbQ+dfsP+B/1ArKSMGTuja2ZrRDtdO4BL+rx4bSPd9j7X38BQxwGy0qsTd6QxNNGVQ/WFFZa1Z5ULBHYDzvLtcfnw/a/iDuBt4gz/LB9baLrgGpiKY3pwir17Fou2XHYNXd5E71Hwa6Focm+TSMQdBLZ1MNWJhZ+1dDU5tLSUGpNCkmVBa7BfP0k+Qw1VPHebsOsmSruKcqp72pWq/Nt8nC6s+53rDuP//OD8sfpS7VO+ZGc08xVe1Xj1caVLBNi0T+OHIrYhxWDOH7lesG3MDNRMECt1Wvg6q1qPypSq54tUW/V8tA2YPolfjkCOAY9iefNWBBz0qZUYBVY1Y6VBpPMkfJPD8wBiKeEpICdvLX4kTUQMdAvKezwq3Eqsiq0a23s0+8SMc91LniOPIvAg0SRCFLL6I720WbTZxSs1TMU/JPR0kKQI00OieJGP8IKvmW6dHaYc29wU+4arFNrRus362Hsui5wMO0z1ndMuy5+2ALnRrmKLk1o0BCSUpPhFLVUjtQzUq+Qlg4+CsPHhwPpv838FvhmdNrx0C9c7VIsO6te67lsRC4wsCry2rYieaK9eMEDRR9IrEvMjuaRJNL4U9cUflPxUvmRJw7PDArI+IU4AWw9tfn3dlAzXDC0Lmsszqwma/OscS2Tb4kyPDTRuGt76L+ng0bHJYplTWtP4NH0UxpTzNPMkyDRlo+ATTWJ0ga0Av0/DjuIOAt09PHd74ut/WyNrE9sgK2YrwhxfDPbtwp6qT4WwfNFXQj2C+HOiNDX0kCTe1NGUyXR5FARjcMLEgfbhH7AnP0WOYp2VzNXcOEuxe2R7Mss8e1/rqjwm7MB9gF5fLyTwGdD1gdBio1NYA+lEUxSjBMf0skSEBCCTrIL9wjsBa8CH/6eOwm3wDTdcjjv5a5xrWWtA62IbqpwGrJFdRI4JXthPuVCUwXLSTCL6Q5e0EARwNKaUovSGtDSTwJM/8nkRsvDlEAdvIZ5bPYtc2AxGe9qrhyttK2xrkzv+fGm9D925XoAfbBA1wRVh44KpgsCBkEAA==',
+  done2:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAACcAmgBRAT8CUQN1BJEFjwZXB9QH8QehB9sGmgXiA7wBOv9v/Hj5dPaG89Pwfu6q7HTr9+pG62zsbe5B8dn0Hfnr/RkDegjaDQMTvRfUGxcfWyF9ImQiAiFWHmsaWhVGD18I4AAM+Sfxf+lf4hDc1dbr0oLQwM+50HPT49fu3WjlFu6w9+IBUgygFmkgTyn4MBM3XDuePbY9lTs/N88wcihqHgoTsgbQ+dfsP+B/1ArKSMGTuja2ZrRDtdO4BL+rx4bSPd9j7X38BQxwGy0qsTd6QxNNGVQ/WFFZa1Z5ULBHYDzvLtcfnw/a/iDuBt4gz/LB9baLrgGpiKY3pwir17Fou2XHYNXd5E71Hwa6Focm+TSMQdBLZ1MNWJhZ+1dDU5tLSUGpNC4mWxa7BfP0k+Qy1VfHebsOs2SruKcqp72pWq/Nt8nC6s+53rDuP//OD8sfpS7VO+ZGc08xVe1Xj1caVLBNi0T+OHIrYhxWDOH7lesG3MDNRMECt1Wvg6q1qPypSq54tUW/V8tA2YPolfjkCOAY9iefNWBBz0qZUYBVY1Y6VBpPMkfJPD8wBiKeEpICdvLX4kTUQMdAvKezwq3EqsiqPa23s0+8SMc91LniOPIvAg0SRCFLL6I720WbTZxSs1TMU/JPR0kKQI00OieJGP8IKvmW6dHaYc29wU+4arFNrRus362Hsui5wMO0z1ndMuy5+2ALnRrmKLk1o0BCSUpPhFLVUjtQzUq+Qlg4+CsPHhwPpv838FvhmdNrx0C9c7VIsO6te67lsRC4wsCry2rYieaK9eMEDRR9IrEvMjuaRJNL4U9cUflPxUvmRJw7PDArI+IU4AWw9tfn3dlAzXDC0Lmsszqwma/OscS2Tb4kyPDTRuGt76L+ng0bHJYplTWtP4NH0UxpTzNPMkyDRlo+ATTWJ0ga0Av0/DjuIOAt09PHd74ut/WyNrE9sgK2YrwhxfDPbtwp6qT4WwfNFXQj2C+HOiNDX0kCTe1NGUyXR5FARjcMLEgfbhH7AnP0WOYp2VzNXcOEuxe2R7Mss8e1/rqjwm7MB9gF5fLyTwGdD1gdBio1NYA+lEUxSjBMf0skSEBCCTrIL9wjsBa8CH/6eOwm3wDTdcjjv5a5xrWWtA62IbqpwGrJFdRI4JXthPuVCUwXLSTCL6Q5e0EARwNKaUovSGtDSTwJM/8nkRsvDlEAdvIZ5bPYtc2AxGe9qrhyttK2xrkzv+fGm9D925XoAfbBA1wRVh44KpgsCBkEAA==',
+  rest:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAABYAWQDGAFoBEQLjAssDwAS7BbEGmwdvCCQJsgkQCjgKJArQCTcJWAg0B8sFIQQ7AiAA1/1q++P4T/a58zHxw+597G3qoOgj5wHmROX05BrlueXU5mzogOoK7QTwZ/Ml9zL7gP/8A5UIOA3QEUgWjBqGHiIiTyX5JxIqiitXLHAszytwKlUogCX4Iccd+xijE9MNnwchAXH6q/Pp7Evm69/o2VzUYs8Sy4PHx8TxwgvCIcI2w03FYshtzGPRNdfP3Rnl+OxQ9f/94gbXD7kYYSGsKXUxmDj2PnBEQkjxSnRMwkzdS8ZJiEYtQsk8cDY8L0snvB6xFU8MvAIe+ZvvWuaB3TLVjs22xsTA0Lvuty61mrM6sw60E7ZCuYy94sIuyVXQPdjE4MnpJ/O4/FYG3A8hGQIiWioIMuw47D7vQ+FHskpXTMlMBkwSSvRGuUJyPTQ3GDA7KLwfvRZjDdMDNfqt8GPnfN4b1mPOcsdkwVO8UbhvtbmzNbPms8m15bgCvTrCa8h7z07Xxd+96BPyobs/BckOGBgGIW8pMjEvOEo+a0N9R29KN0zMTCxMWkpeR0JDGT71N/EwKCm6IMgXdw7rBE37wPFt6HnfB9c6zzHICMLZvLe4tLXbszWzw7ODtW+4eryVwavHo85i1sjes+cA8Yn6JwS2DQ0XCCCCKFowbjelPeNCFEcoShJMykxOTJ9Kw0fIQ7w+tDjIMRQqtyHSGIkPAwZk/NTyeOl94PXXFNDzyK/CYr0huf21ArQ4s6OzQbULuPe78MDuxs7Nd9XM3arm7u9y+RADogwCFgkfkyd/L6s2/DxYQqlG3knqS8VMa0zfSiVISkRcP285nDL9KrEi2hmbEBoHfP3o84Xqd+Hl2PDQuMlaw/y97bll',
+  prep:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAAB4AeAAJAccBqAKdA5cEhQVWBvoGYQd+B0gHtQbDBXMEygLQAJP+I/yV+QD3e/Qi8g3wVe4R7VTsL+yt7NPtpO8Y8ib1vPjC/B0BrQVPCt0OMBMiF44aUB1MH2ggkSC8H+UdERtKF6gSRQ1FB9IBH/pZ83fsb+a54LzbsNe61PnShdJs07HVTdku3jjkROsi85z7cwRnDTIWjx47JvUshDK2NmA5ZTqzOUQ3ITNgLSMmmB35E44Jnv5683fo990o1H7LNcSLvrS62LgPuWG7x78qxmPOPNhy47fvuPzSCaIWyiLuLbw36T85Rn1KlUxxTBJKi0X8Ppc2myxSIRAVMAgV+x3uq+Eb1sTL88Lqu9228rM+s8i0g7hUvg/Ge89R2kDm8PIAABANwBmvJYUw8TmsQX1HOEvCTA5MI0kWRA09PDTlKVUe4xHrBND38Oqu3mXTackEwXW67rWPs2uzg7XHuRfARMgS0jbdXeku9kgDSRDRHIIoBTMKPFBDn0jQS8tMiEsSSIJCATvIMRsnShuuDqQBjvTN58HbxNAmxzK/IbkhtVCzvLNhtiu7+MGTyr7UK+CG7HL5jgZ6E9UfQittNQg+1USfSURMsEzfSt9GzkDaODwvPyQzGHILXP5S8bbk5dg4zv/Efr3ut3i0NbMwtGG3sLz2w/vMftcv47fvuPzSCaIW',
 };
 
-// Pool of Audio elements per sound (avoids re-creation lag)
-const POOL = {};
-function getAudio(key) {
-  if (!POOL[key]) POOL[key] = [];
-  let a = POOL[key].find(x => x.paused || x.ended);
-  if (!a) { a = new Audio(SND[key]); POOL[key].push(a); }
-  return a;
+function ensureAudioCtx(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  if(audioCtx.state==='suspended') audioCtx.resume();
 }
 
-function playSound(key) {
-  try {
-    const a = getAudio(key);
-    a.currentTime = 0;
-    a.play().catch(()=>{});
-  } catch(e) {}
+async function decodeSound(key){
+  if(decodedBuffers[key]) return decodedBuffers[key];
+  ensureAudioCtx();
+  const dataUrl=SND[key];
+  const b64=dataUrl.split(',')[1];
+  const bin=atob(b64);
+  const buf=new ArrayBuffer(bin.length);
+  const view=new Uint8Array(buf);
+  for(let i=0;i<bin.length;i++) view[i]=bin.charCodeAt(i);
+  try{
+    decodedBuffers[key]=await audioCtx.decodeAudioData(buf);
+  }catch(e){
+    // Fallback: create a simple beep
+    const sr=audioCtx.sampleRate;
+    const len=sr*0.15;
+    const b=audioCtx.createBuffer(1,len,sr);
+    const d=b.getChannelData(0);
+    const freq=key==='grave'?440:key==='aigu'?880:660;
+    for(let i=0;i<len;i++){
+      const t=i/sr;
+      d[i]=Math.sin(2*Math.PI*freq*t)*Math.exp(-t*8)*0.5;
+    }
+    decodedBuffers[key]=b;
+  }
+  return decodedBuffers[key];
 }
 
-// Countdown: schedule beeps using setTimeout (works with Audio elements)
-let countdownTimeouts = [];
-
-function clearCountdownTimers() {
-  countdownTimeouts.forEach(t => clearTimeout(t));
-  countdownTimeouts = [];
+async function playSound(key){
+  try{
+    ensureAudioCtx();
+    const buffer=await decodeSound(key);
+    const source=audioCtx.createBufferSource();
+    const gain=audioCtx.createGain();
+    gain.gain.value=SOUND_VOLUME;
+    source.buffer=buffer;
+    source.connect(gain);
+    gain.connect(audioCtx.destination);
+    source.start(0);
+  }catch(e){}
 }
 
-function scheduleCountdown(totalSecs) {
+let countdownTimeouts=[];
+function clearCountdownTimers(){countdownTimeouts.forEach(t=>clearTimeout(t));countdownTimeouts=[];}
+function scheduleCountdown(totalSecs){
   clearCountdownTimers();
-  const now = Date.now();
-  const endTime = now + totalSecs * 1000;
-  
-  // Beeps at 5,4,3,2,1 = grave, at 0 = aigu
-  [5, 4, 3, 2, 1].forEach(secsBefore => {
-    const delay = totalSecs * 1000 - secsBefore * 1000;
-    if (delay < 0) return;
-    const t = setTimeout(() => playSound('grave'), delay);
-    countdownTimeouts.push(t);
+  [5,4,3,2,1].forEach(s=>{
+    const delay=totalSecs*1000-s*1000;
+    if(delay<0)return;
+    countdownTimeouts.push(setTimeout(()=>playSound('grave'),delay));
   });
-  // Aigu at 0
-  const t0 = setTimeout(() => playSound('aigu'), totalSecs * 1000);
-  countdownTimeouts.push(t0);
+  countdownTimeouts.push(setTimeout(()=>playSound('aigu'),totalSecs*1000));
 }
+function beepDone(){playSound('done1');setTimeout(()=>playSound('done2'),150);}
+function beepRest(){playSound('rest');}
+function beepPrepEnd(){playSound('prep');}
+function vibrate(p){if(navigator.vibrate)navigator.vibrate(p);}
 
-function beepDone()    { playSound('done1'); setTimeout(()=>playSound('done2'), 150); }
-function beepRest()    { playSound('rest'); }
-function beepPrepEnd() { playSound('prep'); }
-
-function resumeACX() {} // no-op, kept for compatibility
-function vibrate(p)    { if(navigator.vibrate) navigator.vibrate(p); }
-
-// Unlock audio on first touch — required for iOS
-let audioUnlocked = false;
-document.addEventListener('touchstart', function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  // Play & immediately pause all sounds to unlock them
-  Object.keys(SND).forEach(key => {
-    const a = new Audio(SND[key]);
-    a.volume = 0;
-    a.play().then(() => a.pause()).catch(()=>{});
-    if (!POOL[key]) POOL[key] = [];
-    POOL[key].push(a);
-  });
-}, { passive: true });
+// Unlock AudioContext on first touch
+let audioUnlocked=false;
+document.addEventListener('touchstart',function unlockAudio(){
+  if(audioUnlocked)return;
+  audioUnlocked=true;
+  ensureAudioCtx();
+  // Decode all sounds
+  Object.keys(SND).forEach(k=>decodeSound(k));
+},{passive:true});
+document.addEventListener('click',function(){
+  if(!audioUnlocked){audioUnlocked=true;ensureAudioCtx();Object.keys(SND).forEach(k=>decodeSound(k));}
+},{passive:true,once:true});
 
 
 // ═══════════════════════════════════════════
-// PROGRAM DATA
+// PROGRAM DATA — Complete paths per config
 // ═══════════════════════════════════════════
 
-// Routine posture — independent, daily
-const DEFAULT_ROUTINE = [
-  {id:'r1', name:'Dos contre le mur',        type:'duration', sets:1, duration:60, rest:0,  prep:5, bodyweight:true},
-  {id:'r2', name:'Wall W / Wall Angels',     type:'reps',     sets:2, reps:'10',   rest:20, prep:0, bodyweight:true},
-  {id:'r3', name:'Menton rentré contre mur', type:'duration', sets:1, duration:30, rest:0,  prep:5, bodyweight:true},
+const DEFAULT_ROUTINE=[
+  {id:'r1',name:'Dos contre le mur',type:'duration',sets:1,duration:60,rest:0,prep:5,bodyweight:true},
+  {id:'r2',name:'Wall W / Wall Angels',type:'reps',sets:2,reps:'10',rest:20,prep:0,bodyweight:true},
+  {id:'r3',name:'Menton rentré contre mur',type:'duration',sets:1,duration:30,rest:0,prep:5,bodyweight:true},
 ];
 
-// Séances: each has 5 versions (5/10/15/20/full) x 2 gear (equipped/bodyweight)
-// Duration type exercises use chrono. Reps type: direct "Série terminée"
-const SESSIONS = {
-  A: {
-    name: 'Abdos profonds + Gainage',
-    tag: 'Séance A',
-    description: 'Transverse, stabilisation, protection L5-S1',
-    color: '#2d6a4f',
-    versions: {
-      // [exercise_id, sets, reps_or_duration, rest_secs, askWeight, needs_equipment]
-      '5':  { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:20, rest:30,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'8',    rest:30,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:20, rest:30,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'8',    rest:30,  askWeight:false},
-              ]},
-      '10': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:25, rest:45,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'10',   rest:45,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:2, duration:25, rest:45,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:2, reps:'10',   rest:45,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
-              ]},
-      '15': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:25, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
-                {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:true, weight:'8–12 kg'},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:25, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:35, rest:45,  askWeight:false},
-                {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'15',   rest:60,  askWeight:false},
-              ]},
-      '20': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
-                {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'12',   rest:75,  askWeight:true, weight:'8–12 kg'},
-                {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:40, rest:45,  askWeight:false},
-                {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'15',   rest:75,  askWeight:false},
-                {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-              ]},
-      'full':{ equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
-                {id:'crunch',name:'Crunch lesté banc',     type:'reps',     sets:3, reps:'15',   rest:75,  askWeight:true, weight:'8–12 kg'},
-                {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'fin',   name:'Planche max (finisher)',type:'duration', sets:1, duration:60, rest:0,   askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:3, duration:30, rest:60,  askWeight:false},
-                {id:'dbug', name:'Dead bug',               type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',       type:'duration', sets:3, duration:45, rest:45,  askWeight:false},
-                {id:'crunchbw',name:'Crunch pieds levés',  type:'reps',     sets:3, reps:'20',   rest:75,  askWeight:false},
-                {id:'retro', name:'Rétroversion bassin',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'fin',   name:'Planche max (finisher)',type:'duration', sets:1, duration:60, rest:0,   askWeight:false},
-              ]},
+// Side plank helper: bilateral=true means left+right with 5s prep each side
+// askWeight at end of both sides (same weight)
+
+// REST BETWEEN EXERCISES (restBetweenExercises): time suggested between different exercises
+// 0 = go directly to next exercise
+
+const SESSIONS={
+  A:{
+    name:'Abdos profonds + Gainage',tag:'Séance A',
+    description:'Transverse, stabilisation, protection L5-S1',color:'#2d6a4f',
+    versions:{
+      '5':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
+        ]
+      },
+      '10':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
+        ]
+      },
+      '15':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
+          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'8–12 kg',restAfter:0},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
+        ]
+      },
+      '20':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
+          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'12',rest:75,askWeight:true,weight:'8–12 kg',restAfter:45},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:75,askWeight:false,restAfter:45},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:75,askWeight:false,restAfter:45},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ]
+      },
+      'full':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
+          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'15',rest:75,askWeight:true,weight:'8–12 kg',restAfter:60},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'20',rest:75,askWeight:false,restAfter:60},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
+          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'20',rest:75,askWeight:false,restAfter:60},
+          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
+        ]
+      }
     }
   },
 
-  B: {
-    name: 'Posture + Dos haut',
-    tag: 'Séance B',
-    description: 'Omoplates, rhomboïdes, deltoïdes postérieurs',
-    color: '#457b9d',
-    versions: {
-      '5':  { equipped: [
-                {id:'fp',   name:'Face pull élastique',    type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',           type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:true, weight:'2–4 kg'},
-              ], bodyweight: [
-                {id:'sup',  name:'Superman sol',           type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',            type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:false},
-              ]},
-      '10': { equipped: [
-                {id:'fp',   name:'Face pull élastique',    type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',           type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:true, weight:'2–4 kg'},
-                {id:'rf',   name:'Reverse fly banc 30°',   type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:true, weight:'4–6 kg'},
-              ], bodyweight: [
-                {id:'sup',  name:'Superman sol',           type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',            type:'reps',     sets:2, reps:'12',   rest:45,  askWeight:false},
-                {id:'rfsol',name:'Reverse fly sol',        type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:false},
-              ]},
-      '15': { equipped: [
-                {id:'fp',   name:'Face pull élastique',    type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',           type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:true, weight:'2–4 kg'},
-                {id:'rf',   name:'Reverse fly banc 30°',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:true, weight:'4–6 kg'},
-                {id:'row',  name:'Rowing haltères',        type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:true, weight:'10–14 kg'},
-              ], bodyweight: [
-                {id:'sup',  name:'Superman sol',           type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',            type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'rfsol',name:'Reverse fly sol',        type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'rowbw',name:'Rowing serviette porte', type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-              ]},
-      '20': { equipped: [
-                {id:'fp',   name:'Face pull élastique',    type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',           type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:true, weight:'2–4 kg'},
-                {id:'rf',   name:'Reverse fly banc 30°',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:true, weight:'4–6 kg'},
-                {id:'row',  name:'Rowing haltères',        type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:true, weight:'10–14 kg'},
-                {id:'ext',  name:'Extension lombaire lente',type:'reps',    sets:3, reps:'5',    rest:60,  askWeight:true, weight:'1–3 kg'},
-              ], bodyweight: [
-                {id:'sup',  name:'Superman sol',           type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',            type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'rfsol',name:'Reverse fly sol',        type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'rowbw',name:'Rowing serviette porte', type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'extbw',name:'Superman lent',          type:'reps',     sets:3, reps:'8',    rest:60,  askWeight:false},
-              ]},
-      'full':{ equipped: [
-                {id:'fp',   name:'Face pull élastique',    type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',           type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:true, weight:'2–4 kg'},
-                {id:'rf',   name:'Reverse fly banc 30°',   type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:true, weight:'4–6 kg'},
-                {id:'row',  name:'Rowing haltères',        type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:true, weight:'10–14 kg'},
-                {id:'ext',  name:'Extension lombaire lente',type:'reps',    sets:3, reps:'5',    rest:60,  askWeight:true, weight:'1–3 kg'},
-                {id:'finfp',name:'Face pull lent x15 (finisher)',type:'reps',sets:1,reps:'15',   rest:0,   askWeight:false},
-              ], bodyweight: [
-                {id:'sup',  name:'Superman sol',           type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',            type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'rfsol',name:'Reverse fly sol',        type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'rowbw',name:'Rowing serviette porte', type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'extbw',name:'Superman lent',          type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'finbw',name:'Superman max (finisher)',type:'reps',     sets:1, reps:'max',  rest:0,   askWeight:false},
-              ]},
+  B:{
+    name:'Posture + Dos haut',tag:'Séance B',
+    description:'Omoplates, rhomboïdes, deltoïdes postérieurs',color:'#457b9d',
+    versions:{
+      '5':{
+        full:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:0},
+        ],
+        elastic:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'sup',name:'Superman sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ]
+      },
+      '10':{
+        full:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:30},
+          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:2,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:0},
+        ],
+        elastic:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'sup',name:'Superman sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+        ]
+      },
+      '15':{
+        full:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:45},
+          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:45},
+          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:0},
+        ],
+        elastic:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:0},
+        ]
+      },
+      '20':{
+        full:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:45},
+          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:45},
+          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:45},
+          {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:0},
+        ],
+        elastic:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:45},
+          {id:'supH',name:'Superman tenu 5s',type:'reps',sets:3,reps:'8',rest:60,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'extbw',name:'Superman lent',type:'reps',sets:3,reps:'8',rest:60,askWeight:false,restAfter:0},
+        ]
+      },
+      'full':{
+        full:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'2–4 kg',restAfter:60},
+          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:60},
+          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:60},
+          {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:45},
+          {id:'finfp',name:'Face pull lent x15 (finisher)',type:'reps',sets:1,reps:'15',rest:0,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
+          {id:'supH',name:'Superman tenu 5s',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'finbw',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+          {id:'extbw',name:'Superman lent',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'finbw2',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
+        ]
+      }
     }
   },
 
-  C: {
-    name: 'Abdos dynamiques + Obliques',
-    tag: 'Séance C',
-    description: 'Bas abdos, obliques, force fonctionnelle',
-    color: '#e9a824',
-    versions: {
-      '5':  { equipped: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:2, reps:'12',   rest:30,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:2, duration:25, rest:30,  askWeight:false},
-              ], bodyweight: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:2, reps:'12',   rest:30,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:2, duration:25, rest:30,  askWeight:false},
-              ]},
-      '10': { equipped: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
-                {id:'kr',   name:'Knee raises barre',      type:'reps',     sets:2, reps:'8',    rest:45,  askWeight:false},
-              ], bodyweight: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:2, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:2, duration:30, rest:30,  askWeight:false},
-                {id:'llr',  name:'Leg raises sol',         type:'reps',     sets:2, reps:'10',   rest:45,  askWeight:false},
-              ]},
-      '15': { equipped: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:30, rest:30,  askWeight:false},
-                {id:'kr',   name:'Knee raises barre',      type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'pal',  name:'Pallof press élastique', type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-              ], bodyweight: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:30, rest:30,  askWeight:false},
-                {id:'llr',  name:'Leg raises sol',         type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'dbuni',name:'Dead bug unilatéral',    type:'reps',     sets:3, reps:'10',   rest:45,  askWeight:false},
-              ]},
-      '20': { equipped: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:35, rest:30,  askWeight:false},
-                {id:'kr',   name:'Knee raises barre',      type:'reps',     sets:3, reps:'10',   rest:60,  askWeight:false},
-                {id:'pal',  name:'Pallof press élastique', type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'bic',  name:'Bicycle crunch',         type:'reps',     sets:3, reps:'16',   rest:60,  askWeight:false},
-              ], bodyweight: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:35, rest:30,  askWeight:false},
-                {id:'llr',  name:'Leg raises sol',         type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'dbuni',name:'Dead bug unilatéral',    type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'bic',  name:'Bicycle crunch',         type:'reps',     sets:3, reps:'16',   rest:60,  askWeight:false},
-              ]},
-      'full':{ equipped: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:40, rest:30,  askWeight:false},
-                {id:'kr',   name:'Knee raises barre',      type:'reps',     sets:3, reps:'12',   rest:60,  askWeight:false},
-                {id:'pal',  name:'Pallof press élastique', type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'bic',  name:'Bicycle crunch',         type:'reps',     sets:3, reps:'20',   rest:60,  askWeight:false},
-                {id:'finkr',name:'Knee raises max (finisher)',type:'reps',  sets:1, reps:'max',  rest:0,   askWeight:false},
-              ], bodyweight: [
-                {id:'rc',   name:'Reverse crunch',         type:'reps',     sets:3, reps:'15',   rest:45,  askWeight:false},
-                {id:'sp',   name:'Side plank',             type:'duration', sets:3, duration:40, rest:30,  askWeight:false},
-                {id:'llr',  name:'Leg raises sol',         type:'reps',     sets:3, reps:'15',   rest:60,  askWeight:false},
-                {id:'dbuni',name:'Dead bug unilatéral',    type:'reps',     sets:3, reps:'12',   rest:45,  askWeight:false},
-                {id:'bic',  name:'Bicycle crunch',         type:'reps',     sets:3, reps:'20',   rest:60,  askWeight:false},
-                {id:'finsp',name:'Side plank max (finisher)',type:'duration',sets:1,duration:60, rest:0,   askWeight:false},
-              ]},
+  C:{
+    name:'Abdos dynamiques + Obliques',tag:'Séance C',
+    description:'Bas abdos, obliques, force fonctionnelle',color:'#e9a824',
+    versions:{
+      '5':{
+        full:[
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
+          {id:'sp',name:'Side plank lesté',type:'duration',sets:2,duration:25,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:0},
+        ],
+        elastic:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
+          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:0},
+        ],
+        body:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
+          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:0},
+        ]
+      },
+      '10':{
+        full:[
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'sp',name:'Side plank lesté',type:'duration',sets:2,duration:30,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:30},
+          {id:'kr',name:'Knee raises barre',type:'reps',sets:2,reps:'8',rest:45,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:30},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:30},
+          {id:'llr',name:'Leg raises sol',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:0},
+        ]
+      },
+      '15':{
+        full:[
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:30,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:45},
+          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'10',rest:45,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
+          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'10',rest:45,askWeight:false,restAfter:0},
+        ]
+      },
+      '20':{
+        full:[
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:35,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:45},
+          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
+        ],
+        body:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
+          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
+        ]
+      },
+      'full':{
+        full:[
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:40,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:60},
+          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
+          {id:'finkr',name:'Knee raises max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
+        ],
+        elastic:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:60},
+          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
+          {id:'finsp',name:'Side plank max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,bilateral:true,prep:5,restAfter:0},
+        ],
+        body:[
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:60},
+          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
+          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
+          {id:'finsp',name:'Side plank max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,bilateral:true,prep:5,restAfter:0},
+        ]
+      }
     }
   },
 
-  D: {
-    name: 'Circuit intégral',
-    tag: 'Séance D',
-    description: 'Tout en une fois — finir épuisé',
-    color: '#e63946',
-    isCircuit: true,
-    versions: {
-      '5':  { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:20, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:20, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-              ]},
-      '10': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-              ]},
-      '15': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:25, rest:0,  askWeight:false},
-              ]},
-      '20': { equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'dbug', name:'Dead bug',              type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-                {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:true, weight:'2–4 kg'},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'dbug', name:'Dead bug',              type:'reps',     sets:1, reps:'10',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',           type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:35, rest:0,  askWeight:false},
-              ]},
-      'full':{ equipped: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'dbug', name:'Dead bug',              type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'fp',   name:'Face pull élastique',   type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
-                {id:'yr',   name:'Y-raise banc',          type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:true, weight:'2–4 kg'},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
-                {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-              ], bodyweight: [
-                {id:'vac',  name:'Vacuum debout',         type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-                {id:'dbug', name:'Dead bug',              type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'sup',  name:'Superman sol',          type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
-                {id:'rc',   name:'Reverse crunch',        type:'reps',     sets:1, reps:'15',   rest:0,  askWeight:false},
-                {id:'ysol', name:'Y-raise sol',           type:'reps',     sets:1, reps:'12',   rest:0,  askWeight:false},
-                {id:'plk',  name:'Planche (avant-bras)',      type:'duration', sets:1, duration:40, rest:0,  askWeight:false},
-                {id:'sp',   name:'Side plank',            type:'duration', sets:1, duration:30, rest:0,  askWeight:false},
-              ]},
+  D:{
+    name:'Circuit intégral',tag:'Séance D',
+    description:'Tout en une fois — finir épuisé',color:'#e63946',
+    isCircuit:true,
+    versions:{
+      '5':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+        ]
+      },
+      '10':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        ]
+      },
+      '15':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
+        ]
+      },
+      '20':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:true,weight:'2–4 kg'},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
+          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+        ]
+      },
+      'full':{
+        full:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'yr',name:'Y-raise banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:true,weight:'2–4 kg'},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
+        ],
+        elastic:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
+        ],
+        body:[
+          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
+          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
+          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
+        ]
+      }
     }
   }
 };
 
-// Session order for each frequency
-const FREQ_PLANS = {
-  1: ['D'],
-  2: ['A','B'],
-  3: ['A','B','C'],
-  4: ['A','B','C','D'],
-  5: ['A','B','C','B','D'],
-  6: ['A','B','C','D','B','A'],
-};
-
-const TIME_OPTIONS = [
-  {key:'5',   label:'5 min',   estMins:5},
-  {key:'10',  label:'10 min',  estMins:10},
-  {key:'15',  label:'15 min',  estMins:15},
-  {key:'20',  label:'20 min',  estMins:20},
-  {key:'full',label:'Complet', estMins:28},
-];
+const FREQ_PLANS={1:['D'],2:['A','B'],3:['A','B','C'],4:['A','B','C','D'],5:['A','B','C','B','D'],6:['A','B','C','D','B','A']};
+const TIME_OPTIONS=[{key:'5',label:'5 min',estMins:5},{key:'10',label:'10 min',estMins:10},{key:'15',label:'15 min',estMins:15},{key:'20',label:'20 min',estMins:20},{key:'full',label:'Complet',estMins:28}];
 
 // ═══════════════════════════════════════════
 // STATE & DB
@@ -787,93 +954,100 @@ const $=id=>document.getElementById(id);
 const CIRC=2*Math.PI*76;
 
 let DB={};
-let workExercises=[], workStart=null, totalSeries=0, activeIdx=-1;
-let isCircuit=false, circuitRounds=3;
+let workExercises=[],workStart=null,totalSeries=0,activeIdx=-1;
+let isCircuit=false,circuitRounds=3;
 let chronoIv=null;
-let tPhase='idle', tEnd=0, tDur=0, tRAF=null, tDone=null, tPausedMs=0, tPausedPhase='';
-let selectedTime='full', selectedGear='full';
+let tPhase='idle',tEnd=0,tDur=0,tRAF=null,tDone=null,tPausedMs=0,tPausedPhase='';
+let selectedTime='full',selectedGear='full';
+// Side plank state
+let sideState=null; // {side:'left'|'right', setIdx:0}
+let currentSessionKey='';
+let currentRepsOverride={}; // key: exId → reps value for this session
 
 function loadDB(){
-  try{const s=localStorage.getItem('mp_v5');if(s)DB=JSON.parse(s);}catch(e){}
-  if(!DB.settings) DB.settings={freq:4,gear:'full'};
-  if(!DB.history)  DB.history=[];
-  if(!DB.weekLog)  DB.weekLog={};
-  if(!DB.routine)  DB.routine=JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
-
-  // Migrate history from previous versions
-  if(!DB._migrated){
-    const prevKeys=['workout_db_v4','workout_db'];
-    prevKeys.forEach(key=>{
-      try{
-        const old=localStorage.getItem(key);
-        if(!old) return;
-        const oldDB=JSON.parse(old);
-        if(oldDB.history&&Array.isArray(oldDB.history)&&oldDB.history.length){
-          // Merge: add old entries not already in current history
-          const existingDates=new Set(DB.history.map(r=>r.date));
-          const toAdd=oldDB.history.filter(r=>r.date&&!existingDates.has(r.date));
-          DB.history=[...DB.history,...toAdd];
+  try{const s=localStorage.getItem('mp_v6');if(s)DB=JSON.parse(s);}catch(e){}
+  if(!DB.settings)DB.settings={freq:4,gear:'full'};
+  if(!DB.history)DB.history=[];
+  if(!DB.weekLog)DB.weekLog={};
+  if(!DB.routine)DB.routine=JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
+  if(!DB.customReps)DB.customReps={}; // persistent reps overrides: {exId: repsValue}
+  // Migrate from v5
+  if(!DB._migV6){
+    ['mp_v5','workout_db_v4','workout_db'].forEach(key=>{
+      try{const old=localStorage.getItem(key);if(!old)return;const o=JSON.parse(old);
+        if(o.history&&Array.isArray(o.history)){const ed=new Set(DB.history.map(r=>r.date));
+          DB.history=[...DB.history,...o.history.filter(r=>r.date&&!ed.has(r.date))];
           DB.history.sort((a,b)=>new Date(b.date)-new Date(a.date));
-          console.log('Migrated '+toAdd.length+' entries from '+key);
         }
+        if(o.weekLog)Object.assign(DB.weekLog,o.weekLog);
       }catch(e){}
     });
-    DB._migrated=true;
+    DB._migV6=true;
   }
-
   saveDB();
 }
-function saveDB(){try{localStorage.setItem('mp_v5',JSON.stringify(DB));}catch(e){}}
+function saveDB(){try{localStorage.setItem('mp_v6',JSON.stringify(DB));}catch(e){}}
 
 // ═══════════════════════════════════════════
 // WEEK LOGIC
 // ═══════════════════════════════════════════
-function getWeekKey(){
-  const n=new Date(), d=n.getDay(), diff=d===0?-6:1-d;
-  const m=new Date(n); m.setDate(n.getDate()+diff);
-  return m.toISOString().slice(0,10);
-}
+function getWeekKey(){const n=new Date(),d=n.getDay(),diff=d===0?-6:1-d;const m=new Date(n);m.setDate(n.getDate()+diff);return m.toISOString().slice(0,10);}
+function getWeekLog(){const wk=getWeekKey();if(!DB.weekLog[wk])DB.weekLog[wk]=[];return DB.weekLog[wk];}
+function todayIdx(){return(new Date().getDay()+6)%7;}
 
-function getWeekLog(){
-  const wk=getWeekKey();
-  if(!DB.weekLog[wk]) DB.weekLog[wk]=[];
-  return DB.weekLog[wk];
-}
-
-function todayIdx(){ return (new Date().getDay()+6)%7; }
-
-// Returns the next session to do based on what's been done this week
 function getNextSession(){
   const freq=parseInt(DB.settings.freq)||4;
   const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const log=getWeekLog(); // array of session keys done this week e.g. ['A','B']
+  const log=getWeekLog();
   const doneCount=log.length;
-  if(doneCount>=plan.length) return {key:plan[plan.length-1], idx:plan.length-1, doneCount, total:plan.length, allDone:true};
-  return {key:plan[doneCount], idx:doneCount, doneCount, total:plan.length, allDone:false};
+  if(doneCount>=plan.length)return{key:plan[plan.length-1],idx:plan.length-1,doneCount,total:plan.length,allDone:true};
+  return{key:plan[doneCount],idx:doneCount,doneCount,total:plan.length,allDone:false};
 }
 
-// Smart recommendation text
 function getRecommendation(){
   const freq=parseInt(DB.settings.freq)||4;
   const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
   const log=getWeekLog();
-  const done=log.length;
-  const remaining=plan.length-done;
+  const done=log.length,remaining=plan.length-done;
+  const todayDow=todayIdx(),daysLeft=7-todayDow;
+  if(done>=plan.length)return{badge:'✅ Semaine complète',badgeClass:'good',msg:'Tu as atteint ton objectif ! Récupère bien.',urgent:false};
+  if(daysLeft<=remaining)return{badge:'⚡ Urgent',badgeClass:'urgent',msg:`Plus que ${daysLeft} jour${daysLeft>1?'s':''} pour faire ${remaining} séance${remaining>1?'s':''}.`,urgent:true};
+  if(done===0)return{badge:"Aujourd'hui",badgeClass:'good',msg:`${remaining} séances prévues cette semaine.`,urgent:false};
+  return{badge:`${done}/${plan.length} faites`,badgeClass:'good',msg:`Il reste ${remaining} séance${remaining>1?'s':''} — ${daysLeft} jours disponibles.`,urgent:false};
+}
 
-  // Days left in week (including today) — Mon=0, Sun=6
-  const todayDow=todayIdx(); // 0=Mon
-  const daysLeft=7-todayDow; // including today
-
-  if(done>=plan.length){
-    return {badge:'✅ Semaine complète',badgeClass:'good',msg:'Tu as atteint ton objectif ! Récupère bien.',urgent:false};
+// ═══════════════════════════════════════════
+// DURATION ESTIMATION (dynamic)
+// ═══════════════════════════════════════════
+function estimateDuration(exs,isCirc,rounds){
+  let total=0;
+  if(isCirc){
+    const r=rounds||3;
+    for(let rd=0;rd<r;rd++){
+      exs.forEach((ex,i)=>{
+        if(ex.type==='duration'){total+=(ex.prep||5)+ex.duration;}
+        else{total+=parseInt(ex.reps)||10;total*=1;/* ~1s/rep */}
+        if(ex.bilateral)total*=2; // both sides
+        if(i<exs.length-1)total+=5; // transition
+      });
+      if(rd<r-1)total+=90; // rest between rounds
+    }
+  }else{
+    exs.forEach((ex,i)=>{
+      for(let s=0;s<ex.sets;s++){
+        if(ex.type==='duration'){
+          total+=(ex.prep||5)+ex.duration;
+          if(ex.bilateral)total+=(ex.prep||5)+ex.duration; // other side
+        }else{
+          total+=(parseInt(ex.reps)||10)*1.5; // ~1.5s per rep including setup
+          if(ex.bilateral)total+=(parseInt(ex.reps)||10)*1.5;
+        }
+        if(s<ex.sets-1)total+=(ex.rest||0); // rest between sets
+      }
+      if(i<exs.length-1)total+=(ex.restAfter||0); // rest between exercises
+    });
   }
-  if(daysLeft<=remaining){
-    return {badge:'⚡ Urgent',badgeClass:'urgent',msg:`Plus que ${daysLeft} jour${daysLeft>1?'s':''} pour faire ${remaining} séance${remaining>1?'s':''}.`,urgent:true};
-  }
-  if(done===0){
-    return {badge:'Aujourd\'hui',badgeClass:'good',msg:`${remaining} séances prévues cette semaine.`,urgent:false};
-  }
-  return {badge:`${done}/${plan.length} faites`,badgeClass:'good',msg:`Il reste ${remaining} séance${remaining>1?'s':''} — ${daysLeft} jours disponibles.`,urgent:false};
+  return Math.ceil(total/60);
 }
 
 // ═══════════════════════════════════════════
@@ -882,76 +1056,42 @@ function getRecommendation(){
 function buildHome(){
   selectedGear=DB.settings.gear||'full';
   selectedTime='full';
-
-  const today=todayIdx();
-  const days=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
   const now=new Date();
   $('h-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
-
   const next=getNextSession();
   const reco=getRecommendation();
   const sesh=SESSIONS[next.key];
-
   $('h-greeting').textContent=`Séance ${next.key} · ${sesh.name}`;
   $('h-sub').textContent=sesh.description;
-
-  // Recommendation badge
   $('reco-badge').textContent=reco.badge;
   $('reco-badge').className='reco-badge '+(reco.badgeClass||'good');
   $('reco-label').textContent=reco.msg;
   $('reco-name').textContent=sesh.name;
 
-  // Week dots
   const freq=parseInt(DB.settings.freq)||4;
   const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
   const log=getWeekLog();
-  const wkDots=$('week-dots'); wkDots.innerHTML='';
-
-  // Show séance slots (A, B, C, D...) not calendar days
-  // Each dot = one planned session, colored by status
-  plan.forEach((sessKey, i) => {
-    const isDone = i < log.length;
-    const isCurrent = i === log.length; // next to do
-    const sesh = SESSIONS[sessKey];
-    const d = document.createElement('div');
-    let cls = 'wdot';
-    if (isDone) cls += ' done-day';
-    if (isCurrent) cls += ' today';
-    d.className = cls;
-    // Show date if done, session letter if upcoming
-    const doneEntry = log[i];
-    let dateLabel = sessKey; // fallback: A, B, C, D
-    if (doneEntry && doneEntry.date) {
-      const dt = new Date(doneEntry.date);
-      dateLabel = dt.getDate()+'/'+(dt.getMonth()+1);
-    }
-    d.innerHTML = `<div class="wdd" style="font-size:${isDone?'14px':'16px'}">${isDone ? '✅' : sessKey}</div>`;
-    if (isDone && doneEntry) {
-      const dt = new Date(doneEntry.date);
-      d.title = dt.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
-    }
+  const wkDots=$('week-dots');wkDots.innerHTML='';
+  plan.forEach((sessKey,i)=>{
+    const isDone=i<log.length;
+    const isCurrent=i===log.length;
+    const d=document.createElement('div');
+    let cls='wdot';
+    if(isDone)cls+=' done-day';
+    if(isCurrent)cls+=' today';
+    d.className=cls;
+    d.innerHTML=`<div class="wdd" style="font-size:${isDone?'14px':'16px'}">${isDone?'✅':sessKey}</div>`;
     wkDots.appendChild(d);
   });
-
-  // Week status
   $('week-status').textContent=`${log.length}/${plan.length} séances réalisées cette semaine`;
-
-  // Time selector
   buildTimeSelector(sesh);
-
-  // Gear selector
   updateGearUI();
-
-  // Meta
   updateRecoMeta(next.key);
-
-  // Start button
   $('btn-start').onclick=()=>launchSession(next.key);
 
-  // Routine preview
-  const rp=$('routine-preview'); rp.innerHTML='';
+  const rp=$('routine-preview');rp.innerHTML='';
   DB.routine.forEach(ex=>{
-    const row=document.createElement('div'); row.className='card-row'; row.style.cursor='default';
+    const row=document.createElement('div');row.className='card-row';row.style.cursor='default';
     const lbl=ex.type==='reps'?`${ex.sets}×${ex.reps} reps`:`${ex.sets}×${fmtDur(ex.duration)}`;
     row.innerHTML=`<div style="flex:1;font-size:13px;font-weight:600">${ex.name}</div><div style="font-size:12px;color:var(--muted)">${lbl}</div>`;
     rp.appendChild(row);
@@ -959,67 +1099,60 @@ function buildHome(){
 }
 
 function buildTimeSelector(sesh){
-  const ts=$('time-sel'); ts.innerHTML='';
+  const ts=$('time-sel');ts.innerHTML='';
   TIME_OPTIONS.forEach(opt=>{
-    const v=sesh.versions[opt.key];
-    if(!v) return;
+    if(!sesh.versions[opt.key])return;
     const b=document.createElement('button');
     b.className='tpill'+(opt.key===selectedTime?' sel':'');
     b.textContent=opt.label;
-    b.onclick=()=>{selectedTime=opt.key; buildTimeSelector(sesh); updateRecoMeta(getNextSession().key);};
+    b.onclick=()=>{selectedTime=opt.key;buildTimeSelector(sesh);updateRecoMeta(getNextSession().key);};
     ts.appendChild(b);
   });
 }
 
-function selectGear(g){
-  selectedGear=g; updateGearUI();
-  updateRecoMeta(getNextSession().key);
-}
-
-function updateGearUI(){
-  ['full','elastic','body'].forEach(g=>{
-    const el=$('g-'+g);
-    if(el) el.classList.toggle('sel',selectedGear===g);
-  });
-}
+function selectGear(g){selectedGear=g;updateGearUI();updateRecoMeta(getNextSession().key);}
+function updateGearUI(){['full','elastic','body'].forEach(g=>{const el=$('g-'+g);if(el)el.classList.toggle('sel',selectedGear===g);});}
 
 function updateRecoMeta(key){
   const sesh=SESSIONS[key];
   const ver=sesh.versions[selectedTime];
-  if(!ver) return;
-  const gkey=selectedGear==='body'?'bodyweight':'equipped';
-  const exs=ver[gkey]||ver['equipped'];
+  if(!ver)return;
+  const exs=ver[selectedGear]||ver['full'];
   const total=exs.length;
   const sets=exs.reduce((a,e)=>a+e.sets,0);
-  const gear=selectedGear==='body'?'Poids du corps':selectedGear==='elastic'?'Élastique':'Tout le matériel';
-  const estMins=TIME_OPTIONS.find(o=>o.key===selectedTime)?.estMins||20;
+  const gear=selectedGear==='body'?'Poids du corps':selectedGear==='elastic'?'Élastique + PDC':'Tout le matériel';
+  const estMins=estimateDuration(exs,!!sesh.isCircuit,selectedTime==='5'||selectedTime==='10'?2:3);
   $('reco-meta').textContent=`${total} exercices · ${sets} séries · ~${estMins} min · ${gear}`;
-  if(sesh.isCircuit) $('reco-meta').textContent+=' · 🔄 Circuit';
+  if(sesh.isCircuit)$('reco-meta').textContent+=' · 🔄 Circuit';
 }
 
 // ═══════════════════════════════════════════
 // LAUNCH SESSION
 // ═══════════════════════════════════════════
 function launchSession(key){
+  currentSessionKey=key;
+  currentRepsOverride={};
   const sesh=SESSIONS[key];
   const ver=sesh.versions[selectedTime];
   if(!ver){alert('Version non disponible.');return;}
-  const gkey=selectedGear==='body'?'bodyweight':'equipped';
-  const rawExs=(ver[gkey]||ver['equipped']).map(e=>({...e,doneSet:0,weights:[]}));
+  const rawExs=(ver[selectedGear]||ver['full']).map(e=>{
+    const custom=DB.customReps[e.id];
+    return {...e,reps:custom||e.reps,doneSet:0,weights:[]};
+  });
 
   isCircuit=!!sesh.isCircuit;
   circuitRounds=selectedTime==='5'||selectedTime==='10'?2:3;
 
   if(isCircuit){
     workExercises=buildCircuit(rawExs,circuitRounds);
-  } else {
+  }else{
     workExercises=rawExs;
   }
 
-  workStart=Date.now(); totalSeries=0;
+  workStart=Date.now();totalSeries=0;
   $('w-tag').textContent=sesh.tag+(isCircuit?' · Circuit':'');
   $('w-name').textContent=sesh.name;
-  renderExList(); updateProgress(); startChrono();
+  renderExList();updateProgress();startChrono();
   showPage('workout');
 }
 
@@ -1028,14 +1161,9 @@ function buildCircuit(exs,rounds){
   const result=[];
   for(let r=0;r<rounds;r++){
     exs.forEach((ex,i)=>{
-      result.push({...ex,
-        id:ex.id+'_r'+r+'_'+i,
-        sets:1,
+      result.push({...ex,id:ex.id+'_r'+r+'_'+i,sets:1,
         rest:i===exs.length-1&&r<rounds-1?restBetweenRounds:0,
-        circuitRound:r+1,
-        circuitTotal:rounds,
-        doneSet:0,weights:[]
-      });
+        circuitRound:r+1,circuitTotal:rounds,doneSet:0,weights:[]});
     });
   }
   return result;
@@ -1045,7 +1173,7 @@ function buildCircuit(exs,rounds){
 // EXERCISE LIST
 // ═══════════════════════════════════════════
 function renderExList(){
-  const list=$('ex-list'); list.innerHTML='';
+  const list=$('ex-list');list.innerHTML='';
   let lastRound=-1;
   workExercises.forEach((ex,i)=>{
     if(isCircuit&&ex.circuitRound!==lastRound){
@@ -1060,10 +1188,12 @@ function renderExList(){
     row.className='sesh-item'+(isDone?' done':'');
     row.id=`si-${i}`;
     const chips=[];
-    if(ex.type==='reps') chips.push(`<span class="chip">${ex.sets}×${ex.reps} reps</span>`);
+    if(ex.type==='reps')chips.push(`<span class="chip">${ex.sets}×${ex.reps} reps</span>`);
     else chips.push(`<span class="chip">${ex.sets}×${fmtDur(ex.duration)}</span>`);
-    if(ex.weight) chips.push(`<span class="chip w">🏋 ${ex.weight}</span>`);
-    if(ex.rest>0) chips.push(`<span class="chip r">⏱ ${ex.rest}s repos</span>`);
+    if(ex.bilateral)chips.push(`<span class="chip side">↔ Chaque côté</span>`);
+    if(ex.weight)chips.push(`<span class="chip w">🏋 ${ex.weight}</span>`);
+    if(ex.rest>0)chips.push(`<span class="chip r">⏱ ${ex.rest}s repos</span>`);
+    if(ex.restAfter>0)chips.push(`<span class="chip r">⏳ ${ex.restAfter}s transition</span>`);
     const lw=ex.weights&&ex.weights.filter(w=>w>0).length?`<span style="color:var(--accent);font-weight:700;font-size:11px;margin-top:3px;display:block">Dernier: ${ex.weights.filter(w=>w>0).slice(-1)[0]}kg</span>`:'';
     row.innerHTML=`<div class="si-info"><div class="si-name">${ex.name}</div><div class="chips">${chips.join('')}</div>${lw}</div><div style="font-size:20px;color:var(--muted)">${isDone?'✅':'›'}</div>`;
     row.onclick=()=>openTimer(i);
@@ -1081,43 +1211,42 @@ function updateProgress(){
 function startChrono(){
   stopChrono();
   chronoIv=setInterval(()=>{
-    if(!workStart) return;
+    if(!workStart)return;
     const t=fmtChrono(Date.now()-workStart);
     $('w-chrono').textContent=t;
     $('t-global').textContent=t;
   },1000);
 }
 function stopChrono(){if(chronoIv){clearInterval(chronoIv);chronoIv=null;}}
-
 function goHome(){killTimer();stopChrono();showPage('home');buildHome();}
 
 // ═══════════════════════════════════════════
-// TIMER
+// TIMER — with bilateral side plank support
 // ═══════════════════════════════════════════
 const TCOL={prep:'#e9a824',work:'#2d6a4f',rest:'#457b9d'};
 const TLBL={prep:'PRÉPARE',work:'EN ACTION',rest:'REPOS'};
 
 function openTimer(idx){
-  killTimer();
+  killTimer();sideState=null;
   activeIdx=idx;
   const ex=workExercises[idx];
   $('t-name').textContent=ex.name;
-  refreshDots(); refreshSetLbl(); resetRing();
+  refreshDots();refreshSetLbl();resetRing();
   $('t-desc').textContent='';
   $('weight-panel').style.display='none';
+  $('reps-edit-panel').style.display='none';
   $('t-all').style.display=ex.doneSet>=ex.sets?'none':'';
 
   if(ex.type==='duration'){
-    const lbl=`▶  Lancer (${fmtDur(ex.duration)})`;
+    const lbl=ex.bilateral?`▶ Lancer (${fmtDur(ex.duration)} × chaque côté)`:`▶ Lancer (${fmtDur(ex.duration)})`;
     setMainBtn(lbl,ex.doneSet>=ex.sets);
     $('t-skip').textContent=ex.doneSet>=ex.sets?'← Retour':'Passer →';
-  } else {
-    // Reps: show directly as "Série terminée"
+  }else{
     if(ex.doneSet>=ex.sets){
       setMainBtn('Exercice terminé ✅',true);
       $('t-skip').textContent='← Retour';
       $('t-desc').textContent='Exercice terminé ✅';
-    } else {
+    }else{
       showRepsReady(ex);
     }
   }
@@ -1127,82 +1256,86 @@ function openTimer(idx){
 }
 
 function showRepsReady(ex){
-  // For reps exercises: show directly the "Série terminée" button
   resetRing();
   $('ring-num').textContent='✓';
   $('ring-lbl').textContent='REPS';
   $('ring-fg').style.stroke=TCOL.work;
   setRing(1,TCOL.work);
   $('t-desc').textContent=`Fais tes ${ex.reps} répétitions`;
+  // Show reps edit
+  $('reps-edit-panel').style.display='block';
+  $('reps-input').value=ex.reps==='max'?'':ex.reps;
   setMainBtn('✅ Série terminée',false);
   $('t-skip').textContent='Passer →';
   tPhase='reps_wait';
 }
 
 $('t-back').onclick=()=>{
-  killTimer();
+  killTimer();sideState=null;
   $('page-timer').classList.remove('active');
   $('nav-bar').style.display='';
-  renderExList(); updateProgress();
+  renderExList();updateProgress();
 };
 
 function refreshDots(){
   const ex=workExercises[activeIdx];
-  const c=$('t-dots'); c.innerHTML='';
-  for(let s=0;s<ex.sets;s++){
-    const d=document.createElement('div');
-    d.className='dot'+(s<ex.doneSet?' done':s===ex.doneSet?' active-dot':'');
-    c.appendChild(d);
+  const c=$('t-dots');c.innerHTML='';
+  if(ex.bilateral&&ex.type==='duration'){
+    // Show dots for each side for each set
+    for(let s=0;s<ex.sets;s++){
+      const dL=document.createElement('div');
+      const dR=document.createElement('div');
+      const setDone=s<ex.doneSet;
+      dL.className='dot'+(setDone?' done':s===ex.doneSet&&sideState&&sideState.side==='left'?' active-dot left-dot':'');
+      dR.className='dot'+(setDone?' done':s===ex.doneSet&&sideState&&sideState.side==='right'?' active-dot right-dot':'');
+      dL.title='Gauche';dR.title='Droite';
+      c.appendChild(dL);c.appendChild(dR);
+      if(s<ex.sets-1){const sp=document.createElement('div');sp.style.cssText='width:4px';c.appendChild(sp);}
+    }
+  }else{
+    for(let s=0;s<ex.sets;s++){
+      const d=document.createElement('div');
+      d.className='dot'+(s<ex.doneSet?' done':s===ex.doneSet?' active-dot':'');
+      c.appendChild(d);
+    }
   }
 }
+
 function refreshSetLbl(){
   const ex=workExercises[activeIdx];
-  $('t-set').textContent=ex.doneSet>=ex.sets?'Toutes les séries terminées':`Série ${ex.doneSet+1} sur ${ex.sets}`;
-}
-function resetRing(){
-  $('ring-fg').style.stroke='#e8e4dc';
-  $('ring-fg').style.strokeDashoffset=0;
-  $('ring-num').textContent='—';
-  $('ring-lbl').textContent='';
-}
-function setRing(frac,color){
-  $('ring-fg').style.stroke=color;
-  $('ring-fg').style.strokeDashoffset=CIRC*(1-frac);
-}
-function setMainBtn(text,disabled){
-  $('t-main').textContent=text;
-  $('t-main').disabled=!!disabled;
+  if(ex.doneSet>=ex.sets){$('t-set').textContent='Toutes les séries terminées';return;}
+  let lbl=`Série ${ex.doneSet+1} sur ${ex.sets}`;
+  if(ex.bilateral&&sideState)lbl+=sideState.side==='left'?' — Côté gauche':' — Côté droit';
+  $('t-set').textContent=lbl;
 }
 
-// Timer engine
+function resetRing(){
+  $('ring-fg').style.stroke='#e8e4dc';$('ring-fg').style.strokeDashoffset=0;
+  $('ring-num').textContent='—';$('ring-lbl').textContent='';
+}
+function setRing(frac,color){$('ring-fg').style.stroke=color;$('ring-fg').style.strokeDashoffset=CIRC*(1-frac);}
+function setMainBtn(text,disabled){$('t-main').textContent=text;$('t-main').disabled=!!disabled;}
+
 function startPhase(phase,secs,onDone){
-  killTimer();
-  tPhase=phase; tDur=secs*1000; tEnd=Date.now()+tDur; tDone=onDone;
+  killTimer();tPhase=phase;tDur=secs*1000;tEnd=Date.now()+tDur;tDone=onDone;
   $('ring-lbl').textContent=TLBL[phase]||'';
   $('ring-fg').style.stroke=TCOL[phase]||TCOL.work;
-  // Schedule countdown beeps for both work AND rest phases (>=5s)
-  // Schedule countdown only for 'work' phase (tenue) — called at phase start
-  if(phase==='work'&&secs>=5) scheduleCountdown(secs);
-  // For 'rest' phase: schedule countdown relative to rest duration
-  if(phase==='rest'&&secs>=5) scheduleCountdown(secs);
+  if((phase==='work'||phase==='rest')&&secs>=5)scheduleCountdown(secs);
   function frame(){
     const rem=Math.max(0,tEnd-Date.now()),s=Math.ceil(rem/1000);
-    $('ring-num').textContent=s;
-    setRing(rem/tDur,TCOL[phase]||TCOL.work);
+    $('ring-num').textContent=s;setRing(rem/tDur,TCOL[phase]||TCOL.work);
     if(rem<=0){tRAF=null;tPhase='idle';setRing(0,TCOL[phase]);$('ring-num').textContent='0';const cb=tDone;tDone=null;cb&&cb();return;}
     tRAF=requestAnimationFrame(frame);
   }
   tRAF=requestAnimationFrame(frame);
 }
-function killTimer(){
-  clearCountdownTimers(); // always clear first
-  if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}
-  tPhase='idle';tDone=null;
-}
+
+function killTimer(){clearCountdownTimers();if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}tPhase='idle';tDone=null;}
+
 function pausePhase(){
   if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}
-  tPausedMs=Math.max(0,tEnd-Date.now()); tPausedPhase=tPhase; tPhase='paused';
-  $('ring-fg').style.stroke='#bbb'; $('ring-lbl').textContent='PAUSE';
+  tPausedMs=Math.max(0,tEnd-Date.now());tPausedPhase=tPhase;tPhase='paused';
+  $('ring-fg').style.stroke='#bbb';$('ring-lbl').textContent='PAUSE';
 }
 function resumePhase(cb){startPhase(tPausedPhase,tPausedMs/1000,cb);}
 
@@ -1212,43 +1345,66 @@ $('t-main').onclick=function(){
     const w=parseFloat($('w-input').value)||0;
     $('weight-panel').style.display='none';
     afterWork(w);
-  } else if(tPhase==='weight_input_all'){
+  }else if(tPhase==='weight_input_all'){
     const w=parseFloat($('w-input').value)||0;
     $('weight-panel').style.display='none';
     const ex=workExercises[activeIdx];
     const rem=ex.sets-ex.doneSet;
     for(let i=0;i<rem;i++){ex.doneSet++;if(w>0)ex.weights.push(w);totalSeries++;}
     finishAllSets();
-  } else {
+  }else{
     onMainBtn();
   }
 };
 
 function onMainBtn(){
   const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets) return;
+  if(ex.doneSet>=ex.sets)return;
 
+  // Save reps override if changed
   if(tPhase==='reps_wait'){
+    const newReps=$('reps-input').value;
+    if(newReps&&newReps!==ex.reps&&newReps!==''){
+      ex.reps=newReps;
+      // Save for next session
+      const baseId=ex.id.replace(/_r\d+_\d+$/,'');
+      DB.customReps[baseId]=newReps;
+      saveDB();
+    }
+    $('reps-edit-panel').style.display='none';
     confirmWork();
     return;
   }
+
   if(tPhase==='idle'){
-    resumeACX();
+    ensureAudioCtx();
     $('weight-panel').style.display='none';
+    $('reps-edit-panel').style.display='none';
     if(ex.type==='duration'){
-      // Always do 5s prep for duration exercises
-      const prepSecs = ex.prep && ex.prep > 0 ? ex.prep : 5;
-      setMainBtn('⏸ Pause',false); $('t-desc').textContent='Prépare-toi…';
-      startPhase('prep', prepSecs, ()=>{beepPrepEnd(); beginWork();});
+      if(ex.bilateral){
+        // Start bilateral: left side first
+        sideState={side:'left',setIdx:ex.doneSet};
+        refreshDots();refreshSetLbl();
+        $('t-desc').textContent='Prépare-toi — Côté GAUCHE';
+        setMainBtn('⏸ Pause',false);
+        startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('left');});
+      }else{
+        $('t-desc').textContent='Prépare-toi…';
+        setMainBtn('⏸ Pause',false);
+        startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWork();});
+      }
     }
-    // reps are handled by showRepsReady → reps_wait
-  } else if(tPhase==='prep'||tPhase==='work'){
-    pausePhase(); setMainBtn('▶ Reprendre',false); $('t-desc').textContent='En pause';
-  } else if(tPhase==='paused'){
+  }else if(tPhase==='prep'||tPhase==='work'){
+    pausePhase();setMainBtn('▶ Reprendre',false);$('t-desc').textContent='En pause';
+  }else if(tPhase==='paused'){
     setMainBtn('⏸ Pause',false);
-    $('t-desc').textContent=tPausedPhase==='prep'?'Prépare-toi…':'Tiens la position !';
-    resumePhase(tPausedPhase==='prep'?()=>{beepPrepEnd();beginWork();}:()=>confirmWork());
-  } else if(tPhase==='rest'){
+    const desc=tPausedPhase==='prep'?'Prépare-toi…':'Tiens la position !';
+    if(sideState)$('t-desc').textContent=desc+` — Côté ${sideState.side==='left'?'GAUCHE':'DROIT'}`;
+    else $('t-desc').textContent=desc;
+    resumePhase(tPausedPhase==='prep'?
+      ()=>{beepPrepEnd();sideState?beginWorkBilateral(sideState.side):beginWork();}:
+      ()=>sideState&&sideState.side==='left'?finishLeftSide():confirmWork());
+  }else if(tPhase==='rest'){
     afterRest();
   }
 }
@@ -1259,78 +1415,118 @@ function beginWork(){
   startPhase('work',workExercises[activeIdx].duration,()=>confirmWork());
 }
 
+function beginWorkBilateral(side){
+  setMainBtn('⏸ Pause',false);
+  $('t-desc').textContent=`Tiens — Côté ${side==='left'?'GAUCHE':'DROIT'}`;
+  const ex=workExercises[activeIdx];
+  if(side==='left'){
+    startPhase('work',ex.duration,()=>finishLeftSide());
+  }else{
+    startPhase('work',ex.duration,()=>confirmWork());
+  }
+}
+
+function finishLeftSide(){
+  // Left done, now prep for right side
+  const ex=workExercises[activeIdx];
+  killTimer();
+  beepDone();vibrate([40]);
+  sideState.side='right';
+  refreshDots();refreshSetLbl();
+  $('t-desc').textContent='Prépare-toi — Côté DROIT';
+  setMainBtn('⏸ Pause',false);
+  startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('right');});
+}
+
 function confirmWork(){
   const ex=workExercises[activeIdx];
   killTimer();
+  $('reps-edit-panel').style.display='none';
   if(ex.askWeight){
     $('weight-panel').style.display='block';
     $('w-input').value=ex.weights.filter(w=>w>0).slice(-1)[0]||'';
-    $('ring-num').textContent='💪'; $('ring-lbl').textContent='POIDS';
+    $('ring-num').textContent='💪';$('ring-lbl').textContent='POIDS';
     setRing(1,TCOL.work);
-    $('t-desc').textContent='Enregistre le poids';
+    $('t-desc').textContent=ex.bilateral?'Poids utilisé (même des deux côtés)':'Enregistre le poids';
     setMainBtn('✅ Valider',false);
     tPhase='weight_input';
-  } else {
+  }else{
     afterWork(0);
   }
 }
 
 function afterWork(weight){
-  beepDone(); vibrate([60,20,60]);
+  beepDone();vibrate([60,20,60]);
   const ex=workExercises[activeIdx];
   ex.doneSet++;
-  if(weight>0) ex.weights.push(weight);
+  if(weight>0)ex.weights.push(weight);
   totalSeries++;
-  refreshDots(); refreshSetLbl();
+  sideState=null;
+  refreshDots();refreshSetLbl();
 
   const row=$(`si-${activeIdx}`);
   if(row){
     row.className='sesh-item'+(ex.doneSet>=ex.sets?' done':'');
     const arr=row.querySelector('[style*="font-size:20px"]');
-    if(arr&&ex.doneSet>=ex.sets) arr.textContent='✅';
+    if(arr&&ex.doneSet>=ex.sets)arr.textContent='✅';
   }
   updateProgress();
 
   if(ex.doneSet>=ex.sets){
     if(workExercises.every(e=>e.doneSet>=e.sets)){setTimeout(finishWorkout,900);return;}
-    setTimeout(()=>{
-      let next=activeIdx+1;
-      while(next<workExercises.length&&workExercises[next].doneSet>=workExercises[next].sets) next++;
-      if(next<workExercises.length) openTimer(next); else finishWorkout();
-    },1200);
-    resetRing();
-    $('t-desc').textContent='Exercice terminé 🎉 → Suivant…';
-    setMainBtn('Exercice terminé ✅',true);
-    $('t-skip').textContent='← Retour';
-    $('t-all').style.display='none';
+    // Rest between exercises (restAfter)
+    const restAfterSec=ex.restAfter||0;
+    if(restAfterSec>0){
+      resetRing();$('t-desc').textContent=`Transition — ${restAfterSec}s`;
+      setMainBtn('⏭ Sauter',false);
+      startPhase('rest',restAfterSec,()=>{goNextExercise();});
+      $('t-all').style.display='none';$('t-skip').textContent='← Retour';
+    }else{
+      setTimeout(()=>goNextExercise(),800);
+      resetRing();$('t-desc').textContent='Exercice terminé 🎉 → Suivant…';
+      setMainBtn('Exercice terminé ✅',true);$('t-skip').textContent='← Retour';$('t-all').style.display='none';
+    }
     return;
   }
 
+  // Rest between sets
   if(ex.rest>0){
     $('t-desc').textContent=`Repos — ${ex.rest}s`;
     setMainBtn('⏭ Sauter le repos',false);
     startPhase('rest',ex.rest,()=>afterRest());
-  } else {
+  }else{
     afterRest();
   }
 }
 
+function goNextExercise(){
+  killTimer();
+  let next=activeIdx+1;
+  while(next<workExercises.length&&workExercises[next].doneSet>=workExercises[next].sets)next++;
+  if(next<workExercises.length)openTimer(next);else finishWorkout();
+}
+
 function afterRest(){
-  killTimer(); // clears countdown timers + RAF
-  beepRest(); vibrate([40]);
+  killTimer();beepRest();vibrate([40]);
   const ex=workExercises[activeIdx];
-  refreshDots(); $('weight-panel').style.display='none';
-  $('t-skip').textContent='Passer →'; $('t-all').style.display='';
+  refreshDots();$('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';
+  $('t-skip').textContent='Passer →';$('t-all').style.display='';
 
   if(ex.type==='duration'){
-    // Auto-play: prep 5s then work
-    const prepSecs2 = ex.prep && ex.prep > 0 ? ex.prep : 5;
-    $('t-desc').textContent='Prépare-toi…';
-    setMainBtn('⏸ Pause',false);
-    resumeACX();
-    startPhase('prep', prepSecs2, ()=>{ beepPrepEnd(); beginWork(); });
-  } else {
-    // Reps: reset to direct "Série terminée"
+    if(ex.bilateral){
+      sideState={side:'left',setIdx:ex.doneSet};
+      refreshDots();refreshSetLbl();
+      $('t-desc').textContent='Prépare-toi — Côté GAUCHE';
+      setMainBtn('⏸ Pause',false);
+      ensureAudioCtx();
+      startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('left');});
+    }else{
+      $('t-desc').textContent='Prépare-toi…';
+      setMainBtn('⏸ Pause',false);
+      ensureAudioCtx();
+      startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWork();});
+    }
+  }else{
     resetRing();
     showRepsReady(ex);
   }
@@ -1338,34 +1534,39 @@ function afterRest(){
 
 function finishAllSets(){
   const ex=workExercises[activeIdx];
-  refreshDots(); refreshSetLbl(); updateProgress();
-  beepDone(); vibrate([60,20,60]);
+  refreshDots();refreshSetLbl();updateProgress();
+  beepDone();vibrate([60,20,60]);
   $('t-all').style.display='none';
   if(workExercises.every(e=>e.doneSet>=e.sets)){setTimeout(finishWorkout,900);return;}
   $('t-desc').textContent='Toutes les séries 🎉 → Suivant…';
   setMainBtn('Exercice terminé ✅',true);
   $('t-skip').textContent='← Retour';
-  tPhase='idle';
-  setTimeout(()=>{
-    let next=activeIdx+1;
-    while(next<workExercises.length&&workExercises[next].doneSet>=workExercises[next].sets) next++;
-    if(next<workExercises.length) openTimer(next);
-  },1200);
+  tPhase='idle';sideState=null;
+  const restAfterSec=ex.restAfter||0;
+  if(restAfterSec>0){
+    setTimeout(()=>{
+      resetRing();$('t-desc').textContent=`Transition — ${restAfterSec}s`;
+      setMainBtn('⏭ Sauter',false);
+      startPhase('rest',restAfterSec,()=>goNextExercise());
+    },600);
+  }else{
+    setTimeout(()=>goNextExercise(),1200);
+  }
 }
 
 function validateAll(){
   const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets) return;
-  killTimer(); $('weight-panel').style.display='none';
+  if(ex.doneSet>=ex.sets)return;
+  killTimer();$('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';sideState=null;
   if(ex.askWeight){
     $('weight-panel').style.display='block';
     $('w-input').value=ex.weights.filter(w=>w>0).slice(-1)[0]||'';
-    $('ring-num').textContent='💪'; $('ring-lbl').textContent='POIDS';
+    $('ring-num').textContent='💪';$('ring-lbl').textContent='POIDS';
     setRing(1,TCOL.work);
     $('t-desc').textContent='Poids pour toutes les séries';
     setMainBtn('✅ Valider tout',false);
     tPhase='weight_input_all';
-  } else {
+  }else{
     const rem=ex.sets-ex.doneSet;
     for(let i=0;i<rem;i++){ex.doneSet++;totalSeries++;}
     finishAllSets();
@@ -1375,46 +1576,40 @@ function validateAll(){
 $('t-skip').onclick=function(){
   const ex=workExercises[activeIdx];
   if(ex.doneSet>=ex.sets){
-    killTimer(); $('page-timer').classList.remove('active'); $('nav-bar').style.display='';
-    renderExList(); updateProgress(); return;
+    killTimer();sideState=null;$('page-timer').classList.remove('active');$('nav-bar').style.display='';
+    renderExList();updateProgress();return;
   }
   if(tPhase==='rest'){afterRest();return;}
-  $('weight-panel').style.display='none';
-  killTimer(); afterWork(0);
+  $('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';
+  killTimer();sideState=null;afterWork(0);
 };
 
 function adjW(d){const v=parseFloat($('w-input').value)||0;$('w-input').value=Math.max(0,v+d).toFixed(1).replace('.0','');}
+function adjReps(d){const v=parseInt($('reps-input').value)||0;$('reps-input').value=Math.max(1,v+d);}
 
 // ═══════════════════════════════════════════
 // FINISH
 // ═══════════════════════════════════════════
 function finishWorkout(){
-  killTimer(); stopChrono();
+  killTimer();stopChrono();sideState=null;
   const elapsed=Date.now()-workStart;
-
-  // Log session this week
   const next=getNextSession();
   const log=getWeekLog();
   log.push({key:next.key,date:new Date().toISOString(),duration:elapsed,gear:selectedGear,time:selectedTime});
-  const wk=getWeekKey(); DB.weekLog[wk]=log;
+  DB.weekLog[getWeekKey()]=log;
 
-  // History
   const rec={
-    date:new Date().toISOString(),
-    sessionKey:next.key,
-    sessionName:SESSIONS[next.key].name,
-    duration:elapsed,
-    isCircuit,gear:selectedGear,timeVersion:selectedTime,
-    exercises:workExercises.map(e=>({name:e.name,sets:e.doneSet,weights:e.weights,type:e.type}))
+    date:new Date().toISOString(),sessionKey:next.key,sessionName:SESSIONS[next.key].name,
+    duration:elapsed,isCircuit,gear:selectedGear,timeVersion:selectedTime,
+    exercises:workExercises.map(e=>({name:e.name,sets:e.doneSet,reps:e.reps,weights:e.weights,type:e.type}))
   };
   DB.history.unshift(rec);
-  if(DB.history.length>150) DB.history=DB.history.slice(0,150);
+  if(DB.history.length>150)DB.history=DB.history.slice(0,150);
   saveDB();
 
   const freq=parseInt(DB.settings.freq)||4;
   const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
   const newLog=getWeekLog();
-
   $('fin-sub').textContent=`${SESSIONS[next.key].name} — bien joué !`;
   $('fin-week').textContent=`${newLog.length}/${plan.length} séances cette semaine`;
   $('st-ex').textContent=workExercises.length;
@@ -1428,20 +1623,15 @@ function finishWorkout(){
   $('nav-bar').style.display='none';
 }
 
-function finishToHome(){
-  $('page-finish').classList.remove('active');
-  $('nav-bar').style.display='';
-  switchTab('home');
-}
+function finishToHome(){$('page-finish').classList.remove('active');$('nav-bar').style.display='';switchTab('home');}
 
 // ═══════════════════════════════════════════
-// ROUTINE PAGE
+// ROUTINE
 // ═══════════════════════════════════════════
 function buildRoutinePage(){
-  const list=$('routine-list'); list.innerHTML='';
+  const list=$('routine-list');list.innerHTML='';
   DB.routine.forEach((ex,i)=>{
-    const row=document.createElement('div');
-    row.className='routine-ex-row';
+    const row=document.createElement('div');row.className='routine-ex-row';
     const lbl=ex.type==='reps'?`${ex.sets}×${ex.reps} reps`:`${ex.sets}×${fmtDur(ex.duration)}`;
     row.innerHTML=`<div style="font-size:22px">🧱</div><div style="flex:1"><div style="font-weight:600;font-size:15px">${ex.name}</div><div style="font-size:12px;color:var(--muted);margin-top:3px">${lbl}</div></div><div style="font-size:18px;color:var(--muted)">›</div>`;
     row.onclick=()=>launchRoutineSingle(i);
@@ -1450,22 +1640,17 @@ function buildRoutinePage(){
 }
 
 function startRoutine(){
-  // Launch all routine exercises
   workExercises=DB.routine.map(e=>({...e,doneSet:0,weights:[]}));
-  workStart=Date.now(); totalSeries=0; isCircuit=false;
-  $('w-tag').textContent='Routine posture';
-  $('w-name').textContent='Exercices quotidiens';
-  renderExList(); updateProgress(); startChrono();
-  showPage('workout');
+  workStart=Date.now();totalSeries=0;isCircuit=false;
+  $('w-tag').textContent='Routine posture';$('w-name').textContent='Exercices quotidiens';
+  renderExList();updateProgress();startChrono();showPage('workout');
 }
 
 function launchRoutineSingle(idx){
   workExercises=DB.routine.map(e=>({...e,doneSet:0,weights:[]}));
-  workStart=Date.now(); totalSeries=0; isCircuit=false;
-  $('w-tag').textContent='Routine posture';
-  $('w-name').textContent='Exercices quotidiens';
-  renderExList(); updateProgress(); startChrono();
-  showPage('workout');
+  workStart=Date.now();totalSeries=0;isCircuit=false;
+  $('w-tag').textContent='Routine posture';$('w-name').textContent='Exercices quotidiens';
+  renderExList();updateProgress();startChrono();showPage('workout');
   setTimeout(()=>openTimer(idx),300);
 }
 
@@ -1473,127 +1658,79 @@ function launchRoutineSingle(idx){
 // HISTORY
 // ═══════════════════════════════════════════
 function buildHistory(){
-  const list=$('hist-list'); list.innerHTML='';
+  const list=$('hist-list');list.innerHTML='';
   if(!DB.history.length){
     list.innerHTML='<div class="empty"><div class="eico">📭</div><p>Aucune séance enregistrée.</p></div>';
-    $('hist-sub').textContent='Aucune séance'; return;
+    $('hist-sub').textContent='Aucune séance';return;
   }
   $('hist-sub').textContent=`${DB.history.length} séance${DB.history.length>1?'s':''}`;
   DB.history.forEach((rec,ri)=>{
     const d=new Date(rec.date);
     const ds=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
     const ts=d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    const card=document.createElement('div');
-    card.className='card'; card.style.margin='0 16px 12px';
+    const card=document.createElement('div');card.className='card';card.style.margin='0 16px 12px';
     const exRows=rec.exercises.filter(e=>e.sets>0).map(e=>{
       const ws=e.weights&&e.weights.filter(w=>w>0).length?e.weights.filter(w=>w>0).map(w=>w+'kg').join(', '):'';
-      return `<div class="hist-ex"><span class="hn">${e.name}</span><span>${e.sets} série${e.sets>1?'s':''} ${ws?'<span class="hw">'+ws+'</span>':''}</span></div>`;
+      const repsInfo=e.reps?` · ${e.reps} reps`:'';
+      return `<div class="hist-ex"><span class="hn">${e.name}</span><span>${e.sets} série${e.sets>1?'s':''}${repsInfo} ${ws?'<span class="hw">'+ws+'</span>':''}</span></div>`;
     }).join('');
     const tag=rec.isCircuit?' · 🔄 Circuit':rec.timeVersion&&rec.timeVersion!=='full'?` · ${rec.timeVersion} min`:'';
     card.innerHTML=`<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:start"><div><div class="hist-date">${ds} · ${ts}</div><div class="hist-meta">Séance ${rec.sessionKey||'?'} · ${rec.sessionName}${tag} · ${fmtMs(rec.duration)}</div></div><button onclick="deleteHistory(${ri})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#ccc;padding:2px">🗑</button></div><div class="hist-exs">${exRows}</div></div>`;
     list.appendChild(card);
   });
 }
-
 function deleteHistory(idx){if(!confirm('Supprimer ?'))return;DB.history.splice(idx,1);saveDB();buildHistory();}
 
 // ═══════════════════════════════════════════
-// EXPORT FOR CLAUDE
+// EXPORT
 // ═══════════════════════════════════════════
 function exportForClaude(){
   const freq=parseInt(DB.settings.freq)||4;
   const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
   const log=getWeekLog();
-
-  // Build progression per exercise
   const prog={};
   DB.history.forEach(rec=>{
     rec.exercises.forEach(ex=>{
       const valid=(ex.weights||[]).filter(w=>w>0);
-      if(!valid.length) return;
-      if(!prog[ex.name]) prog[ex.name]=[];
+      if(!valid.length)return;
+      if(!prog[ex.name])prog[ex.name]=[];
       prog[ex.name].push({date:rec.date,max:Math.max(...valid),avg:+(valid.reduce((a,b)=>a+b,0)/valid.length).toFixed(1)});
     });
   });
-
   const report={
-    exportDate:new Date().toISOString(),
-    profil:{
-      objectif_abdos:"6-pack",
-      objectif_posture:"omoplates resserrées, épaules ouvertes",
-      niveau:"avancé",
-      limitation_physique:"contracture lombaire L5-S1 en amélioration, renforcement progressif en cours",
-      materiel:"banc, haltères, barre traction (porte), élastiques",
-      frequence_objectif:freq+" séances/semaine",
-      planning:"Lun/Mar/Jeu muscu, Mer/Ven tennis"
-    },
-    programme:{
-      plan_semaine:plan,
-      sessions_disponibles:Object.keys(SESSIONS).map(k=>({key:k,nom:SESSIONS[k].name,description:SESSIONS[k].description}))
-    },
-    semaine_en_cours:{
-      objectif:plan.length+" séances",
-      realisees:log.length,
-      seances:log
-    },
+    exportDate:new Date().toISOString(),version:'v6',
+    customReps:DB.customReps,
+    profil:{objectif_abdos:"6-pack",objectif_posture:"omoplates resserrées, épaules ouvertes",niveau:"avancé",limitation_physique:"contracture lombaire L5-S1 en amélioration",materiel:"banc, haltères, barre traction (porte), élastiques",frequence_objectif:freq+" séances/semaine"},
+    programme:{plan_semaine:plan,sessions:Object.keys(SESSIONS).map(k=>({key:k,nom:SESSIONS[k].name,description:SESSIONS[k].description}))},
+    semaine_en_cours:{objectif:plan.length+" séances",realisees:log.length,seances:log},
     historique_recent:DB.history.slice(0,20),
     progression_poids:prog
   };
-
   const json=JSON.stringify(report,null,2);
-  const instructions=`Copié !\n\nColle dans Claude avec :\n"Voici mon historique. Analyse ma progression et dis-moi :\n1. Comment j'évolue sur les poids\n2. Si mon programme est optimal\n3. Quels ajustements tu recommandes\n4. Génère un nouveau programme JSON si nécessaire"`;
-  try{navigator.clipboard.writeText(json).then(()=>alert(instructions));}
-  catch(e){prompt('Données pour Claude :',json);}
+  try{navigator.clipboard.writeText(json).then(()=>alert('Copié ! Colle dans Claude pour analyse.'));}
+  catch(e){prompt('Données :',json);}
 }
 
 // ═══════════════════════════════════════════
 // SETTINGS
 // ═══════════════════════════════════════════
-function saveSetting(key,val){
-  DB.settings[key]=val;
-  if(key==='gear') selectedGear=val;
-  saveDB();
-}
-
+function saveSetting(key,val){DB.settings[key]=val;if(key==='gear')selectedGear=val;saveDB();}
 function showImportModal(){$('import-txt').value='';$('import-err').style.display='none';$('import-modal').classList.add('open');}
 function closeImportModal(){$('import-modal').classList.remove('open');}
 $('import-modal').onclick=e=>{if(e.target===$('import-modal'))closeImportModal();};
-
 function doImport(){
   const raw=$('import-txt').value.trim();
-  const err=$('import-err');
-  err.style.display='none';
-  try{
-    const p=JSON.parse(raw);
-    if(p.routine&&Array.isArray(p.routine)) DB.routine=p.routine;
-    saveDB(); closeImportModal(); buildHome(); buildRoutinePage();
-    alert('Programme importé !');
-  } catch(e){err.textContent='❌ JSON invalide : '+e.message;err.style.display='block';}
+  const err=$('import-err');err.style.display='none';
+  try{const p=JSON.parse(raw);if(p.routine&&Array.isArray(p.routine))DB.routine=p.routine;saveDB();closeImportModal();buildHome();buildRoutinePage();alert('Programme importé !');}
+  catch(e){err.textContent='❌ JSON invalide : '+e.message;err.style.display='block';}
 }
-
-function confirmReset(){
-  if(!confirm('Effacer TOUTES les données ?')) return;
-  localStorage.removeItem('mp_v5');
-  loadDB(); buildHome(); buildHistory(); buildRoutinePage();
-  alert('Réinitialisé.');
-}
+function confirmReset(){if(!confirm('Effacer TOUTES les données ?'))return;localStorage.removeItem('mp_v6');loadDB();buildHome();buildHistory();buildRoutinePage();alert('Réinitialisé.');}
 
 // ═══════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  $('page-'+id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function switchTab(tab){
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===tab));
-  showPage(tab);
-  if(tab==='home')    buildHome();
-  if(tab==='routine') buildRoutinePage();
-  if(tab==='history') buildHistory();
-}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+id).classList.add('active');window.scrollTo(0,0);}
+function switchTab(tab){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===tab));showPage(tab);if(tab==='home')buildHome();if(tab==='routine')buildRoutinePage();if(tab==='history')buildHistory();}
 
 // ═══════════════════════════════════════════
 // UTILS
@@ -1605,14 +1742,10 @@ function fmtChrono(ms){const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-loadDB();
-buildHome();
-buildRoutinePage();
-// Apply saved settings
-const sf=$('set-freq'); if(sf) sf.value=DB.settings.freq||4;
-const sg=$('set-gear'); if(sg) sg.value=DB.settings.gear||'full';
-
-console.log('Mon Programme v5 ✅');
+loadDB();buildHome();buildRoutinePage();
+const sf=$('set-freq');if(sf)sf.value=DB.settings.freq||4;
+const sg=$('set-gear');if(sg)sg.value=DB.settings.gear||'full';
+console.log('Mon Programme v6 ✅');
 </script>
 </body>
 </html>
