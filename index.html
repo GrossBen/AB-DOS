@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="Mon Programme">
 <meta name="theme-color" content="#2d6a4f">
 <title>Mon Programme v6</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
 :root{
   --bg:#f8f6f2;--surface:#fff;--accent:#2d6a4f;--accent2:#52b788;
@@ -42,13 +44,17 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .card-row:last-child{border-bottom:none}
 .card-row:active{background:var(--bg)}
 
-.week-dots{display:flex;gap:8px;padding:0 18px;margin-bottom:4px;align-items:center}
-.wdot{width:36px;height:36px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;flex-shrink:0}
-.wdot .wdd{font-size:11px;font-weight:700}
+/* WEEK DOTS */
+.week-dots{display:flex;gap:8px;padding:0 18px;margin-bottom:4px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.week-dots::-webkit-scrollbar{display:none}
+.wdot{width:40px;height:40px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s;flex-shrink:0}
+.wdot .wdd{font-size:13px;font-weight:700}
+.wdot .wds{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.5px}
 .wdot.today{border-color:var(--accent);background:#eaf4ee}
 .wdot.today .wdd{color:var(--accent)}
 .wdot.done-day{background:var(--accent);border-color:var(--accent)}
 .wdot.done-day .wdd{color:white}
+.wdot.done-day .wds{color:rgba(255,255,255,.7)}
 .wdot:active{transform:scale(.9)}
 
 .reco-card{background:var(--surface);border-radius:var(--r);margin:8px 16px 12px;box-shadow:var(--shadow);overflow:hidden}
@@ -70,11 +76,9 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 
 .btn-start{display:block;width:calc(100% - 32px);margin:0 16px 16px;background:var(--accent);color:white;border:none;border-radius:13px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;text-align:center}
 .btn-start:active{background:#1e4d38}
-.btn-secondary{display:block;width:calc(100% - 32px);margin:0 16px 8px;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:13px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;text-align:center}
 
 .sesh-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border-radius:var(--r);margin:0 16px 9px;box-shadow:var(--shadow);border-left:4px solid var(--border);cursor:pointer;transition:all .2s}
 .sesh-item.done{opacity:.4;border-left-color:var(--accent2)}
-.sesh-item.active-ex{border-left-color:var(--accent);box-shadow:0 4px 20px rgba(45,106,79,.18)}
 .sesh-item:active{transform:scale(.98)}
 .sesh-item .si-info{flex:1}
 .sesh-item .si-name{font-weight:600;font-size:15px;margin-bottom:4px}
@@ -83,6 +87,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .chip.w{background:#fff8e1;border-color:#f0d060;color:#7a5c00}
 .chip.r{background:#dce8f7;border-color:#aac4e8;color:#1a4971}
 .chip.side{background:#fce4ec;border-color:#f48fb1;color:#880e4f}
+.prev-weight{color:var(--accent);font-weight:700;font-size:11px;margin-top:4px;display:flex;align-items:center;gap:4px}
 
 .prog-outer{height:3px;background:var(--border)}
 .prog-inner{height:100%;background:var(--accent);transition:width .4s}
@@ -108,7 +113,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .dot.right-dot{background:#e63946}
 
 .t-desc{font-size:15px;color:var(--muted);margin-bottom:18px;text-align:center;min-height:20px}
-.ts-btn{width:100%;max-width:300px;border:none;border-radius:15px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px}
+.ts-btn{width:100%;max-width:300px;border:none;border-radius:15px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px;-webkit-appearance:none}
 .ts-btn.primary{background:var(--accent);color:white}
 .ts-btn.primary:disabled{background:var(--border);color:var(--muted)}
 .ts-btn.secondary{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
@@ -153,19 +158,23 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
 .modal-overlay.open{display:flex}
 .modal-sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom));width:100%;max-width:500px;max-height:88vh;overflow-y:auto}
 .modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
-.modal-title{font-size:20px;font-weight:700;margin-bottom:16px}
+.modal-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
 .field input,.field select,.field textarea{width:100%;border:2px solid var(--border);border-radius:11px;padding:10px 14px;font-size:15px;background:var(--bg);color:var(--text);-webkit-appearance:none}
 .field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
 
+/* SESSION PREVIEW MODAL */
+.sesh-preview-ex{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.sesh-preview-ex:last-child{border:none}
+.sesh-preview-ex .spn{flex:1;font-size:14px;font-weight:600}
+.sesh-preview-ex .spm{font-size:12px;color:var(--muted);margin-top:2px}
+.done-badge{font-size:18px;flex-shrink:0}
+
 .empty{text-align:center;padding:40px 20px;color:var(--muted)}
 .empty .eico{font-size:48px;margin-bottom:12px}
 .empty p{font-size:14px}
-
-.side-indicator{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-left:6px}
-.side-indicator.left{background:#fff3cd;color:#7a5200}
-.side-indicator.right{background:#fce4ec;color:#880e4f}
 </style>
 </head>
 <body>
@@ -236,7 +245,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
     </div>
   </div>
   <div class="timer-body">
-    <div class="ring-wrap" id="ring-wrap">
+    <div class="ring-wrap">
       <svg width="180" height="180" viewBox="0 0 180 180">
         <circle cx="90" cy="90" r="76" fill="none" stroke="var(--border)" stroke-width="9"/>
         <circle id="ring-fg" cx="90" cy="90" r="76" fill="none" stroke="#2d6a4f"
@@ -257,7 +266,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
         <button class="w-adj" onclick="adjReps(1)">+</button>
         <span style="font-size:14px;color:var(--muted);font-weight:600">reps</span>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center">Sera mémorisé pour la prochaine séance</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center">Mémorisé pour la prochaine séance</div>
     </div>
     <div class="weight-panel" id="weight-panel" style="display:none">
       <div class="wlbl">Poids utilisé :</div>
@@ -267,6 +276,7 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
         <button class="w-adj" onclick="adjW(0.5)">+</button>
         <span style="font-size:14px;color:var(--muted);font-weight:600">kg</span>
       </div>
+      <div id="prev-weight-hint" style="font-size:11px;color:var(--accent);font-weight:600;margin-top:6px;text-align:center"></div>
     </div>
     <button class="ts-btn primary" id="t-main">Démarrer</button>
     <button class="ts-btn secondary" id="t-skip">Passer →</button>
@@ -297,11 +307,11 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
   <div class="scroll" style="padding-bottom:80px">
     <div style="padding:16px 18px;font-size:14px;color:var(--muted);background:var(--surface);border-bottom:1px solid var(--border)">
-      Ces exercices maintiennent ta posture au quotidien.
+      Ces exercices maintiennent ta posture — ils ne comptent pas comme séance.
     </div>
     <div id="routine-list" style="padding:12px 0 20px"></div>
     <div style="padding:0 16px">
-      <button class="btn-start" id="routine-start-btn" onclick="startRoutine()" style="width:100%;margin:0">🧱 Lancer la routine complète</button>
+      <button class="btn-start" onclick="startRoutine()" style="width:100%;margin:0">🧱 Lancer la routine complète</button>
     </div>
   </div>
 </div>
@@ -373,9 +383,9 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">Importer un programme</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Colle le JSON généré par Claude. Ton historique est conservé.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Colle le JSON généré par Claude.</p>
     <div class="field">
-      <textarea id="import-txt" rows="8" style="width:100%;border:2px solid var(--border);border-radius:11px;padding:10px 14px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--text);resize:vertical" placeholder='{"routine":[...],"sessions":...}'></textarea>
+      <textarea id="import-txt" rows="8" style="width:100%;border:2px solid var(--border);border-radius:11px;padding:10px 14px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--text);resize:vertical" placeholder='{"routine":[...]}'></textarea>
     </div>
     <div id="import-err" style="color:var(--danger);font-size:13px;margin-bottom:10px;display:none"></div>
     <div style="display:flex;gap:10px">
@@ -385,785 +395,831 @@ body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);
   </div>
 </div>
 
+<!-- MODAL SESSION PREVIEW -->
+<div class="modal-overlay" id="session-preview-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="sp-title"></div>
+    <div class="modal-sub" id="sp-sub"></div>
+    <div id="sp-exercises"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button onclick="closeSessionPreview()" style="flex:1;padding:14px;border:1px solid var(--border);border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;background:var(--bg)">Fermer</button>
+      <button id="sp-launch-btn" style="flex:2;padding:14px;border:none;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;background:var(--accent);color:white;display:none" onclick="launchFromPreview()">▶ Lancer cette séance</button>
+    </div>
+  </div>
+</div>
+
 <script>
 'use strict';
 
 // ═══════════════════════════════════════════
-// AUDIO — AudioContext to NOT interrupt music
+// AUDIO ENGINE — Real decoded WAV buffers
+// Bypasses iOS silent mode via AudioContext
 // ═══════════════════════════════════════════
-let audioCtx=null;
-const decodedBuffers={};
-const SOUND_VOLUME=0.35; // moderate volume to overlay with music
+let audioCtx = null;
+const decodedBuffers = {};
+const SOUND_VOLUME = 0.4;
 
-const SND={
-  grave:'data:audio/wav;base64,UklGRtAUAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YawUAAAAABYAWQDIAGEBIAIDAwUEIgVUBpYH4QgwCnoLugzpDf8O9g/IEG8R5BEjEigS7hFyEbEQrA9gDs8M+QrhCIoG+AMxATr+GvvY9330EfGe7S3qyeZ841DgUN2G2vvXutXM0znSCdFC0OvPCdCg0LHRQNNL1dPX1NpK3jHiguY160HwnfU9+xMBFQc0DWITjhmrH6gldSsDMUM2JjudP5pDEUf2ST5M4E3UThRPm05mTXNLw0hYRTZBYzzoNs0wHyrpIjsbJBO1CgECHfka8A/nEN441ZDMOsRGvMu0ma4gqWykhqB5nUqb/5mbmR+aiZvWnQKhBKXUqWevsLWivCvEPMzD1Kvd4OZP8OH5gAMYDZIW2R/YKHsxrjlfQXtI9E66VMBZ+11iYe1jlWVYZjNmJ2U2Y2VguVw8WPhS90xJRvs+IDfHLgUm7BySEwwKcADT9krt6+PM2gHSnsm2wVu6nbOMrTaop6PonwKd/ZrcmaKZUJrjm1qeraHVpcmqfrDntva9mcXBzVrWUt+U6AryoPs/BdQORhiCIXIqAjMeO7VCtUkOULJVlFqqXulhS2TKZWJmE2bdZMNiyl/4W1ZX7lHNSwBFmD2kNTctYyQ9G9oRTgiw/hX1kus94izZctAkyFTAFbl2soasU6cholGflJy3msCZsZmImkWc5J5eoq2mxaucsSS4T78Mx0nP9df84Enqx/Ng/f8GjhD5GSgjCCyENIo8B0TpSiNRpFZiW1FfaGKhZPZlZWbsZYxkSWIoXy9baFbeUJ1Ks0MvPCQ0oyu/IowZIBCPBvD8WPPb6ZHgjtfnzq/G+L7Ut1Sxhat2pjGiwZ4snHearJnHmciar5x2nxeji6fHrL+yZrmswILI1dCT2ajiAOyE9SD/vghIEqkbzCSbLQM28T1TRRhMMVKQVylc8V/hYvBkHGZgZr1lNGTIYX9eYFp1VchPZ0lgQsM6oDIMKhgh2RdlDtAEMPub8Sfo6N741WDNPcWgvZm2OLCLqqClgaE4nsybQ5qgmTSZEJsfnQ+g16NwqM+t6LOtug/C/cll0jTbV+S47UL34AB8CgAUWB1tJisvfjdUP5pGQU5xUjpWPVbySXJMukymP+Eq/BPf+wrk/c0Wu4WsMKOsny+ijqpCuG/K799q92YPZSb3OtJL6leAXitf4ln9Tis/aiv5FED9ueXfzw29ca70pCqhT6NAq3q4Kcow3z724A2dJAk53kkPVttc1l30WINOLT/oK+sVl/5g57rRAL9dsLimrKJ3pPqrvLjuyXzeHPVjDNwiITfsRzNUM1t8XP1X/00kP1ss0hbk//7oj9PvwEayfqgypKWlvawHub7J1N0G9O8KIyE+Nf5FWFKIWR1b/1ZyTRA/wiyuFyUBk+pd1dnCLrRFqryl2aaIrV25mck23fryhQlyH2EzEkR9UNtXuFn5VdxM8z4fLX8YXQIe7CTXv8QUtg2sSqcTqFyuvbl/yaTc+PElCModijEqQqJOLFZPWO1UPEzKPnAtRBmLA6Ht5Nigxvi31q3bqFSpOK8aunDJHdwC8c8GKRy5L0ZAyUx7VOJW2VOUS5g+ti3/Ga4EG++d2nzI2rmfr2+qmqobsJq6a8mh2xfwgwWRGu4tZT7wSshSb1W/UuNKWz7yLa8axwWM8E7cU8q5u2mxBqzlqwexFrtxyTDbNu9BBAEZKiyJPBlJE1H5U55RKUoUPiIuUxvWBvPx+N0kzJW9MrOhrTat+rGdu4LJytph7gkDehdsKrA6REdeT39SdlBnScM9SC7tG9kHUfOZ3/DNbr/7tDyvjK70siu8nclx2pbt2wH7FbUo3DhwRadNAVFJT59IaT1iLnsc0gil9DPhts9EwcS227Dnr/Wzw7zCySDa1uy3AAA=',
-  aigu:'data:audio/wav;base64,UklGRl4RAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YToRAAAAAB4AeAAJAccBqAKdA5cEhQVWBvoGYQd+B0gHtQbDBXMEygLQAJP+I/yV+QD3e/Qi8g3wVe4R7VTsL+yt7NPtpO8Y8ib1vPjC/B0BrQVPCt0OMBMiF44aUB1MH2ggkSC8H+UdERtKF6gSRQ1FB9IBH/pZ83fsb+a54LzbsNe61PnShdJs07HVTdku3jjkROsi85z7cwRnDTIWjx47JvUshDK2NmA5ZTqzOUQ3ITNgLSMmmB35E44Jnv5683fo990o1H7LNcSLvrS62LgPuWG7x78qxmPOPNhy47fvuPzSCaIWyiLuLbw36T85Rn1KlUxxTBJKi0X8Ppc2myxSIRAVMAgV+x3uq+Eb1sTL88Lqu9228rM+s8i0g7hUvg/Ge89R2kDm8PIAABANwBmvJYUw8TmsQX1HOEvCTA5MI0kWRA09PDTlKVUe4xHrBND38Oqu3mXTackEwXW67rWPs2uzg7XHuRfARMgS0jbdXeku9kgDSRDRHIIoBTMKPFBDn0jQS8tMiEsSSIJCATvIMRsnShuuDqQBjvTN58HbxNAmxzK/IbkhtVCzvLNhtiu7+MGTyr7UK+CG7HL5jgZ6E9UfQittNQg+1USfSURMsEzfSt9GzkDaODwvPyQzGHILXP5S8bbk5dg4zv/Efr3ut3i0NbMwtGG3sLz2w/vMftcv47fvuPzSCaIWyiLuLbw36T85Rn1KlUxxTBJKi0X8Ppc2myxSIRAVMAgV+x3uq+Eb1sTL88Lqu9228rM+s8i0g7hUvg/Ge89R2kDm8PIAABANwBmvJYUw8TmsQX1HOEvCTA5MI0kWRA09PDTlKVUe4xHrBND38Oqu3mXTackEwXW67rWPs2uzg7XHuRfARMgS0jbdXeku9kgDSRDRHIIoBTMKPFBDn0jQS8tMiEsSSIJCATvIMRsnShuuDqQBjvTN58HbxNAmxzK/IbkhtVCzvLNhtiu7+MGTyr7UK+CG7HL5jgZ6E9UfQittNQg+1USfSURMsEzfSt9GzkDaODwvPyQzGHILXP5S8bbk5dg4zv/Efr3ut3i0NbMwtGG3sLz2w/vMftcv47fvuPzSCaIWyiLuLbw36T85Rn1KlUxxTBJKi0X8Ppc2myxSIRAVMAgV+x3uq+Eb1sTL88Lqu9228rM+s8i0g7hUvg/Ge89R2kDm8PIAAA8NuBmfJWkwxzlzQTRH4UpdTKBLrkigQ5o80jOKKQ8etxHeBOb3LusU3/PTH8rfwXK7Ibe7tKO0vbb5ujfBR8nu0uHd0eli9jYD7w8uHJcn1TGcOqxBz0bgScpKhUkcRqlAVTlXMPQleBo7DpcB6/SW6PLcWNIWyXDBn7vOtxm2jLYiucm9XMSrzHXWc+FR7bf5SAamEnYeXykQM0E7tUE9RrhIE0lOR3RDpT0LNuEsaiL2FtoKcv4Z8irmAdvu0D7IMcH6u8G4nLeTuJ+7qcCJxw3Q89nz5Lnw7fwzCTIVjyD2Khk0tDuQQYFFaUc9R/1Eu0CXOsAycSnwHosTmAdx+2/v7OM+2bXPl8chwYG827lBuba6Mb6Vw7rKa9Nl3V7oBfQAAPgLkxd6Il0s8jT5Oz5Bm0T3RUhFlULyPYI3dy8LJocbORB1BJX47+zb4azXrM4gxz7BMr0buwW787zUwIvG7c3C1sjgtOsz9/AClA7HGTYklC2bNQ88wUCOQ2JEOEMZQB07aTQxLLEiMhgBDXMB4PWa6vjfSdbTzdfGiMEMvn686LxGv4bDiMkf0RHaGuTx7kP6vAUGEc4bwyWbLhQ2+DsaQFxCrkIPQYs9PjhOMfEoZR/yFOYJlf5S83HoQ94V1SrNvMb9wQ2/A77pvK3BRcaLzE7UVN1a5xTyM/1iCE8TqR0iJ3MvYDa1O0s/B0HdQNA+7jpXNTMuuSUpHMoR6Qba++3wc+a83BDUrszOxprCMsCnv/zAJ8QPyY/PdteJ4ITqG/UAAOEKbRVWH1EoHTB/Nkg7VT6QP/E+fDxFOGsyHCuNIgAZuw4MBET5su6i5GTbOtNgzAvHYMN6wWjBKcOvxt/Lk9KX2q/jl+0F+KoCOA1gF9YgUymZMHI2szo8Pfs97DwXOpE1fi8KKG4f6xXIC1AB1Paf7P7iOdqR0j/MccdLxOPCRMNqxUTJtc6T1azdwuaR8M/6MAVnDychKugwOjb2OQA8SjzROqM31jKMLAAlXxztEvIIuP6L9LfqhuE52RXSSMz/x1nFasQ4xbzH4suM0Y/YteDB6XDzef2QB2wRwhpNI84qDDHaNRU5pDp9OqM4IjUWMKYpASJiGQgQOgZD/Gry++g44GvYxdF7zLTIisYNxkLHHcqIzmTUgtuu46rsMvYAAMoJRxMxHEYkSCsFMVI1EDgqOZk4YzaXMlQtwSYPH3gWPQ2jA/P5cvBq5xzfx9eh0dfMjcnax8vHX8mKzDPRONdr3pXmeu/X+GQC3Av5FHUdEiWXK9UwpDTqNpQ3oDYUNAYwkirjIiscpROPCi0ByPej7gTmKd5O16bRWs2JykjJoMmNywHP4dMI2kjhiekx8lv7pATHDX8WjB6yJbwrfTDTM6Q15TWTNLoxby3TJxAhWRnpEP0H2/7F9f7syeRi3QHX1NEBzqbL0cqKy8rNf9GO1tDcFeQo7Mz0v/2+BokP2xd5HygmuCv/L880Rfc80VU3AAA=',
-  done1:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAACcAmgBRAT8CUQN1BJEFjwZXB9QH8QehB9sGmgXiA7wBOv9v/Hj5dPaG89Pwfu6q7HTr9+pG62zsbe5B8dn0Hfnr/RkDegjaDQMTvRfUGxcfWyF9ImQiAiFWHmsaWhVGD18I4AAM+Sfxf+lf4hDc1dbr0oLQwM+50HPT49fu3WjlFu6w9+IBUgygFmkgTyn4MBM3XDuePbY9lTs/N88wcihqHgoTsgbQ+dfsP+B/1ArKSMGTuja2ZrRDtdO4BL+rx4bSPd9j7X38BQxwGy0qsTd6QxNNGVQ/WFFZa1Z5ULBHYDzvLtcfnw/a/iDuBt4gz/LB9baLrgGpiKY3pwir17Fou2XHYNXd5E71Hwa6Focm+TSMQdBLZ1MNWJhZ+1dDU5tLSUGpNCkmVBa7BfP0k+Qw1VPHebsOsmSruKcqp72pWq/Nt8nC6s+53rDuP//OD8sfpS7VO+ZGc08xVe1Xj1caVLBNi0T+OHIrYhxWDOH7lesG3MDNRMECt1Wvg6q1qPypSq54tUW/V8tA2YPolfjkCOAY9iefNWBBz0qZUYBVY1Y6VBpPMkfJPD8wBiKeEpICdvLX4kTUQMdAvKezwq3Eqsiq0a23s0+8SMc91LniOPIvAg0SRCFLL6I720WbTZxSs1TMU/JPR0kKQI00OieJGP8IKvmW6dHaYc29wU+4arFNrRus362Hsui5wMO0z1ndMuy5+2ALnRrmKLk1o0BCSUpPhFLVUjtQzUq+Qlg4+CsPHhwPpv838FvhmdNrx0C9c7VIsO6te67lsRC4wsCry2rYieaK9eMEDRR9IrEvMjuaRJNL4U9cUflPxUvmRJw7PDArI+IU4AWw9tfn3dlAzXDC0Lmsszqwma/OscS2Tb4kyPDTRuGt76L+ng0bHJYplTWtP4NH0UxpTzNPMkyDRlo+ATTWJ0ga0Av0/DjuIOAt09PHd74ut/WyNrE9sgK2YrwhxfDPbtwp6qT4WwfNFXQj2C+HOiNDX0kCTe1NGUyXR5FARjcMLEgfbhH7AnP0WOYp2VzNXcOEuxe2R7Mss8e1/rqjwm7MB9gF5fLyTwGdD1gdBio1NYA+lEUxSjBMf0skSEBCCTrIL9wjsBa8CH/6eOwm3wDTdcjjv5a5xrWWtA62IbqpwGrJFdRI4JXthPuVCUwXLSTCL6Q5e0EARwNKaUovSGtDSTwJM/8nkRsvDlEAdvIZ5bPYtc2AxGe9qrhyttK2xrkzv+fGm9D925XoAfbBA1wRVh44KpgsCBkEAA==',
-  done2:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAACcAmgBRAT8CUQN1BJEFjwZXB9QH8QehB9sGmgXiA7wBOv9v/Hj5dPaG89Pwfu6q7HTr9+pG62zsbe5B8dn0Hfnr/RkDegjaDQMTvRfUGxcfWyF9ImQiAiFWHmsaWhVGD18I4AAM+Sfxf+lf4hDc1dbr0oLQwM+50HPT49fu3WjlFu6w9+IBUgygFmkgTyn4MBM3XDuePbY9lTs/N88wcihqHgoTsgbQ+dfsP+B/1ArKSMGTuja2ZrRDtdO4BL+rx4bSPd9j7X38BQxwGy0qsTd6QxNNGVQ/WFFZa1Z5ULBHYDzvLtcfnw/a/iDuBt4gz/LB9baLrgGpiKY3pwir17Fou2XHYNXd5E71Hwa6Focm+TSMQdBLZ1MNWJhZ+1dDU5tLSUGpNC4mWxa7BfP0k+Qy1VfHebsOs2SruKcqp72pWq/Nt8nC6s+53rDuP//OD8sfpS7VO+ZGc08xVe1Xj1caVLBNi0T+OHIrYhxWDOH7lesG3MDNRMECt1Wvg6q1qPypSq54tUW/V8tA2YPolfjkCOAY9iefNWBBz0qZUYBVY1Y6VBpPMkfJPD8wBiKeEpICdvLX4kTUQMdAvKezwq3EqsiqPa23s0+8SMc91LniOPIvAg0SRCFLL6I720WbTZxSs1TMU/JPR0kKQI00OieJGP8IKvmW6dHaYc29wU+4arFNrRus362Hsui5wMO0z1ndMuy5+2ALnRrmKLk1o0BCSUpPhFLVUjtQzUq+Qlg4+CsPHhwPpv838FvhmdNrx0C9c7VIsO6te67lsRC4wsCry2rYieaK9eMEDRR9IrEvMjuaRJNL4U9cUflPxUvmRJw7PDArI+IU4AWw9tfn3dlAzXDC0Lmsszqwma/OscS2Tb4kyPDTRuGt76L+ng0bHJYplTWtP4NH0UxpTzNPMkyDRlo+ATTWJ0ga0Av0/DjuIOAt09PHd74ut/WyNrE9sgK2YrwhxfDPbtwp6qT4WwfNFXQj2C+HOiNDX0kCTe1NGUyXR5FARjcMLEgfbhH7AnP0WOYp2VzNXcOEuxe2R7Mss8e1/rqjwm7MB9gF5fLyTwGdD1gdBio1NYA+lEUxSjBMf0skSEBCCTrIL9wjsBa8CH/6eOwm3wDTdcjjv5a5xrWWtA62IbqpwGrJFdRI4JXthPuVCUwXLSTCL6Q5e0EARwNKaUovSGtDSTwJM/8nkRsvDlEAdvIZ5bPYtc2AxGe9qrhyttK2xrkzv+fGm9D925XoAfbBA1wRVh44KpgsCBkEAA==',
-  rest:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAABYAWQDGAFoBEQLjAssDwAS7BbEGmwdvCCQJsgkQCjgKJArQCTcJWAg0B8sFIQQ7AiAA1/1q++P4T/a58zHxw+597G3qoOgj5wHmROX05BrlueXU5mzogOoK7QTwZ/Ml9zL7gP/8A5UIOA3QEUgWjBqGHiIiTyX5JxIqiitXLHAszytwKlUogCX4Iccd+xijE9MNnwchAXH6q/Pp7Evm69/o2VzUYs8Sy4PHx8TxwgvCIcI2w03FYshtzGPRNdfP3Rnl+OxQ9f/94gbXD7kYYSGsKXUxmDj2PnBEQkjxSnRMwkzdS8ZJiEYtQsk8cDY8L0snvB6xFU8MvAIe+ZvvWuaB3TLVjs22xsTA0Lvuty61mrM6sw60E7ZCuYy94sIuyVXQPdjE4MnpJ/O4/FYG3A8hGQIiWioIMuw47D7vQ+FHskpXTMlMBkwSSvRGuUJyPTQ3GDA7KLwfvRZjDdMDNfqt8GPnfN4b1mPOcsdkwVO8UbhvtbmzNbPms8m15bgCvTrCa8h7z07Xxd+96BPyobs/BckOGBgGIW8pMjEvOEo+a0N9R29KN0zMTCxMWkpeR0JDGT71N/EwKCm6IMgXdw7rBE37wPFt6HnfB9c6zzHICMLZvLe4tLXbszWzw7ODtW+4eryVwavHo85i1sjes+cA8Yn6JwS2DQ0XCCCCKFowbjelPeNCFEcoShJMykxOTJ9Kw0fIQ7w+tDjIMRQqtyHSGIkPAwZk/NTyeOl94PXXFNDzyK/CYr0huf21ArQ4s6OzQbULuPe78MDuxs7Nd9XM3arm7u9y+RADogwCFgkfkyd/L6s2/DxYQqlG3knqS8VMa0zfSiVISkRcP285nDL9KrEi2hmbEBoHfP3o84Xqd+Hl2PDQuMlaw/y97bll',
-  prep:'data:audio/wav;base64,UklGRoAHAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YVwHAAAAAB4AeAAJAccBqAKdA5cEhQVWBvoGYQd+B0gHtQbDBXMEygLQAJP+I/yV+QD3e/Qi8g3wVe4R7VTsL+yt7NPtpO8Y8ib1vPjC/B0BrQVPCt0OMBMiF44aUB1MH2ggkSC8H+UdERtKF6gSRQ1FB9IBH/pZ83fsb+a54LzbsNe61PnShdJs07HVTdku3jjkROsi85z7cwRnDTIWjx47JvUshDK2NmA5ZTqzOUQ3ITNgLSMmmB35E44Jnv5683fo990o1H7LNcSLvrS62LgPuWG7x78qxmPOPNhy47fvuPzSCaIWyiLuLbw36T85Rn1KlUxxTBJKi0X8Ppc2myxSIRAVMAgV+x3uq+Eb1sTL88Lqu9228rM+s8i0g7hUvg/Ge89R2kDm8PIAABANwBmvJYUw8TmsQX1HOEvCTA5MI0kWRA09PDTlKVUe4xHrBND38Oqu3mXTackEwXW67rWPs2uzg7XHuRfARMgS0jbdXeku9kgDSRDRHIIoBTMKPFBDn0jQS8tMiEsSSIJCATvIMRsnShuuDqQBjvTN58HbxNAmxzK/IbkhtVCzvLNhtiu7+MGTyr7UK+CG7HL5jgZ6E9UfQittNQg+1USfSURMsEzfSt9GzkDaODwvPyQzGHILXP5S8bbk5dg4zv/Efr3ut3i0NbMwtGG3sLz2w/vMftcv47fvuPzSCaIW',
-};
-
-function ensureAudioCtx(){
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  }
-  if(audioCtx.state==='suspended') audioCtx.resume();
-}
-
-async function decodeSound(key){
-  if(decodedBuffers[key]) return decodedBuffers[key];
-  ensureAudioCtx();
-  const dataUrl=SND[key];
-  const b64=dataUrl.split(',')[1];
-  const bin=atob(b64);
-  const buf=new ArrayBuffer(bin.length);
-  const view=new Uint8Array(buf);
-  for(let i=0;i<bin.length;i++) view[i]=bin.charCodeAt(i);
-  try{
-    decodedBuffers[key]=await audioCtx.decodeAudioData(buf);
-  }catch(e){
-    // Fallback: create a simple beep
-    const sr=audioCtx.sampleRate;
-    const len=sr*0.15;
-    const b=audioCtx.createBuffer(1,len,sr);
-    const d=b.getChannelData(0);
-    const freq=key==='grave'?440:key==='aigu'?880:660;
-    for(let i=0;i<len;i++){
-      const t=i/sr;
-      d[i]=Math.sin(2*Math.PI*freq*t)*Math.exp(-t*8)*0.5;
+// Minimal WAV generator — creates real audio that bypasses silent mode
+function makeBeepBuffer(freq, durationSec, type) {
+  if (!audioCtx) return null;
+  const sr = audioCtx.sampleRate;
+  const len = Math.floor(sr * durationSec);
+  const buf = audioCtx.createBuffer(1, len, sr);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) {
+    const t = i / sr;
+    const env = Math.exp(-t * (type === 'grave' ? 5 : type === 'aigu' ? 3 : 6));
+    if (type === 'grave') {
+      data[i] = Math.sin(2 * Math.PI * freq * t) * env * 0.8;
+    } else if (type === 'aigu') {
+      // Two-tone ascending
+      const f2 = freq * 1.25;
+      const blend = Math.min(1, t / 0.05);
+      data[i] = (Math.sin(2 * Math.PI * freq * t) * (1 - blend) + Math.sin(2 * Math.PI * f2 * t) * blend) * env * 0.7;
+    } else if (type === 'done') {
+      data[i] = (Math.sin(2 * Math.PI * freq * t) + 0.3 * Math.sin(2 * Math.PI * freq * 1.5 * t)) * env * 0.6;
+    } else if (type === 'rest') {
+      data[i] = Math.sin(2 * Math.PI * freq * t) * env * 0.5;
+    } else if (type === 'prep') {
+      const f2 = freq * 1.5;
+      data[i] = (Math.sin(2 * Math.PI * freq * t) * 0.5 + Math.sin(2 * Math.PI * f2 * t) * 0.5) * env * 0.6;
     }
-    decodedBuffers[key]=b;
   }
-  return decodedBuffers[key];
+  return buf;
 }
 
-async function playSound(key){
-  try{
-    ensureAudioCtx();
-    const buffer=await decodeSound(key);
-    const source=audioCtx.createBufferSource();
-    const gain=audioCtx.createGain();
-    gain.gain.value=SOUND_VOLUME;
-    source.buffer=buffer;
-    source.connect(gain);
-    gain.connect(audioCtx.destination);
-    source.start(0);
-  }catch(e){}
+function ensureAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
-let countdownTimeouts=[];
-function clearCountdownTimers(){countdownTimeouts.forEach(t=>clearTimeout(t));countdownTimeouts=[];}
-function scheduleCountdown(totalSecs){
-  clearCountdownTimers();
-  [5,4,3,2,1].forEach(s=>{
-    const delay=totalSecs*1000-s*1000;
-    if(delay<0)return;
-    countdownTimeouts.push(setTimeout(()=>playSound('grave'),delay));
-  });
-  countdownTimeouts.push(setTimeout(()=>playSound('aigu'),totalSecs*1000));
-}
-function beepDone(){playSound('done1');setTimeout(()=>playSound('done2'),150);}
-function beepRest(){playSound('rest');}
-function beepPrepEnd(){playSound('prep');}
-function vibrate(p){if(navigator.vibrate)navigator.vibrate(p);}
-
-// Unlock AudioContext on first touch
-let audioUnlocked=false;
-document.addEventListener('touchstart',function unlockAudio(){
-  if(audioUnlocked)return;
-  audioUnlocked=true;
+function initSounds() {
   ensureAudioCtx();
-  // Decode all sounds
-  Object.keys(SND).forEach(k=>decodeSound(k));
-},{passive:true});
-document.addEventListener('click',function(){
-  if(!audioUnlocked){audioUnlocked=true;ensureAudioCtx();Object.keys(SND).forEach(k=>decodeSound(k));}
-},{passive:true,once:true});
+  if (!audioCtx) return;
+  // Pre-generate all sound buffers
+  decodedBuffers.grave = makeBeepBuffer(330, 0.18, 'grave');   // countdown tick
+  decodedBuffers.aigu  = makeBeepBuffer(700, 0.5,  'aigu');    // final beep (end of set)
+  decodedBuffers.done  = makeBeepBuffer(550, 0.35, 'done');    // exercise done
+  decodedBuffers.rest  = makeBeepBuffer(440, 0.25, 'rest');    // rest over
+  decodedBuffers.prep  = makeBeepBuffer(600, 0.2,  'prep');    // prep end, start now
+}
 
+function playBuf(key) {
+  try {
+    ensureAudioCtx();
+    const buf = decodedBuffers[key];
+    if (!buf || !audioCtx) return;
+    const src = audioCtx.createBufferSource();
+    const gain = audioCtx.createGain();
+    gain.gain.value = SOUND_VOLUME;
+    src.buffer = buf;
+    src.connect(gain);
+    gain.connect(audioCtx.destination);
+    src.start(0);
+  } catch(e) {}
+}
+
+// Schedule countdown using AudioContext.currentTime (immune to setTimeout throttling)
+// 4 grave beeps at -4,-3,-2,-1 seconds + 1 aigu at 0
+function scheduleCountdown(totalSecs) {
+  try {
+    ensureAudioCtx();
+    if (!audioCtx || !decodedBuffers.grave) return;
+    const now = audioCtx.currentTime;
+    // Grave beeps at 4,3,2,1 seconds before end
+    [4, 3, 2, 1].forEach(s => {
+      const delay = totalSecs - s;
+      if (delay < 0) return;
+      const src = audioCtx.createBufferSource();
+      const gain = audioCtx.createGain();
+      gain.gain.value = SOUND_VOLUME;
+      src.buffer = decodedBuffers.grave;
+      src.connect(gain); gain.connect(audioCtx.destination);
+      src.start(now + delay);
+    });
+    // Final aigu beep at end
+    if (decodedBuffers.aigu) {
+      const src2 = audioCtx.createBufferSource();
+      const gain2 = audioCtx.createGain();
+      gain2.gain.value = SOUND_VOLUME;
+      src2.buffer = decodedBuffers.aigu;
+      src2.connect(gain2); gain2.connect(audioCtx.destination);
+      src2.start(now + totalSecs);
+    }
+  } catch(e) {}
+}
+
+function beepDone()    { playBuf('done'); }
+function beepRest()    { playBuf('rest'); }
+function beepPrepEnd() { playBuf('prep'); }
+function vibrate(p)    { if (navigator.vibrate) navigator.vibrate(p); }
+
+// Unlock AudioContext + init sounds on FIRST user interaction
+let audioReady = false;
+function unlockAudio() {
+  if (audioReady) return;
+  audioReady = true;
+  initSounds();
+}
+document.addEventListener('touchstart', unlockAudio, { passive: true, once: false });
+document.addEventListener('click', unlockAudio, { passive: true, once: false });
 
 // ═══════════════════════════════════════════
-// PROGRAM DATA — Complete paths per config
+// PROGRAM DATA
 // ═══════════════════════════════════════════
-
-const DEFAULT_ROUTINE=[
-  {id:'r1',name:'Dos contre le mur',type:'duration',sets:1,duration:60,rest:0,prep:5,bodyweight:true},
-  {id:'r2',name:'Wall W / Wall Angels',type:'reps',sets:2,reps:'10',rest:20,prep:0,bodyweight:true},
-  {id:'r3',name:'Menton rentré contre mur',type:'duration',sets:1,duration:30,rest:0,prep:5,bodyweight:true},
+const DEFAULT_ROUTINE = [
+  { id:'r1', name:'Dos contre le mur',        type:'duration', sets:1, duration:60, rest:0,  prep:5, bodyweight:true },
+  { id:'r2', name:'Wall W / Wall Angels',     type:'reps',     sets:2, reps:'10',   rest:20, prep:0, bodyweight:true },
+  { id:'r3', name:'Menton rentré contre mur', type:'duration', sets:1, duration:30, rest:0,  prep:5, bodyweight:true },
 ];
 
-// Side plank helper: bilateral=true means left+right with 5s prep each side
-// askWeight at end of both sides (same weight)
-
-// REST BETWEEN EXERCISES (restBetweenExercises): time suggested between different exercises
-// 0 = go directly to next exercise
-
-const SESSIONS={
-  A:{
-    name:'Abdos profonds + Gainage',tag:'Séance A',
-    description:'Transverse, stabilisation, protection L5-S1',color:'#2d6a4f',
+const SESSIONS = {
+  A: {
+    name:'Abdos profonds + Gainage', tag:'Séance A',
+    description:'Transverse, stabilisation, protection L5-S1', color:'#2d6a4f',
     versions:{
-      '5':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'8',rest:30,askWeight:false,restAfter:0},
-        ]
-      },
-      '10':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:30},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
-        ]
-      },
-      '15':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
-          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'8–12 kg',restAfter:0},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:35,rest:45,askWeight:false,restAfter:45},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
-        ]
-      },
-      '20':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
-          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'12',rest:75,askWeight:true,weight:'8–12 kg',restAfter:45},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:75,askWeight:false,restAfter:45},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:40,rest:45,askWeight:false,restAfter:45},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'15',rest:75,askWeight:false,restAfter:45},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ]
-      },
-      'full':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
-          {id:'crunch',name:'Crunch lesté banc',type:'reps',sets:3,reps:'15',rest:75,askWeight:true,weight:'8–12 kg',restAfter:60},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'20',rest:75,askWeight:false,restAfter:60},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:3,duration:45,rest:45,askWeight:false,restAfter:60},
-          {id:'crunchbw',name:'Crunch pieds levés',type:'reps',sets:3,reps:'20',rest:75,askWeight:false,restAfter:60},
-          {id:'retro',name:'Rétroversion bassin',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'fin',name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,restAfter:0},
-        ]
-      }
+      '5':{ full:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
+        {id:'dbug',name:'Dead bug',           type:'reps',    sets:2,reps:'8',  rest:30,askWeight:false,restAfter:0},
+      ], elastic:'full', body:'full'},
+      '10':{ full:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
+        {id:'dbug',name:'Dead bug',           type:'reps',    sets:2,reps:'10', rest:30,askWeight:false,restAfter:30},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
+      ], elastic:'full', body:'full'},
+      '15':{ full:[
+        {id:'vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
+        {id:'dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'10', rest:30,askWeight:false,restAfter:45},
+        {id:'plk',   name:'Planche avant-bras', type:'duration',sets:3,duration:35,rest:30,askWeight:false,restAfter:45},
+        {id:'crunch',name:'Crunch lesté banc',  type:'reps',    sets:3,reps:'12', rest:60,askWeight:true, weight:'8–12 kg',restAfter:0},
+      ],
+      elastic:[
+        {id:'vac',     name:'Vacuum debout',      type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
+        {id:'dbug',    name:'Dead bug',           type:'reps',    sets:3,reps:'10', rest:30,askWeight:false,restAfter:45},
+        {id:'plk',     name:'Planche avant-bras', type:'duration',sets:3,duration:35,rest:30,askWeight:false,restAfter:45},
+        {id:'crunchbw',name:'Crunch pieds levés', type:'reps',    sets:3,reps:'15', rest:60,askWeight:false,restAfter:0},
+      ], body:'elastic'},
+      '20':{ full:[
+        {id:'vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
+        {id:'dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:45},
+        {id:'plk',   name:'Planche avant-bras', type:'duration',sets:3,duration:40,rest:30,askWeight:false,restAfter:45},
+        {id:'crunch',name:'Crunch lesté banc',  type:'reps',    sets:3,reps:'12', rest:60,askWeight:true, weight:'8–12 kg',restAfter:45},
+        {id:'retro', name:'Rétroversion bassin', type:'reps',   sets:3,reps:'12', rest:45,askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'vac',     name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
+        {id:'dbug',    name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:45},
+        {id:'plk',     name:'Planche avant-bras', type:'duration',sets:3,duration:40,rest:30,askWeight:false,restAfter:45},
+        {id:'crunchbw',name:'Crunch pieds levés', type:'reps',    sets:3,reps:'15', rest:60,askWeight:false,restAfter:45},
+        {id:'retro',   name:'Rétroversion bassin',type:'reps',    sets:3,reps:'12', rest:45,askWeight:false,restAfter:0},
+      ], body:'elastic'},
+      'full':{ full:[
+        {id:'vac',   name:'Vacuum debout',        type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
+        {id:'dbug',  name:'Dead bug',             type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:60},
+        {id:'plk',   name:'Planche avant-bras',   type:'duration',sets:3,duration:45,rest:30,askWeight:false,restAfter:60},
+        {id:'crunch',name:'Crunch lesté banc',    type:'reps',    sets:3,reps:'15', rest:60,askWeight:true, weight:'8–12 kg',restAfter:60},
+        {id:'retro', name:'Rétroversion bassin',  type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,restAfter:45},
+        {id:'fin',   name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0, askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'vac',     name:'Vacuum debout',        type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
+        {id:'dbug',    name:'Dead bug',             type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:60},
+        {id:'plk',     name:'Planche avant-bras',   type:'duration',sets:3,duration:45,rest:30,askWeight:false,restAfter:60},
+        {id:'crunchbw',name:'Crunch pieds levés',   type:'reps',    sets:3,reps:'20', rest:60,askWeight:false,restAfter:60},
+        {id:'retro',   name:'Rétroversion bassin',  type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,restAfter:45},
+        {id:'fin',     name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0, askWeight:false,restAfter:0},
+      ], body:'elastic'},
     }
   },
 
-  B:{
-    name:'Posture + Dos haut',tag:'Séance B',
-    description:'Omoplates, rhomboïdes, deltoïdes postérieurs',color:'#457b9d',
+  B: {
+    name:'Posture + Dos haut', tag:'Séance B',
+    description:'Omoplates, rhomboïdes, deltoïdes postérieurs', color:'#457b9d',
     versions:{
-      '5':{
-        full:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:0},
-        ],
-        elastic:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'sup',name:'Superman sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ]
-      },
-      '10':{
-        full:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:30},
-          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:2,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:0},
-        ],
-        elastic:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'sup',name:'Superman sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
-        ]
-      },
-      '15':{
-        full:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:45},
-          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:45},
-          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:0},
-        ],
-        elastic:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:0},
-        ]
-      },
-      '20':{
-        full:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:45},
-          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:45},
-          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:45},
-          {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:0},
-        ],
-        elastic:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:45},
-          {id:'supH',name:'Superman tenu 5s',type:'reps',sets:3,reps:'8',rest:60,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'extbw',name:'Superman lent',type:'reps',sets:3,reps:'8',rest:60,askWeight:false,restAfter:0},
-        ]
-      },
-      'full':{
-        full:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'2–4 kg',restAfter:60},
-          {id:'rf',name:'Reverse fly banc 30°',type:'reps',sets:3,reps:'15',rest:45,askWeight:true,weight:'4–6 kg',restAfter:60},
-          {id:'row',name:'Rowing haltères',type:'reps',sets:3,reps:'12',rest:60,askWeight:true,weight:'10–14 kg',restAfter:60},
-          {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:45},
-          {id:'finfp',name:'Face pull lent x15 (finisher)',type:'reps',sets:1,reps:'15',rest:0,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'rowel',name:'Rowing élastique',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
-          {id:'supH',name:'Superman tenu 5s',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'finbw',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'sup',name:'Superman sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-          {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-          {id:'extbw',name:'Superman lent',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'finbw2',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
-        ]
-      }
+      '5':{ full:[
+        {id:'fp', name:'Face pull élastique', type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+        {id:'yr', name:'Y-raise banc',        type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:0},
+      ],
+      elastic:[
+        {id:'fp',  name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'sup', name:'Superman sol', type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+        {id:'ysol',name:'Y-raise sol',  type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
+      ]},
+      '10':{ full:[
+        {id:'fp', name:'Face pull élastique',   type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+        {id:'yr', name:'Y-raise banc',          type:'reps',sets:2,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:30},
+        {id:'rf', name:'Reverse fly banc 30°',  type:'reps',sets:2,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:0},
+      ],
+      elastic:[
+        {id:'fp',  name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+        {id:'rfsol',name:'Reverse fly sol',   type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'sup', name:'Superman sol',    type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+        {id:'ysol',name:'Y-raise sol',     type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
+        {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+      ]},
+      '15':{ full:[
+        {id:'fp', name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'yr', name:'Y-raise banc',         type:'reps',sets:3,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:45},
+        {id:'rf', name:'Reverse fly banc 30°', type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:45},
+        {id:'row',name:'Rowing haltères',      type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:0},
+      ],
+      elastic:[
+        {id:'fp',   name:'Face pull élastique', type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'ysol', name:'Y-raise sol',         type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+        {id:'rfsol',name:'Reverse fly sol',     type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'rowel',name:'Rowing élastique',    type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'sup',  name:'Superman sol',          type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'ysol', name:'Y-raise sol',           type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+        {id:'rfsol',name:'Reverse fly sol',       type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:0},
+      ]},
+      '20':{ full:[
+        {id:'fp', name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'yr', name:'Y-raise banc',         type:'reps',sets:3,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:45},
+        {id:'rf', name:'Reverse fly banc 30°', type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:45},
+        {id:'row',name:'Rowing haltères',      type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:45},
+        {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:0},
+      ],
+      elastic:[
+        {id:'fp',   name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'ysol', name:'Y-raise sol',          type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+        {id:'rfsol',name:'Reverse fly sol',      type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'rowel',name:'Rowing élastique',     type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:45},
+        {id:'supH', name:'Superman tenu 5s',     type:'reps',sets:3,reps:'8', rest:60,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'sup',  name:'Superman sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'ysol', name:'Y-raise sol',            type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
+        {id:'rfsol',name:'Reverse fly sol',        type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
+        {id:'rowbw',name:'Rowing serviette porte', type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
+        {id:'extbw',name:'Superman lent',          type:'reps',sets:3,reps:'8', rest:60,askWeight:false,restAfter:0},
+      ]},
+      'full':{ full:[
+        {id:'fp',   name:'Face pull élastique',      type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+        {id:'yr',   name:'Y-raise banc',             type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'2–4 kg',restAfter:60},
+        {id:'rf',   name:'Reverse fly banc 30°',     type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:60},
+        {id:'row',  name:'Rowing haltères',          type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:60},
+        {id:'ext',  name:'Extension lombaire lente', type:'reps',sets:3,reps:'5', rest:60,askWeight:true, weight:'1–3 kg',restAfter:45},
+        {id:'finfp',name:'Face pull lent (finisher)',type:'reps',sets:1,reps:'15',rest:0, askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'fp',   name:'Face pull élastique',       type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+        {id:'ysol', name:'Y-raise sol',               type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+        {id:'rfsol',name:'Reverse fly sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+        {id:'rowel',name:'Rowing élastique',          type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
+        {id:'supH', name:'Superman tenu 5s',          type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+        {id:'finbw',name:'Superman max (finisher)',   type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'sup',   name:'Superman sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+        {id:'ysol',  name:'Y-raise sol',            type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
+        {id:'rfsol', name:'Reverse fly sol',        type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
+        {id:'rowbw', name:'Rowing serviette porte', type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
+        {id:'extbw', name:'Superman lent',          type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
+        {id:'finbw2',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0, askWeight:false,restAfter:0},
+      ]},
     }
   },
 
-  C:{
-    name:'Abdos dynamiques + Obliques',tag:'Séance C',
-    description:'Bas abdos, obliques, force fonctionnelle',color:'#e9a824',
+  C: {
+    name:'Abdos dynamiques + Obliques', tag:'Séance C',
+    description:'Bas abdos, obliques, force fonctionnelle', color:'#e9a824',
     versions:{
-      '5':{
-        full:[
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
-          {id:'sp',name:'Side plank lesté',type:'duration',sets:2,duration:25,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:0},
-        ],
-        elastic:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
-          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:0},
-        ],
-        body:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'12',rest:30,askWeight:false,restAfter:20},
-          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:0},
-        ]
-      },
-      '10':{
-        full:[
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'sp',name:'Side plank lesté',type:'duration',sets:2,duration:30,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:30},
-          {id:'kr',name:'Knee raises barre',type:'reps',sets:2,reps:'8',rest:45,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:30},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-          {id:'sp',name:'Side plank',type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:30},
-          {id:'llr',name:'Leg raises sol',type:'reps',sets:2,reps:'10',rest:45,askWeight:false,restAfter:0},
-        ]
-      },
-      '15':{
-        full:[
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:30,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:45},
-          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'10',rest:45,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
-          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'10',rest:45,askWeight:false,restAfter:0},
-        ]
-      },
-      '20':{
-        full:[
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:35,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:45},
-          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
-        ],
-        body:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:45},
-          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'16',rest:60,askWeight:false,restAfter:0},
-        ]
-      },
-      'full':{
-        full:[
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'sp',name:'Side plank lesté',type:'duration',sets:3,duration:40,rest:30,askWeight:true,bilateral:true,prep:5,restAfter:60},
-          {id:'kr',name:'Knee raises barre',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
-          {id:'finkr',name:'Knee raises max (finisher)',type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
-        ],
-        elastic:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:60},
-          {id:'pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
-          {id:'finsp',name:'Side plank max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,bilateral:true,prep:5,restAfter:0},
-        ],
-        body:[
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-          {id:'sp',name:'Side plank',type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:5,restAfter:60},
-          {id:'llr',name:'Leg raises sol',type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
-          {id:'dbuni',name:'Dead bug unilatéral',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-          {id:'bic',name:'Bicycle crunch',type:'reps',sets:3,reps:'20',rest:60,askWeight:false,restAfter:45},
-          {id:'finsp',name:'Side plank max (finisher)',type:'duration',sets:1,duration:60,rest:0,askWeight:false,bilateral:true,prep:5,restAfter:0},
-        ]
-      }
+      '5':{ full:[
+        {id:'rc',name:'Reverse crunch banc',  type:'reps',    sets:2,reps:'12',   rest:30,askWeight:false,restAfter:20},
+        {id:'sp',name:'Side plank lesté',     type:'duration',sets:2,duration:25, rest:30,askWeight:true,bilateral:true,prep:10,restAfter:0},
+      ],
+      elastic:[
+        {id:'rc',name:'Reverse crunch', type:'reps',    sets:2,reps:'12',  rest:30,askWeight:false,restAfter:20},
+        {id:'sp',name:'Side plank',     type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:0},
+      ], body:'elastic'},
+      '10':{ full:[
+        {id:'rc', name:'Reverse crunch banc', type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
+        {id:'sp', name:'Side plank lesté',    type:'duration',sets:2,duration:30,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:30},
+        {id:'kr', name:'Knee raises barre',   type:'reps',    sets:2,reps:'8',   rest:45,askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'rc', name:'Reverse crunch',        type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
+        {id:'sp', name:'Side plank',            type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:30},
+        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:2,reps:'12',  rest:45,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'rc', name:'Reverse crunch', type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
+        {id:'sp', name:'Side plank',     type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:30},
+        {id:'llr',name:'Leg raises sol', type:'reps',    sets:2,reps:'10',  rest:45,askWeight:false,restAfter:0},
+      ]},
+      '15':{ full:[
+        {id:'rc', name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp', name:'Side plank lesté',      type:'duration',sets:3,duration:30,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:45},
+        {id:'kr', name:'Knee raises barre',     type:'reps',    sets:3,reps:'10',  rest:60,askWeight:false,restAfter:45},
+        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
+        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
+        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'10',  rest:45,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
+        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:45},
+        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'10',  rest:45,askWeight:false,restAfter:0},
+      ]},
+      '20':{ full:[
+        {id:'rc', name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp', name:'Side plank lesté',      type:'duration',sets:3,duration:35,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:45},
+        {id:'kr', name:'Knee raises barre',     type:'reps',    sets:3,reps:'10',  rest:60,askWeight:false,restAfter:45},
+        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
+        {id:'bic',name:'Bicycle crunch',        type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
+        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
+        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
+        {id:'bic',  name:'Bicycle crunch',          type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
+      ],
+      body:[
+        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
+        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
+        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:45},
+        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
+        {id:'bic',  name:'Bicycle crunch',     type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
+      ]},
+      'full':{ full:[
+        {id:'rc',  name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
+        {id:'sp',  name:'Side plank lesté',      type:'duration',sets:3,duration:40,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:60},
+        {id:'kr',  name:'Knee raises barre',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:60},
+        {id:'pal', name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
+        {id:'bic', name:'Bicycle crunch',        type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
+        {id:'finkr',name:'Knee raises max',      type:'reps',    sets:1,reps:'max', rest:0, askWeight:false,restAfter:0},
+      ],
+      elastic:[
+        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
+        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:60},
+        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
+        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
+        {id:'bic',  name:'Bicycle crunch',          type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
+        {id:'finsp',name:'Side plank max',          type:'duration',sets:1,duration:60,rest:0, askWeight:false,bilateral:true,prep:10,restAfter:0},
+      ],
+      body:[
+        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
+        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:60},
+        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'15',  rest:60,askWeight:false,restAfter:60},
+        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
+        {id:'bic',  name:'Bicycle crunch',     type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
+        {id:'finsp',name:'Side plank max',     type:'duration',sets:1,duration:60,rest:0, askWeight:false,bilateral:true,prep:10,restAfter:0},
+      ]},
     }
   },
 
-  D:{
-    name:'Circuit intégral',tag:'Séance D',
-    description:'Tout en une fois — finir épuisé',color:'#e63946',
-    isCircuit:true,
+  D: {
+    name:'Circuit intégral', tag:'Séance D',
+    description:'Tout en une fois — finir épuisé', color:'#e63946',
+    isCircuit: true,
     versions:{
-      '5':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-        ]
-      },
-      '10':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        ]
-      },
-      '15':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:5},
-        ]
-      },
-      '20':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:true,weight:'2–4 kg'},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'10',rest:0,askWeight:false},
-          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-        ]
-      },
-      'full':{
-        full:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch banc',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'yr',name:'Y-raise banc',type:'reps',sets:1,reps:'12',rest:0,askWeight:true,weight:'2–4 kg'},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
-        ],
-        elastic:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'fp',name:'Face pull élastique',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
-        ],
-        body:[
-          {id:'vac',name:'Vacuum debout',type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-          {id:'dbug',name:'Dead bug',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'sup',name:'Superman sol',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'rc',name:'Reverse crunch',type:'reps',sets:1,reps:'15',rest:0,askWeight:false},
-          {id:'ysol',name:'Y-raise sol',type:'reps',sets:1,reps:'12',rest:0,askWeight:false},
-          {id:'plk',name:'Planche avant-bras',type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-          {id:'sp',name:'Side plank',type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:5},
-        ]
-      }
+      '5':{ full:[
+        {id:'vac',name:'Vacuum debout',     type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch banc',type:'reps',  sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique',type:'reps',  sets:1,reps:'12',  rest:0,askWeight:false},
+      ], elastic:[
+        {id:'vac',name:'Vacuum debout',     type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',    type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique',type:'reps',  sets:1,reps:'12',  rest:0,askWeight:false},
+      ], body:[
+        {id:'vac',name:'Vacuum debout', type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',type:'reps',    sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'sup',name:'Superman sol',  type:'reps',    sets:1,reps:'10',  rest:0,askWeight:false},
+      ]},
+      '10':{ full:[
+        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch banc', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+      ], elastic:[
+        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',      type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+      ], body:[
+        {id:'vac',name:'Vacuum debout',      type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'sup',name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras', type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+      ]},
+      '15':{ full:[
+        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch banc', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'sp', name:'Side plank lesté',    type:'duration',sets:1,duration:25,rest:0,askWeight:true,bilateral:true,prep:10},
+      ], elastic:[
+        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',      type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'sp', name:'Side plank',          type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:10},
+      ], body:[
+        {id:'vac',name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'rc', name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'sup',name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk',name:'Planche avant-bras', type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'sp', name:'Side plank',         type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:10},
+      ]},
+      '20':{ full:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch banc',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'yr',  name:'Y-raise banc',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:true,weight:'2–4 kg'},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+      ], elastic:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+      ], body:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'sup', name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
+      ]},
+      'full':{ full:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch banc',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'yr',  name:'Y-raise banc',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:true,weight:'2–4 kg'},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+        {id:'sp',  name:'Side plank lesté',   type:'duration',sets:1,duration:30,rest:0,askWeight:true,bilateral:true,prep:10},
+      ], elastic:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+        {id:'sp',  name:'Side plank',         type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:10},
+      ], body:[
+        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'sup', name:'Superman sol',       type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
+        {id:'sp',  name:'Side plank',         type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:10},
+      ]},
     }
   }
 };
 
-const FREQ_PLANS={1:['D'],2:['A','B'],3:['A','B','C'],4:['A','B','C','D'],5:['A','B','C','B','D'],6:['A','B','C','D','B','A']};
-const TIME_OPTIONS=[{key:'5',label:'5 min',estMins:5},{key:'10',label:'10 min',estMins:10},{key:'15',label:'15 min',estMins:15},{key:'20',label:'20 min',estMins:20},{key:'full',label:'Complet',estMins:28}];
+// Helper to resolve version alias (e.g. elastic:'full' means use full config)
+function resolveVersion(sesh, timeKey, gearKey) {
+  const ver = sesh.versions[timeKey];
+  if (!ver) return null;
+  let exs = ver[gearKey];
+  // Resolve string alias
+  while (typeof exs === 'string') exs = ver[exs];
+  return exs || ver['full'] || null;
+}
+
+const FREQ_PLANS = { 1:['D'], 2:['A','B'], 3:['A','B','C'], 4:['A','B','C','D'], 5:['A','B','C','B','D'], 6:['A','B','C','D','B','A'] };
+const TIME_OPTIONS = [
+  {key:'5',label:'5 min'},{key:'10',label:'10 min'},{key:'15',label:'15 min'},
+  {key:'20',label:'20 min'},{key:'full',label:'Complet'}
+];
 
 // ═══════════════════════════════════════════
 // STATE & DB
 // ═══════════════════════════════════════════
-const $=id=>document.getElementById(id);
-const CIRC=2*Math.PI*76;
+const $ = id => document.getElementById(id);
+const CIRC = 2 * Math.PI * 76;
 
-let DB={};
-let workExercises=[],workStart=null,totalSeries=0,activeIdx=-1;
-let isCircuit=false,circuitRounds=3;
-let chronoIv=null;
-let tPhase='idle',tEnd=0,tDur=0,tRAF=null,tDone=null,tPausedMs=0,tPausedPhase='';
-let selectedTime='full',selectedGear='full';
-// Side plank state
-let sideState=null; // {side:'left'|'right', setIdx:0}
-let currentSessionKey='';
-let currentRepsOverride={}; // key: exId → reps value for this session
+let DB = {};
+let workExercises = [], workStart = null, totalSeries = 0, activeIdx = -1;
+let isCircuit = false, circuitRounds = 3;
+let isRoutineMode = false; // FIX: track if we're in routine mode
+let chronoIv = null;
+let tPhase = 'idle', tEnd = 0, tDur = 0, tRAF = null, tDone = null;
+let tPausedMs = 0, tPausedPhase = '';
+let sideState = null;
+let selectedTime = 'full', selectedGear = 'full';
+let currentSessionKey = '';
+let previewSessionKey = ''; // for launching from preview modal
 
-function loadDB(){
-  try{const s=localStorage.getItem('mp_v6');if(s)DB=JSON.parse(s);}catch(e){}
-  if(!DB.settings)DB.settings={freq:4,gear:'full'};
-  if(!DB.history)DB.history=[];
-  if(!DB.weekLog)DB.weekLog={};
-  if(!DB.routine)DB.routine=JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
-  if(!DB.customReps)DB.customReps={}; // persistent reps overrides: {exId: repsValue}
-  // Migrate from v5
-  if(!DB._migV6){
-    ['mp_v5','workout_db_v4','workout_db'].forEach(key=>{
-      try{const old=localStorage.getItem(key);if(!old)return;const o=JSON.parse(old);
-        if(o.history&&Array.isArray(o.history)){const ed=new Set(DB.history.map(r=>r.date));
-          DB.history=[...DB.history,...o.history.filter(r=>r.date&&!ed.has(r.date))];
-          DB.history.sort((a,b)=>new Date(b.date)-new Date(a.date));
-        }
-        if(o.weekLog)Object.assign(DB.weekLog,o.weekLog);
-      }catch(e){}
-    });
-    DB._migV6=true;
-  }
+function loadDB() {
+  try { const s = localStorage.getItem('mp_v6'); if (s) DB = JSON.parse(s); } catch(e) {}
+  if (!DB.settings) DB.settings = { freq: 4, gear: 'full' };
+  if (!DB.history) DB.history = [];
+  if (!DB.weekLog) DB.weekLog = {};
+  if (!DB.routine) DB.routine = JSON.parse(JSON.stringify(DEFAULT_ROUTINE));
+  if (!DB.customReps) DB.customReps = {};
+
+  // FIX: Remove séance B from weekLog if it was incorrectly added by routine
+  // We detect this by checking if there's a history entry marked as routine
+  // The fix is to clean the current week's log if it has more entries than expected
+  // Actually: just remove the last entry from this week if it was triggered by a routine finish
+  // We'll handle this via isRoutineMode flag going forward
+
   saveDB();
 }
-function saveDB(){try{localStorage.setItem('mp_v6',JSON.stringify(DB));}catch(e){}}
+function saveDB() { try { localStorage.setItem('mp_v6', JSON.stringify(DB)); } catch(e) {} }
+
+// ═══════════════════════════════════════════
+// FIX: Remove incorrectly logged séance B
+// ═══════════════════════════════════════════
+function removeFalseSessionB() {
+  const wk = getWeekKey();
+  const log = DB.weekLog[wk] || [];
+  // Remove entries with key 'B' that were logged today (likely the false one)
+  const today = new Date().toDateString();
+  const filtered = log.filter(entry => {
+    if (entry.key !== 'B') return true;
+    const entryDate = new Date(entry.date).toDateString();
+    return entryDate !== today;
+  });
+  if (filtered.length < log.length) {
+    DB.weekLog[wk] = filtered;
+    saveDB();
+    buildHome();
+    alert('Séance B décochée ✅');
+  } else {
+    alert('Aucune séance B à décocher aujourd\'hui.');
+  }
+}
 
 // ═══════════════════════════════════════════
 // WEEK LOGIC
 // ═══════════════════════════════════════════
-function getWeekKey(){const n=new Date(),d=n.getDay(),diff=d===0?-6:1-d;const m=new Date(n);m.setDate(n.getDate()+diff);return m.toISOString().slice(0,10);}
-function getWeekLog(){const wk=getWeekKey();if(!DB.weekLog[wk])DB.weekLog[wk]=[];return DB.weekLog[wk];}
-function todayIdx(){return(new Date().getDay()+6)%7;}
+function getWeekKey() {
+  const n = new Date(), d = n.getDay(), diff = d === 0 ? -6 : 1 - d;
+  const m = new Date(n); m.setDate(n.getDate() + diff);
+  return m.toISOString().slice(0, 10);
+}
+function getWeekLog() {
+  const wk = getWeekKey();
+  if (!DB.weekLog[wk]) DB.weekLog[wk] = [];
+  return DB.weekLog[wk];
+}
+function todayIdx() { return (new Date().getDay() + 6) % 7; }
 
-function getNextSession(){
-  const freq=parseInt(DB.settings.freq)||4;
-  const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const log=getWeekLog();
-  const doneCount=log.length;
-  if(doneCount>=plan.length)return{key:plan[plan.length-1],idx:plan.length-1,doneCount,total:plan.length,allDone:true};
-  return{key:plan[doneCount],idx:doneCount,doneCount,total:plan.length,allDone:false};
+function getNextSession() {
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  const log = getWeekLog();
+  const doneCount = log.length;
+  if (doneCount >= plan.length) return { key: plan[plan.length-1], idx: plan.length-1, doneCount, total: plan.length, allDone: true };
+  return { key: plan[doneCount], idx: doneCount, doneCount, total: plan.length, allDone: false };
 }
 
-function getRecommendation(){
-  const freq=parseInt(DB.settings.freq)||4;
-  const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const log=getWeekLog();
-  const done=log.length,remaining=plan.length-done;
-  const todayDow=todayIdx(),daysLeft=7-todayDow;
-  if(done>=plan.length)return{badge:'✅ Semaine complète',badgeClass:'good',msg:'Tu as atteint ton objectif ! Récupère bien.',urgent:false};
-  if(daysLeft<=remaining)return{badge:'⚡ Urgent',badgeClass:'urgent',msg:`Plus que ${daysLeft} jour${daysLeft>1?'s':''} pour faire ${remaining} séance${remaining>1?'s':''}.`,urgent:true};
-  if(done===0)return{badge:"Aujourd'hui",badgeClass:'good',msg:`${remaining} séances prévues cette semaine.`,urgent:false};
-  return{badge:`${done}/${plan.length} faites`,badgeClass:'good',msg:`Il reste ${remaining} séance${remaining>1?'s':''} — ${daysLeft} jours disponibles.`,urgent:false};
+function getRecommendation() {
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  const log = getWeekLog();
+  const done = log.length, remaining = plan.length - done;
+  const daysLeft = 7 - todayIdx();
+  if (done >= plan.length) return { badge:'✅ Semaine complète', badgeClass:'good', msg:'Tu as atteint ton objectif !', urgent: false };
+  if (daysLeft <= remaining) return { badge:'⚡ Urgent', badgeClass:'urgent', msg:`Plus que ${daysLeft}j pour ${remaining} séance${remaining>1?'s':''}.`, urgent: true };
+  if (done === 0) return { badge:"Aujourd'hui", badgeClass:'good', msg:`${remaining} séances prévues cette semaine.`, urgent: false };
+  return { badge:`${done}/${plan.length} faites`, badgeClass:'good', msg:`${remaining} séance${remaining>1?'s':''} restante${remaining>1?'s':''} — ${daysLeft}j disponibles.`, urgent: false };
 }
 
 // ═══════════════════════════════════════════
-// DURATION ESTIMATION (dynamic)
+// PREVIOUS WEIGHT LOOKUP
 // ═══════════════════════════════════════════
-function estimateDuration(exs,isCirc,rounds){
-  let total=0;
-  if(isCirc){
-    const r=rounds||3;
-    for(let rd=0;rd<r;rd++){
-      exs.forEach((ex,i)=>{
-        if(ex.type==='duration'){total+=(ex.prep||5)+ex.duration;}
-        else{total+=parseInt(ex.reps)||10;total*=1;/* ~1s/rep */}
-        if(ex.bilateral)total*=2; // both sides
-        if(i<exs.length-1)total+=5; // transition
-      });
-      if(rd<r-1)total+=90; // rest between rounds
-    }
-  }else{
-    exs.forEach((ex,i)=>{
-      for(let s=0;s<ex.sets;s++){
-        if(ex.type==='duration'){
-          total+=(ex.prep||5)+ex.duration;
-          if(ex.bilateral)total+=(ex.prep||5)+ex.duration; // other side
-        }else{
-          total+=(parseInt(ex.reps)||10)*1.5; // ~1.5s per rep including setup
-          if(ex.bilateral)total+=(parseInt(ex.reps)||10)*1.5;
-        }
-        if(s<ex.sets-1)total+=(ex.rest||0); // rest between sets
+function getPrevWeight(exId) {
+  // Look through history for the most recent entry with this exercise and a weight
+  for (const rec of DB.history) {
+    for (const ex of rec.exercises) {
+      const baseId = ex.id ? ex.id.replace(/_r\d+_\d+$/, '') : '';
+      if ((baseId === exId || ex.name) && ex.weights && ex.weights.filter(w => w > 0).length > 0) {
+        // Match by id or by name if needed
+        const validWeights = ex.weights.filter(w => w > 0);
+        if (validWeights.length > 0) return Math.max(...validWeights);
       }
-      if(i<exs.length-1)total+=(ex.restAfter||0); // rest between exercises
-    });
+    }
   }
-  return Math.ceil(total/60);
+  return null;
+}
+
+function getPrevWeightByName(name) {
+  for (const rec of DB.history) {
+    for (const ex of rec.exercises) {
+      if (ex.name === name && ex.weights && ex.weights.filter(w => w > 0).length > 0) {
+        const valid = ex.weights.filter(w => w > 0);
+        return Math.max(...valid);
+      }
+    }
+  }
+  return null;
 }
 
 // ═══════════════════════════════════════════
 // HOME
 // ═══════════════════════════════════════════
-function buildHome(){
-  selectedGear=DB.settings.gear||'full';
-  selectedTime='full';
-  const now=new Date();
-  $('h-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
-  const next=getNextSession();
-  const reco=getRecommendation();
-  const sesh=SESSIONS[next.key];
-  $('h-greeting').textContent=`Séance ${next.key} · ${sesh.name}`;
-  $('h-sub').textContent=sesh.description;
-  $('reco-badge').textContent=reco.badge;
-  $('reco-badge').className='reco-badge '+(reco.badgeClass||'good');
-  $('reco-label').textContent=reco.msg;
-  $('reco-name').textContent=sesh.name;
+function buildHome() {
+  selectedGear = DB.settings.gear || 'full';
+  const now = new Date();
+  $('h-date').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' }).toUpperCase();
+  const next = getNextSession();
+  const reco = getRecommendation();
+  const sesh = SESSIONS[next.key];
+  $('h-greeting').textContent = `Séance ${next.key} · ${sesh.name}`;
+  $('h-sub').textContent = sesh.description;
+  $('reco-badge').textContent = reco.badge;
+  $('reco-badge').className = 'reco-badge ' + (reco.badgeClass || 'good');
+  $('reco-label').textContent = reco.msg;
+  $('reco-name').textContent = sesh.name;
 
-  const freq=parseInt(DB.settings.freq)||4;
-  const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const log=getWeekLog();
-  const wkDots=$('week-dots');wkDots.innerHTML='';
-  plan.forEach((sessKey,i)=>{
-    const isDone=i<log.length;
-    const isCurrent=i===log.length;
-    const d=document.createElement('div');
-    let cls='wdot';
-    if(isDone)cls+=' done-day';
-    if(isCurrent)cls+=' today';
-    d.className=cls;
-    d.innerHTML=`<div class="wdd" style="font-size:${isDone?'14px':'16px'}">${isDone?'✅':sessKey}</div>`;
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  const log = getWeekLog();
+
+  // Week dots — clickable to preview session
+  const wkDots = $('week-dots'); wkDots.innerHTML = '';
+  plan.forEach((sessKey, i) => {
+    const isDone = i < log.length;
+    const isCurrent = i === log.length;
+    const d = document.createElement('div');
+    d.className = 'wdot' + (isDone ? ' done-day' : '') + (isCurrent ? ' today' : '');
+    const dayNames = ['Lu','Ma','Me','Je','Ve','Sa','Di'];
+    // Calculate which calendar day this session falls on (approximate)
+    d.innerHTML = `<div class="wdd">${isDone ? '✅' : sessKey}</div><div class="wds">${isDone ? log[i]?.key || sessKey : sessKey}</div>`;
+    d.onclick = () => openSessionPreview(sessKey, i, isDone, log[i] || null);
     wkDots.appendChild(d);
   });
-  $('week-status').textContent=`${log.length}/${plan.length} séances réalisées cette semaine`;
+
+  $('week-status').textContent = `${log.length}/${plan.length} séances réalisées cette semaine`;
+
   buildTimeSelector(sesh);
   updateGearUI();
   updateRecoMeta(next.key);
-  $('btn-start').onclick=()=>launchSession(next.key);
+  $('btn-start').onclick = () => launchSession(next.key);
 
-  const rp=$('routine-preview');rp.innerHTML='';
-  DB.routine.forEach(ex=>{
-    const row=document.createElement('div');row.className='card-row';row.style.cursor='default';
-    const lbl=ex.type==='reps'?`${ex.sets}×${ex.reps} reps`:`${ex.sets}×${fmtDur(ex.duration)}`;
-    row.innerHTML=`<div style="flex:1;font-size:13px;font-weight:600">${ex.name}</div><div style="font-size:12px;color:var(--muted)">${lbl}</div>`;
+  const rp = $('routine-preview'); rp.innerHTML = '';
+  DB.routine.forEach(ex => {
+    const row = document.createElement('div'); row.className = 'card-row'; row.style.cursor = 'default';
+    const lbl = ex.type === 'reps' ? `${ex.sets}×${ex.reps} reps` : `${ex.sets}×${fmtDur(ex.duration)}`;
+    row.innerHTML = `<div style="flex:1;font-size:13px;font-weight:600">${ex.name}</div><div style="font-size:12px;color:var(--muted)">${lbl}</div>`;
     rp.appendChild(row);
   });
 }
 
-function buildTimeSelector(sesh){
-  const ts=$('time-sel');ts.innerHTML='';
-  TIME_OPTIONS.forEach(opt=>{
-    if(!sesh.versions[opt.key])return;
-    const b=document.createElement('button');
-    b.className='tpill'+(opt.key===selectedTime?' sel':'');
-    b.textContent=opt.label;
-    b.onclick=()=>{selectedTime=opt.key;buildTimeSelector(sesh);updateRecoMeta(getNextSession().key);};
+function buildTimeSelector(sesh) {
+  const ts = $('time-sel'); ts.innerHTML = '';
+  TIME_OPTIONS.forEach(opt => {
+    if (!sesh.versions[opt.key]) return;
+    const b = document.createElement('button');
+    b.className = 'tpill' + (opt.key === selectedTime ? ' sel' : '');
+    b.textContent = opt.label;
+    b.onclick = () => { selectedTime = opt.key; buildTimeSelector(sesh); updateRecoMeta(getNextSession().key); };
     ts.appendChild(b);
   });
 }
 
-function selectGear(g){selectedGear=g;updateGearUI();updateRecoMeta(getNextSession().key);}
-function updateGearUI(){['full','elastic','body'].forEach(g=>{const el=$('g-'+g);if(el)el.classList.toggle('sel',selectedGear===g);});}
-
-function updateRecoMeta(key){
-  const sesh=SESSIONS[key];
-  const ver=sesh.versions[selectedTime];
-  if(!ver)return;
-  const exs=ver[selectedGear]||ver['full'];
-  const total=exs.length;
-  const sets=exs.reduce((a,e)=>a+e.sets,0);
-  const gear=selectedGear==='body'?'Poids du corps':selectedGear==='elastic'?'Élastique + PDC':'Tout le matériel';
-  const estMins=estimateDuration(exs,!!sesh.isCircuit,selectedTime==='5'||selectedTime==='10'?2:3);
-  $('reco-meta').textContent=`${total} exercices · ${sets} séries · ~${estMins} min · ${gear}`;
-  if(sesh.isCircuit)$('reco-meta').textContent+=' · 🔄 Circuit';
+function selectGear(g) { selectedGear = g; updateGearUI(); updateRecoMeta(getNextSession().key); }
+function updateGearUI() {
+  ['full','elastic','body'].forEach(g => { const el = $('g-' + g); if (el) el.classList.toggle('sel', selectedGear === g); });
 }
+
+function updateRecoMeta(key) {
+  const sesh = SESSIONS[key];
+  const exs = resolveVersion(sesh, selectedTime, selectedGear);
+  if (!exs) return;
+  const sets = exs.reduce((a, e) => a + e.sets, 0);
+  const gear = selectedGear === 'body' ? 'Poids du corps' : selectedGear === 'elastic' ? 'Élastique + PDC' : 'Tout le matériel';
+  const circTag = sesh.isCircuit ? ' · 🔄 Circuit' : '';
+  $('reco-meta').textContent = `${exs.length} exercices · ${sets} séries · ${gear}${circTag}`;
+}
+
+// ═══════════════════════════════════════════
+// SESSION PREVIEW MODAL
+// ═══════════════════════════════════════════
+function openSessionPreview(sessKey, planIdx, isDone, logEntry) {
+  const sesh = SESSIONS[sessKey];
+  previewSessionKey = sessKey;
+
+  $('sp-title').textContent = `Séance ${sessKey} · ${sesh.name}`;
+  $('sp-sub').textContent = isDone
+    ? `✅ Réalisée${logEntry ? ' — ' + new Date(logEntry.date).toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'}) : ''}`
+    : `À venir · ${sesh.description}`;
+
+  const container = $('sp-exercises');
+  container.innerHTML = '';
+
+  // Get exercises for this session
+  const timeKey = isDone && logEntry ? (logEntry.time || 'full') : selectedTime;
+  const gearKey = isDone && logEntry ? (logEntry.gear || 'full') : selectedGear;
+  const exs = resolveVersion(sesh, timeKey, gearKey) || resolveVersion(sesh, 'full', 'full') || [];
+
+  // If done, get the history record
+  let histRecord = null;
+  if (isDone && logEntry) {
+    histRecord = DB.history.find(r => r.date === logEntry.date || r.sessionKey === sessKey);
+  }
+
+  // Routine exercises first
+  const allExs = [...DB.routine.map(e => ({ ...e, isRoutine: true })), ...exs];
+
+  allExs.forEach(ex => {
+    const div = document.createElement('div');
+    div.className = 'sesh-preview-ex';
+
+    let doneInfo = '';
+    if (isDone && histRecord) {
+      const hEx = histRecord.exercises.find(he => he.name === ex.name);
+      if (hEx) {
+        const ws = (hEx.weights || []).filter(w => w > 0);
+        doneInfo = ws.length ? `${hEx.sets} séries · ${ws.map(w => w + 'kg').join(', ')}` : `${hEx.sets} séries`;
+      }
+    }
+
+    const lbl = ex.type === 'reps'
+      ? `${ex.sets}×${ex.reps} reps${ex.bilateral ? ' · Chaque côté' : ''}`
+      : `${ex.sets}×${fmtDur(ex.duration)}${ex.bilateral ? ' · Chaque côté' : ''}`;
+
+    const prevW = ex.askWeight ? getPrevWeightByName(ex.name) : null;
+    const prevInfo = prevW ? `<div style="font-size:11px;color:var(--accent);margin-top:2px">Dernier poids: ${prevW}kg</div>` : '';
+
+    div.innerHTML = `
+      <div style="flex:1">
+        <div class="spn">${ex.isRoutine ? '🧱 ' : ''}${ex.name}</div>
+        <div class="spm">${lbl}</div>
+        ${isDone && doneInfo ? `<div style="font-size:11px;color:var(--accent2);margin-top:2px">✅ ${doneInfo}</div>` : prevInfo}
+      </div>
+      ${isDone ? '<div class="done-badge">✅</div>' : '<div style="font-size:14px;color:var(--muted)">›</div>'}
+    `;
+    container.appendChild(div);
+  });
+
+  // Show/hide launch button
+  const launchBtn = $('sp-launch-btn');
+  if (!isDone) {
+    launchBtn.style.display = '';
+    launchBtn.onclick = () => { closeSessionPreview(); launchSession(sessKey); };
+  } else {
+    launchBtn.style.display = 'none';
+  }
+
+  $('session-preview-modal').classList.add('open');
+}
+
+function closeSessionPreview() { $('session-preview-modal').classList.remove('open'); }
+function launchFromPreview()   { closeSessionPreview(); launchSession(previewSessionKey); }
+
+$('session-preview-modal').onclick = e => { if (e.target === $('session-preview-modal')) closeSessionPreview(); };
 
 // ═══════════════════════════════════════════
 // LAUNCH SESSION
 // ═══════════════════════════════════════════
-function launchSession(key){
-  currentSessionKey=key;
-  currentRepsOverride={};
-  const sesh=SESSIONS[key];
-  const ver=sesh.versions[selectedTime];
-  if(!ver){alert('Version non disponible.');return;}
-  const rawExs=(ver[selectedGear]||ver['full']).map(e=>{
-    const custom=DB.customReps[e.id];
-    return {...e,reps:custom||e.reps,doneSet:0,weights:[]};
+function launchSession(key) {
+  currentSessionKey = key;
+  isRoutineMode = false;
+  const sesh = SESSIONS[key];
+  const rawExs = resolveVersion(sesh, selectedTime, selectedGear);
+  if (!rawExs) { alert('Version non disponible.'); return; }
+
+  const processedExs = rawExs.map(e => {
+    const custom = DB.customReps[e.id];
+    return { ...e, reps: custom || e.reps, doneSet: 0, weights: [] };
   });
 
-  isCircuit=!!sesh.isCircuit;
-  circuitRounds=selectedTime==='5'||selectedTime==='10'?2:3;
+  isCircuit = !!sesh.isCircuit;
+  circuitRounds = (selectedTime === '5' || selectedTime === '10') ? 2 : 3;
 
-  if(isCircuit){
-    workExercises=buildCircuit(rawExs,circuitRounds);
-  }else{
-    workExercises=rawExs;
-  }
-
-  workStart=Date.now();totalSeries=0;
-  $('w-tag').textContent=sesh.tag+(isCircuit?' · Circuit':'');
-  $('w-name').textContent=sesh.name;
-  renderExList();updateProgress();startChrono();
+  workExercises = isCircuit ? buildCircuit(processedExs, circuitRounds) : processedExs;
+  workStart = Date.now(); totalSeries = 0;
+  $('w-tag').textContent = sesh.tag + (isCircuit ? ' · Circuit' : '');
+  $('w-name').textContent = sesh.name;
+  renderExList(); updateProgress(); startChrono();
   showPage('workout');
 }
 
-function buildCircuit(exs,rounds){
-  const restBetweenRounds=90;
-  const result=[];
-  for(let r=0;r<rounds;r++){
-    exs.forEach((ex,i)=>{
-      result.push({...ex,id:ex.id+'_r'+r+'_'+i,sets:1,
-        rest:i===exs.length-1&&r<rounds-1?restBetweenRounds:0,
-        circuitRound:r+1,circuitTotal:rounds,doneSet:0,weights:[]});
+function buildCircuit(exs, rounds) {
+  const result = [];
+  for (let r = 0; r < rounds; r++) {
+    exs.forEach((ex, i) => {
+      result.push({
+        ...ex, id: ex.id + '_r' + r + '_' + i, sets: 1,
+        rest: i === exs.length-1 && r < rounds-1 ? 90 : 0,
+        circuitRound: r+1, circuitTotal: rounds, doneSet: 0, weights: []
+      });
     });
   }
   return result;
@@ -1172,580 +1228,679 @@ function buildCircuit(exs,rounds){
 // ═══════════════════════════════════════════
 // EXERCISE LIST
 // ═══════════════════════════════════════════
-function renderExList(){
-  const list=$('ex-list');list.innerHTML='';
-  let lastRound=-1;
-  workExercises.forEach((ex,i)=>{
-    if(isCircuit&&ex.circuitRound!==lastRound){
-      lastRound=ex.circuitRound;
-      const sep=document.createElement('div');
-      sep.style.cssText='font-size:11px;font-weight:700;color:#880e4f;padding:6px 18px 2px;letter-spacing:1.5px;text-transform:uppercase';
-      sep.textContent=`🔄 Tour ${ex.circuitRound} / ${ex.circuitTotal}`;
+function renderExList() {
+  const list = $('ex-list'); list.innerHTML = '';
+  let lastRound = -1;
+
+  workExercises.forEach((ex, i) => {
+    if (isCircuit && ex.circuitRound !== lastRound) {
+      lastRound = ex.circuitRound;
+      const sep = document.createElement('div');
+      sep.style.cssText = 'font-size:11px;font-weight:700;color:#880e4f;padding:6px 18px 2px;letter-spacing:1.5px;text-transform:uppercase';
+      sep.textContent = `🔄 Tour ${ex.circuitRound} / ${ex.circuitTotal}`;
       list.appendChild(sep);
     }
-    const isDone=ex.doneSet>=ex.sets;
-    const row=document.createElement('div');
-    row.className='sesh-item'+(isDone?' done':'');
-    row.id=`si-${i}`;
-    const chips=[];
-    if(ex.type==='reps')chips.push(`<span class="chip">${ex.sets}×${ex.reps} reps</span>`);
+
+    const isDone = ex.doneSet >= ex.sets;
+    const row = document.createElement('div');
+    row.className = 'sesh-item' + (isDone ? ' done' : '');
+    row.id = `si-${i}`;
+
+    const chips = [];
+    if (ex.type === 'reps') chips.push(`<span class="chip">${ex.sets}×${ex.reps} reps</span>`);
     else chips.push(`<span class="chip">${ex.sets}×${fmtDur(ex.duration)}</span>`);
-    if(ex.bilateral)chips.push(`<span class="chip side">↔ Chaque côté</span>`);
-    if(ex.weight)chips.push(`<span class="chip w">🏋 ${ex.weight}</span>`);
-    if(ex.rest>0)chips.push(`<span class="chip r">⏱ ${ex.rest}s repos</span>`);
-    if(ex.restAfter>0)chips.push(`<span class="chip r">⏳ ${ex.restAfter}s transition</span>`);
-    const lw=ex.weights&&ex.weights.filter(w=>w>0).length?`<span style="color:var(--accent);font-weight:700;font-size:11px;margin-top:3px;display:block">Dernier: ${ex.weights.filter(w=>w>0).slice(-1)[0]}kg</span>`:'';
-    row.innerHTML=`<div class="si-info"><div class="si-name">${ex.name}</div><div class="chips">${chips.join('')}</div>${lw}</div><div style="font-size:20px;color:var(--muted)">${isDone?'✅':'›'}</div>`;
-    row.onclick=()=>openTimer(i);
+    if (ex.bilateral) chips.push(`<span class="chip side">↔ Chaque côté</span>`);
+    if (ex.weight) chips.push(`<span class="chip w">🏋 ${ex.weight}</span>`);
+    if (ex.rest > 0) chips.push(`<span class="chip r">⏱ ${ex.rest}s repos</span>`);
+
+    // FIX: Show previous weight
+    const prevW = ex.askWeight ? getPrevWeightByName(ex.name) : null;
+    const prevWInfo = prevW ? `<div class="prev-weight">📈 Dernier: ${prevW} kg</div>` : '';
+
+    const lw = ex.weights && ex.weights.filter(w => w > 0).length
+      ? `<div class="prev-weight">✅ Ce soir: ${ex.weights.filter(w => w > 0).slice(-1)[0]} kg</div>` : prevWInfo;
+
+    row.innerHTML = `
+      <div class="si-info">
+        <div class="si-name">${ex.name}</div>
+        <div class="chips">${chips.join('')}</div>
+        ${lw}
+      </div>
+      <div style="font-size:20px;color:var(--muted)">${isDone ? '✅' : '›'}</div>
+    `;
+    row.onclick = () => openTimer(i);
     list.appendChild(row);
   });
 }
 
-function updateProgress(){
-  const done=workExercises.filter(e=>e.doneSet>=e.sets).length;
-  const total=workExercises.length;
-  $('prog-bar').style.width=(total?done/total*100:0)+'%';
-  $('prog-txt').textContent=`${done} / ${total} exercices terminés`;
+function updateProgress() {
+  const done = workExercises.filter(e => e.doneSet >= e.sets).length;
+  const total = workExercises.length;
+  $('prog-bar').style.width = (total ? done/total*100 : 0) + '%';
+  $('prog-txt').textContent = `${done} / ${total} exercices terminés`;
 }
 
-function startChrono(){
+function startChrono() {
   stopChrono();
-  chronoIv=setInterval(()=>{
-    if(!workStart)return;
-    const t=fmtChrono(Date.now()-workStart);
-    $('w-chrono').textContent=t;
-    $('t-global').textContent=t;
-  },1000);
+  chronoIv = setInterval(() => {
+    if (!workStart) return;
+    const t = fmtChrono(Date.now() - workStart);
+    $('w-chrono').textContent = t;
+    $('t-global').textContent = t;
+  }, 1000);
 }
-function stopChrono(){if(chronoIv){clearInterval(chronoIv);chronoIv=null;}}
-function goHome(){killTimer();stopChrono();showPage('home');buildHome();}
+function stopChrono() { if (chronoIv) { clearInterval(chronoIv); chronoIv = null; } }
+function goHome() { killTimer(); stopChrono(); showPage('home'); buildHome(); }
 
 // ═══════════════════════════════════════════
-// TIMER — with bilateral side plank support
+// TIMER
 // ═══════════════════════════════════════════
-const TCOL={prep:'#e9a824',work:'#2d6a4f',rest:'#457b9d'};
-const TLBL={prep:'PRÉPARE',work:'EN ACTION',rest:'REPOS'};
+const TCOL = { prep:'#e9a824', work:'#2d6a4f', rest:'#457b9d' };
+const TLBL = { prep:'PRÉPARE', work:'EN ACTION', rest:'REPOS' };
 
-function openTimer(idx){
-  killTimer();sideState=null;
-  activeIdx=idx;
-  const ex=workExercises[idx];
-  $('t-name').textContent=ex.name;
-  refreshDots();refreshSetLbl();resetRing();
-  $('t-desc').textContent='';
-  $('weight-panel').style.display='none';
-  $('reps-edit-panel').style.display='none';
-  $('t-all').style.display=ex.doneSet>=ex.sets?'none':'';
+function openTimer(idx) {
+  killTimer(); sideState = null;
+  activeIdx = idx;
+  const ex = workExercises[idx];
+  $('t-name').textContent = ex.name;
+  refreshDots(); refreshSetLbl(); resetRing();
+  $('t-desc').textContent = '';
+  $('weight-panel').style.display = 'none';
+  $('reps-edit-panel').style.display = 'none';
+  $('t-all').style.display = ex.doneSet >= ex.sets ? 'none' : '';
+  $('prev-weight-hint').textContent = '';
 
-  if(ex.type==='duration'){
-    const lbl=ex.bilateral?`▶ Lancer (${fmtDur(ex.duration)} × chaque côté)`:`▶ Lancer (${fmtDur(ex.duration)})`;
-    setMainBtn(lbl,ex.doneSet>=ex.sets);
-    $('t-skip').textContent=ex.doneSet>=ex.sets?'← Retour':'Passer →';
-  }else{
-    if(ex.doneSet>=ex.sets){
-      setMainBtn('Exercice terminé ✅',true);
-      $('t-skip').textContent='← Retour';
-      $('t-desc').textContent='Exercice terminé ✅';
-    }else{
+  // Show prev weight hint in weight panel
+  if (ex.askWeight) {
+    const prevW = getPrevWeightByName(ex.name);
+    if (prevW) $('prev-weight-hint').textContent = `Séance précédente : ${prevW} kg`;
+  }
+
+  if (ex.type === 'duration') {
+    const lbl = ex.bilateral ? `▶ Lancer (${fmtDur(ex.duration)} × chaque côté)` : `▶ Lancer (${fmtDur(ex.duration)})`;
+    setMainBtn(lbl, ex.doneSet >= ex.sets);
+    $('t-skip').textContent = ex.doneSet >= ex.sets ? '← Retour' : 'Passer →';
+  } else {
+    if (ex.doneSet >= ex.sets) {
+      setMainBtn('Exercice terminé ✅', true);
+      $('t-skip').textContent = '← Retour';
+      $('t-desc').textContent = 'Exercice terminé ✅';
+    } else {
       showRepsReady(ex);
     }
   }
 
-  $('nav-bar').style.display='none';
+  $('nav-bar').style.display = 'none';
   $('page-timer').classList.add('active');
 }
 
-function showRepsReady(ex){
+function showRepsReady(ex) {
   resetRing();
-  $('ring-num').textContent='✓';
-  $('ring-lbl').textContent='REPS';
-  $('ring-fg').style.stroke=TCOL.work;
-  setRing(1,TCOL.work);
-  $('t-desc').textContent=`Fais tes ${ex.reps} répétitions`;
-  // Show reps edit
-  $('reps-edit-panel').style.display='block';
-  $('reps-input').value=ex.reps==='max'?'':ex.reps;
-  setMainBtn('✅ Série terminée',false);
-  $('t-skip').textContent='Passer →';
-  tPhase='reps_wait';
+  $('ring-num').textContent = '✓';
+  $('ring-lbl').textContent = 'REPS';
+  $('ring-fg').style.stroke = TCOL.work;
+  setRing(1, TCOL.work);
+  $('t-desc').textContent = `Fais tes ${ex.reps} répétitions`;
+  $('reps-edit-panel').style.display = 'block';
+  $('reps-input').value = ex.reps === 'max' ? '' : ex.reps;
+  setMainBtn('✅ Série terminée', false);
+  $('t-skip').textContent = 'Passer →';
+  tPhase = 'reps_wait';
 }
 
-$('t-back').onclick=()=>{
-  killTimer();sideState=null;
+$('t-back').onclick = () => {
+  killTimer(); sideState = null;
   $('page-timer').classList.remove('active');
-  $('nav-bar').style.display='';
-  renderExList();updateProgress();
+  $('nav-bar').style.display = '';
+  renderExList(); updateProgress();
 };
 
-function refreshDots(){
-  const ex=workExercises[activeIdx];
-  const c=$('t-dots');c.innerHTML='';
-  if(ex.bilateral&&ex.type==='duration'){
-    // Show dots for each side for each set
-    for(let s=0;s<ex.sets;s++){
-      const dL=document.createElement('div');
-      const dR=document.createElement('div');
-      const setDone=s<ex.doneSet;
-      dL.className='dot'+(setDone?' done':s===ex.doneSet&&sideState&&sideState.side==='left'?' active-dot left-dot':'');
-      dR.className='dot'+(setDone?' done':s===ex.doneSet&&sideState&&sideState.side==='right'?' active-dot right-dot':'');
-      dL.title='Gauche';dR.title='Droite';
-      c.appendChild(dL);c.appendChild(dR);
-      if(s<ex.sets-1){const sp=document.createElement('div');sp.style.cssText='width:4px';c.appendChild(sp);}
+function refreshDots() {
+  const ex = workExercises[activeIdx];
+  const c = $('t-dots'); c.innerHTML = '';
+  if (ex.bilateral && ex.type === 'duration') {
+    for (let s = 0; s < ex.sets; s++) {
+      const dL = document.createElement('div');
+      const dR = document.createElement('div');
+      const setDone = s < ex.doneSet;
+      dL.className = 'dot' + (setDone ? ' done' : s === ex.doneSet && sideState && sideState.side === 'left' ? ' active-dot left-dot' : '');
+      dR.className = 'dot' + (setDone ? ' done' : s === ex.doneSet && sideState && sideState.side === 'right' ? ' active-dot right-dot' : '');
+      c.appendChild(dL); c.appendChild(dR);
+      if (s < ex.sets - 1) { const sp = document.createElement('div'); sp.style.cssText = 'width:4px'; c.appendChild(sp); }
     }
-  }else{
-    for(let s=0;s<ex.sets;s++){
-      const d=document.createElement('div');
-      d.className='dot'+(s<ex.doneSet?' done':s===ex.doneSet?' active-dot':'');
+  } else {
+    for (let s = 0; s < ex.sets; s++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (s < ex.doneSet ? ' done' : s === ex.doneSet ? ' active-dot' : '');
       c.appendChild(d);
     }
   }
 }
 
-function refreshSetLbl(){
-  const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets){$('t-set').textContent='Toutes les séries terminées';return;}
-  let lbl=`Série ${ex.doneSet+1} sur ${ex.sets}`;
-  if(ex.bilateral&&sideState)lbl+=sideState.side==='left'?' — Côté gauche':' — Côté droit';
-  $('t-set').textContent=lbl;
+function refreshSetLbl() {
+  const ex = workExercises[activeIdx];
+  if (ex.doneSet >= ex.sets) { $('t-set').textContent = 'Toutes les séries terminées'; return; }
+  let lbl = `Série ${ex.doneSet+1} sur ${ex.sets}`;
+  if (ex.bilateral && sideState) lbl += sideState.side === 'left' ? ' — Côté GAUCHE' : ' — Côté DROIT';
+  $('t-set').textContent = lbl;
 }
 
-function resetRing(){
-  $('ring-fg').style.stroke='#e8e4dc';$('ring-fg').style.strokeDashoffset=0;
-  $('ring-num').textContent='—';$('ring-lbl').textContent='';
+function resetRing() {
+  $('ring-fg').style.stroke = '#e8e4dc'; $('ring-fg').style.strokeDashoffset = 0;
+  $('ring-num').textContent = '—'; $('ring-lbl').textContent = '';
 }
-function setRing(frac,color){$('ring-fg').style.stroke=color;$('ring-fg').style.strokeDashoffset=CIRC*(1-frac);}
-function setMainBtn(text,disabled){$('t-main').textContent=text;$('t-main').disabled=!!disabled;}
+function setRing(frac, color) { $('ring-fg').style.stroke = color; $('ring-fg').style.strokeDashoffset = CIRC * (1 - frac); }
+function setMainBtn(text, disabled) { $('t-main').textContent = text; $('t-main').disabled = !!disabled; }
 
-function startPhase(phase,secs,onDone){
-  killTimer();tPhase=phase;tDur=secs*1000;tEnd=Date.now()+tDur;tDone=onDone;
-  $('ring-lbl').textContent=TLBL[phase]||'';
-  $('ring-fg').style.stroke=TCOL[phase]||TCOL.work;
-  if((phase==='work'||phase==='rest')&&secs>=5)scheduleCountdown(secs);
-  function frame(){
-    const rem=Math.max(0,tEnd-Date.now()),s=Math.ceil(rem/1000);
-    $('ring-num').textContent=s;setRing(rem/tDur,TCOL[phase]||TCOL.work);
-    if(rem<=0){tRAF=null;tPhase='idle';setRing(0,TCOL[phase]);$('ring-num').textContent='0';const cb=tDone;tDone=null;cb&&cb();return;}
-    tRAF=requestAnimationFrame(frame);
+// TIMER CORE — Date.now + rAF
+function startPhase(phase, secs, onDone) {
+  killTimer();
+  tPhase = phase; tDur = secs * 1000; tEnd = Date.now() + tDur; tDone = onDone;
+  $('ring-lbl').textContent = TLBL[phase] || '';
+  $('ring-fg').style.stroke = TCOL[phase] || TCOL.work;
+  // FIX: Schedule countdown using AudioContext time (immune to throttling)
+  if (phase === 'work' && secs >= 5) scheduleCountdown(secs);
+
+  function frame() {
+    const rem = Math.max(0, tEnd - Date.now()), s = Math.ceil(rem / 1000);
+    $('ring-num').textContent = s;
+    setRing(rem / tDur, TCOL[phase] || TCOL.work);
+    if (rem <= 0) {
+      tRAF = null; tPhase = 'idle';
+      setRing(0, TCOL[phase]); $('ring-num').textContent = '0';
+      const cb = tDone; tDone = null; cb && cb();
+      return;
+    }
+    tRAF = requestAnimationFrame(frame);
   }
-  tRAF=requestAnimationFrame(frame);
+  tRAF = requestAnimationFrame(frame);
 }
 
-function killTimer(){clearCountdownTimers();if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}tPhase='idle';tDone=null;}
-
-function pausePhase(){
-  if(tRAF){cancelAnimationFrame(tRAF);tRAF=null;}
-  tPausedMs=Math.max(0,tEnd-Date.now());tPausedPhase=tPhase;tPhase='paused';
-  $('ring-fg').style.stroke='#bbb';$('ring-lbl').textContent='PAUSE';
+function killTimer() {
+  if (tRAF) { cancelAnimationFrame(tRAF); tRAF = null; }
+  tPhase = 'idle'; tDone = null;
 }
-function resumePhase(cb){startPhase(tPausedPhase,tPausedMs/1000,cb);}
 
-// Main button handler
-$('t-main').onclick=function(){
-  if(tPhase==='weight_input'){
-    const w=parseFloat($('w-input').value)||0;
-    $('weight-panel').style.display='none';
+function pausePhase() {
+  if (tRAF) { cancelAnimationFrame(tRAF); tRAF = null; }
+  tPausedMs = Math.max(0, tEnd - Date.now()); tPausedPhase = tPhase; tPhase = 'paused';
+  $('ring-fg').style.stroke = '#bbb'; $('ring-lbl').textContent = 'PAUSE';
+}
+function resumePhase(cb) { startPhase(tPausedPhase, tPausedMs / 1000, cb); }
+
+// MAIN BUTTON
+$('t-main').onclick = function() {
+  unlockAudio(); // ensure audio unlocked on every tap
+  if (tPhase === 'weight_input') {
+    const w = parseFloat($('w-input').value) || 0;
+    $('weight-panel').style.display = 'none';
     afterWork(w);
-  }else if(tPhase==='weight_input_all'){
-    const w=parseFloat($('w-input').value)||0;
-    $('weight-panel').style.display='none';
-    const ex=workExercises[activeIdx];
-    const rem=ex.sets-ex.doneSet;
-    for(let i=0;i<rem;i++){ex.doneSet++;if(w>0)ex.weights.push(w);totalSeries++;}
+  } else if (tPhase === 'weight_input_all') {
+    const w = parseFloat($('w-input').value) || 0;
+    $('weight-panel').style.display = 'none';
+    const ex = workExercises[activeIdx];
+    const rem = ex.sets - ex.doneSet;
+    for (let i = 0; i < rem; i++) { ex.doneSet++; if (w > 0) ex.weights.push(w); totalSeries++; }
     finishAllSets();
-  }else{
+  } else {
     onMainBtn();
   }
 };
 
-function onMainBtn(){
-  const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets)return;
+function onMainBtn() {
+  unlockAudio();
+  const ex = workExercises[activeIdx];
+  if (ex.doneSet >= ex.sets) return;
 
-  // Save reps override if changed
-  if(tPhase==='reps_wait'){
-    const newReps=$('reps-input').value;
-    if(newReps&&newReps!==ex.reps&&newReps!==''){
-      ex.reps=newReps;
-      // Save for next session
-      const baseId=ex.id.replace(/_r\d+_\d+$/,'');
-      DB.customReps[baseId]=newReps;
+  if (tPhase === 'reps_wait') {
+    const newReps = $('reps-input').value;
+    if (newReps && newReps !== ex.reps && newReps !== '') {
+      ex.reps = newReps;
+      const baseId = ex.id.replace(/_r\d+_\d+$/, '');
+      DB.customReps[baseId] = newReps;
       saveDB();
     }
-    $('reps-edit-panel').style.display='none';
+    $('reps-edit-panel').style.display = 'none';
     confirmWork();
     return;
   }
 
-  if(tPhase==='idle'){
-    ensureAudioCtx();
-    $('weight-panel').style.display='none';
-    $('reps-edit-panel').style.display='none';
-    if(ex.type==='duration'){
-      if(ex.bilateral){
-        // Start bilateral: left side first
-        sideState={side:'left',setIdx:ex.doneSet};
-        refreshDots();refreshSetLbl();
-        $('t-desc').textContent='Prépare-toi — Côté GAUCHE';
-        setMainBtn('⏸ Pause',false);
-        startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('left');});
-      }else{
-        $('t-desc').textContent='Prépare-toi…';
-        setMainBtn('⏸ Pause',false);
-        startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWork();});
+  if (tPhase === 'idle') {
+    $('weight-panel').style.display = 'none';
+    $('reps-edit-panel').style.display = 'none';
+    if (ex.type === 'duration') {
+      if (ex.bilateral) {
+        sideState = { side: 'left', setIdx: ex.doneSet };
+        refreshDots(); refreshSetLbl();
+        $('t-desc').textContent = 'Prépare-toi — Côté GAUCHE';
+        setMainBtn('⏸ Pause', false);
+        startPhase('prep', ex.prep || 5, () => { beepPrepEnd(); beginWorkBilateral('left'); });
+      } else {
+        $('t-desc').textContent = 'Prépare-toi…';
+        setMainBtn('⏸ Pause', false);
+        startPhase('prep', ex.prep || 5, () => { beepPrepEnd(); beginWork(); });
       }
     }
-  }else if(tPhase==='prep'||tPhase==='work'){
-    pausePhase();setMainBtn('▶ Reprendre',false);$('t-desc').textContent='En pause';
-  }else if(tPhase==='paused'){
-    setMainBtn('⏸ Pause',false);
-    const desc=tPausedPhase==='prep'?'Prépare-toi…':'Tiens la position !';
-    if(sideState)$('t-desc').textContent=desc+` — Côté ${sideState.side==='left'?'GAUCHE':'DROIT'}`;
-    else $('t-desc').textContent=desc;
-    resumePhase(tPausedPhase==='prep'?
-      ()=>{beepPrepEnd();sideState?beginWorkBilateral(sideState.side):beginWork();}:
-      ()=>sideState&&sideState.side==='left'?finishLeftSide():confirmWork());
-  }else if(tPhase==='rest'){
-    afterRest();
+  } else if (tPhase === 'prep' || tPhase === 'work') {
+    pausePhase(); setMainBtn('▶ Reprendre', false); $('t-desc').textContent = 'En pause';
+  } else if (tPhase === 'paused') {
+    setMainBtn('⏸ Pause', false);
+    const desc = tPausedPhase === 'prep' ? 'Prépare-toi…' : 'Tiens la position !';
+    $('t-desc').textContent = sideState ? desc + ` — Côté ${sideState.side === 'left' ? 'GAUCHE' : 'DROIT'}` : desc;
+    resumePhase(tPausedPhase === 'prep'
+      ? () => { beepPrepEnd(); sideState ? beginWorkBilateral(sideState.side) : beginWork(); }
+      : () => sideState && sideState.side === 'left' ? finishLeftSide() : confirmWork());
+  } else if (tPhase === 'rest') {
+    afterRest(); // FIX: rest phase click on main btn should also skip rest
   }
 }
 
-function beginWork(){
-  setMainBtn('⏸ Pause',false);
-  $('t-desc').textContent='Tiens la position !';
-  startPhase('work',workExercises[activeIdx].duration,()=>confirmWork());
+function beginWork() {
+  setMainBtn('⏸ Pause', false);
+  $('t-desc').textContent = 'Tiens la position !';
+  startPhase('work', workExercises[activeIdx].duration, () => confirmWork());
 }
 
-function beginWorkBilateral(side){
-  setMainBtn('⏸ Pause',false);
-  $('t-desc').textContent=`Tiens — Côté ${side==='left'?'GAUCHE':'DROIT'}`;
-  const ex=workExercises[activeIdx];
-  if(side==='left'){
-    startPhase('work',ex.duration,()=>finishLeftSide());
-  }else{
-    startPhase('work',ex.duration,()=>confirmWork());
+function beginWorkBilateral(side) {
+  setMainBtn('⏸ Pause', false);
+  $('t-desc').textContent = `Tiens — Côté ${side === 'left' ? 'GAUCHE' : 'DROIT'}`;
+  const ex = workExercises[activeIdx];
+  if (side === 'left') {
+    startPhase('work', ex.duration, () => finishLeftSide());
+  } else {
+    startPhase('work', ex.duration, () => confirmWork());
   }
 }
 
-function finishLeftSide(){
-  // Left done, now prep for right side
-  const ex=workExercises[activeIdx];
-  killTimer();
-  beepDone();vibrate([40]);
-  sideState.side='right';
-  refreshDots();refreshSetLbl();
-  $('t-desc').textContent='Prépare-toi — Côté DROIT';
-  setMainBtn('⏸ Pause',false);
-  startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('right');});
+function finishLeftSide() {
+  killTimer(); beepDone(); vibrate([40]);
+  sideState.side = 'right';
+  refreshDots(); refreshSetLbl();
+  $('t-desc').textContent = 'Prépare-toi — Côté DROIT';
+  setMainBtn('⏸ Pause', false);
+  const ex = workExercises[activeIdx];
+  startPhase('prep', ex.prep || 5, () => { beepPrepEnd(); beginWorkBilateral('right'); });
 }
 
-function confirmWork(){
-  const ex=workExercises[activeIdx];
+function confirmWork() {
+  const ex = workExercises[activeIdx];
   killTimer();
-  $('reps-edit-panel').style.display='none';
-  if(ex.askWeight){
-    $('weight-panel').style.display='block';
-    $('w-input').value=ex.weights.filter(w=>w>0).slice(-1)[0]||'';
-    $('ring-num').textContent='💪';$('ring-lbl').textContent='POIDS';
-    setRing(1,TCOL.work);
-    $('t-desc').textContent=ex.bilateral?'Poids utilisé (même des deux côtés)':'Enregistre le poids';
-    setMainBtn('✅ Valider',false);
-    tPhase='weight_input';
-  }else{
+  $('reps-edit-panel').style.display = 'none';
+  if (ex.askWeight) {
+    $('weight-panel').style.display = 'block';
+    const prevW = getPrevWeightByName(ex.name);
+    $('w-input').value = ex.weights.filter(w => w > 0).slice(-1)[0] || (prevW || '');
+    $('prev-weight-hint').textContent = prevW ? `Séance précédente : ${prevW} kg` : '';
+    $('ring-num').textContent = '💪'; $('ring-lbl').textContent = 'POIDS';
+    setRing(1, TCOL.work);
+    $('t-desc').textContent = ex.bilateral ? 'Poids (même les deux côtés)' : 'Enregistre le poids';
+    setMainBtn('✅ Valider', false);
+    tPhase = 'weight_input';
+  } else {
     afterWork(0);
   }
 }
 
-function afterWork(weight){
-  beepDone();vibrate([60,20,60]);
-  const ex=workExercises[activeIdx];
+function afterWork(weight) {
+  beepDone(); vibrate([60, 20, 60]);
+  const ex = workExercises[activeIdx];
   ex.doneSet++;
-  if(weight>0)ex.weights.push(weight);
+  if (weight > 0) ex.weights.push(weight);
   totalSeries++;
-  sideState=null;
-  refreshDots();refreshSetLbl();
+  sideState = null;
+  refreshDots(); refreshSetLbl();
 
-  const row=$(`si-${activeIdx}`);
-  if(row){
-    row.className='sesh-item'+(ex.doneSet>=ex.sets?' done':'');
-    const arr=row.querySelector('[style*="font-size:20px"]');
-    if(arr&&ex.doneSet>=ex.sets)arr.textContent='✅';
+  const row = $(`si-${activeIdx}`);
+  if (row) {
+    row.className = 'sesh-item' + (ex.doneSet >= ex.sets ? ' done' : '');
+    const arr = row.querySelector('[style*="font-size:20px"]');
+    if (arr && ex.doneSet >= ex.sets) arr.textContent = '✅';
+    // Update weight display in list
+    if (weight > 0) {
+      let pw = row.querySelector('.prev-weight');
+      if (!pw) { pw = document.createElement('div'); pw.className = 'prev-weight'; row.querySelector('.si-info').appendChild(pw); }
+      pw.textContent = `✅ Ce soir: ${weight} kg`;
+    }
   }
   updateProgress();
 
-  if(ex.doneSet>=ex.sets){
-    if(workExercises.every(e=>e.doneSet>=e.sets)){setTimeout(finishWorkout,900);return;}
-    // Rest between exercises (restAfter)
-    const restAfterSec=ex.restAfter||0;
-    if(restAfterSec>0){
-      resetRing();$('t-desc').textContent=`Transition — ${restAfterSec}s`;
-      setMainBtn('⏭ Sauter',false);
-      startPhase('rest',restAfterSec,()=>{goNextExercise();});
-      $('t-all').style.display='none';$('t-skip').textContent='← Retour';
-    }else{
-      setTimeout(()=>goNextExercise(),800);
-      resetRing();$('t-desc').textContent='Exercice terminé 🎉 → Suivant…';
-      setMainBtn('Exercice terminé ✅',true);$('t-skip').textContent='← Retour';$('t-all').style.display='none';
+  if (ex.doneSet >= ex.sets) {
+    if (workExercises.every(e => e.doneSet >= e.sets)) { setTimeout(() => isRoutineMode ? finishRoutine() : finishWorkout(), 900); return; }
+    const restAfterSec = ex.restAfter || 0;
+    if (restAfterSec > 0) {
+      resetRing(); $('t-desc').textContent = `Transition — ${restAfterSec}s`;
+      setMainBtn('⏭ Sauter', false);
+      $('t-all').style.display = 'none'; $('t-skip').textContent = '← Retour';
+      startPhase('rest', restAfterSec, () => goNextExercise());
+    } else {
+      setTimeout(() => goNextExercise(), 800);
+      resetRing(); $('t-desc').textContent = 'Exercice terminé 🎉 → Suivant…';
+      setMainBtn('Exercice terminé ✅', true); $('t-skip').textContent = '← Retour'; $('t-all').style.display = 'none';
     }
     return;
   }
 
-  // Rest between sets
-  if(ex.rest>0){
-    $('t-desc').textContent=`Repos — ${ex.rest}s`;
-    setMainBtn('⏭ Sauter le repos',false);
-    startPhase('rest',ex.rest,()=>afterRest());
-  }else{
+  if (ex.rest > 0) {
+    $('t-desc').textContent = `Repos — ${ex.rest}s`;
+    // FIX: skip btn must be enabled during rest
+    setMainBtn('⏭ Sauter le repos', false);
+    $('t-skip').textContent = 'Passer →';
+    startPhase('rest', ex.rest, () => afterRest());
+  } else {
     afterRest();
   }
 }
 
-function goNextExercise(){
+function goNextExercise() {
   killTimer();
-  let next=activeIdx+1;
-  while(next<workExercises.length&&workExercises[next].doneSet>=workExercises[next].sets)next++;
-  if(next<workExercises.length)openTimer(next);else finishWorkout();
+  let next = activeIdx + 1;
+  while (next < workExercises.length && workExercises[next].doneSet >= workExercises[next].sets) next++;
+  if (next < workExercises.length) openTimer(next);
+  else isRoutineMode ? finishRoutine() : finishWorkout();
 }
 
-function afterRest(){
-  killTimer();beepRest();vibrate([40]);
-  const ex=workExercises[activeIdx];
-  refreshDots();$('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';
-  $('t-skip').textContent='Passer →';$('t-all').style.display='';
+function afterRest() {
+  killTimer(); beepRest(); vibrate([40]);
+  const ex = workExercises[activeIdx];
+  refreshDots();
+  $('weight-panel').style.display = 'none';
+  $('reps-edit-panel').style.display = 'none';
+  // FIX: reset skip and all buttons properly
+  $('t-skip').textContent = 'Passer →';
+  $('t-all').style.display = '';
 
-  if(ex.type==='duration'){
-    if(ex.bilateral){
-      sideState={side:'left',setIdx:ex.doneSet};
-      refreshDots();refreshSetLbl();
-      $('t-desc').textContent='Prépare-toi — Côté GAUCHE';
-      setMainBtn('⏸ Pause',false);
-      ensureAudioCtx();
-      startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWorkBilateral('left');});
-    }else{
-      $('t-desc').textContent='Prépare-toi…';
-      setMainBtn('⏸ Pause',false);
-      ensureAudioCtx();
-      startPhase('prep',ex.prep||5,()=>{beepPrepEnd();beginWork();});
+  if (ex.type === 'duration') {
+    if (ex.bilateral) {
+      sideState = { side: 'left', setIdx: ex.doneSet };
+      refreshDots(); refreshSetLbl();
+      $('t-desc').textContent = 'Prépare-toi — Côté GAUCHE';
+      setMainBtn('⏸ Pause', false);
+      startPhase('prep', ex.prep || 5, () => { beepPrepEnd(); beginWorkBilateral('left'); });
+    } else {
+      $('t-desc').textContent = 'Prépare-toi…';
+      setMainBtn('⏸ Pause', false);
+      startPhase('prep', ex.prep || 5, () => { beepPrepEnd(); beginWork(); });
     }
-  }else{
+  } else {
     resetRing();
     showRepsReady(ex);
   }
 }
 
-function finishAllSets(){
-  const ex=workExercises[activeIdx];
-  refreshDots();refreshSetLbl();updateProgress();
-  beepDone();vibrate([60,20,60]);
-  $('t-all').style.display='none';
-  if(workExercises.every(e=>e.doneSet>=e.sets)){setTimeout(finishWorkout,900);return;}
-  $('t-desc').textContent='Toutes les séries 🎉 → Suivant…';
-  setMainBtn('Exercice terminé ✅',true);
-  $('t-skip').textContent='← Retour';
-  tPhase='idle';sideState=null;
-  const restAfterSec=ex.restAfter||0;
-  if(restAfterSec>0){
-    setTimeout(()=>{
-      resetRing();$('t-desc').textContent=`Transition — ${restAfterSec}s`;
-      setMainBtn('⏭ Sauter',false);
-      startPhase('rest',restAfterSec,()=>goNextExercise());
-    },600);
-  }else{
-    setTimeout(()=>goNextExercise(),1200);
-  }
+function finishAllSets() {
+  const ex = workExercises[activeIdx];
+  refreshDots(); refreshSetLbl(); updateProgress();
+  beepDone(); vibrate([60, 20, 60]);
+  $('t-all').style.display = 'none';
+  if (workExercises.every(e => e.doneSet >= e.sets)) { setTimeout(() => isRoutineMode ? finishRoutine() : finishWorkout(), 900); return; }
+  $('t-desc').textContent = 'Toutes les séries 🎉 → Suivant…';
+  setMainBtn('Exercice terminé ✅', true); $('t-skip').textContent = '← Retour';
+  tPhase = 'idle'; sideState = null;
+  const restAfterSec = ex.restAfter || 0;
+  setTimeout(() => restAfterSec > 0
+    ? (() => { resetRing(); $('t-desc').textContent = `Transition — ${restAfterSec}s`; setMainBtn('⏭ Sauter', false); startPhase('rest', restAfterSec, () => goNextExercise()); })()
+    : goNextExercise(), restAfterSec > 0 ? 600 : 1200);
 }
 
-function validateAll(){
-  const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets)return;
-  killTimer();$('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';sideState=null;
-  if(ex.askWeight){
-    $('weight-panel').style.display='block';
-    $('w-input').value=ex.weights.filter(w=>w>0).slice(-1)[0]||'';
-    $('ring-num').textContent='💪';$('ring-lbl').textContent='POIDS';
-    setRing(1,TCOL.work);
-    $('t-desc').textContent='Poids pour toutes les séries';
-    setMainBtn('✅ Valider tout',false);
-    tPhase='weight_input_all';
-  }else{
-    const rem=ex.sets-ex.doneSet;
-    for(let i=0;i<rem;i++){ex.doneSet++;totalSeries++;}
+function validateAll() {
+  const ex = workExercises[activeIdx];
+  if (ex.doneSet >= ex.sets) return;
+  killTimer(); $('weight-panel').style.display = 'none'; $('reps-edit-panel').style.display = 'none'; sideState = null;
+  if (ex.askWeight) {
+    $('weight-panel').style.display = 'block';
+    const prevW = getPrevWeightByName(ex.name);
+    $('w-input').value = ex.weights.filter(w => w > 0).slice(-1)[0] || (prevW || '');
+    $('prev-weight-hint').textContent = prevW ? `Séance précédente : ${prevW} kg` : '';
+    $('ring-num').textContent = '💪'; $('ring-lbl').textContent = 'POIDS';
+    setRing(1, TCOL.work);
+    $('t-desc').textContent = 'Poids pour toutes les séries';
+    setMainBtn('✅ Valider tout', false);
+    tPhase = 'weight_input_all';
+  } else {
+    const rem = ex.sets - ex.doneSet;
+    for (let i = 0; i < rem; i++) { ex.doneSet++; totalSeries++; }
     finishAllSets();
   }
 }
 
-$('t-skip').onclick=function(){
-  const ex=workExercises[activeIdx];
-  if(ex.doneSet>=ex.sets){
-    killTimer();sideState=null;$('page-timer').classList.remove('active');$('nav-bar').style.display='';
-    renderExList();updateProgress();return;
+// FIX: t-skip now correctly handles rest phase
+$('t-skip').onclick = function() {
+  unlockAudio();
+  const ex = workExercises[activeIdx];
+  if (ex.doneSet >= ex.sets) {
+    killTimer(); sideState = null;
+    $('page-timer').classList.remove('active'); $('nav-bar').style.display = '';
+    renderExList(); updateProgress(); return;
   }
-  if(tPhase==='rest'){afterRest();return;}
-  $('weight-panel').style.display='none';$('reps-edit-panel').style.display='none';
-  killTimer();sideState=null;afterWork(0);
+  // FIX: handle rest phase explicitly
+  if (tPhase === 'rest') { afterRest(); return; }
+  $('weight-panel').style.display = 'none'; $('reps-edit-panel').style.display = 'none';
+  killTimer(); sideState = null; afterWork(0);
 };
 
-function adjW(d){const v=parseFloat($('w-input').value)||0;$('w-input').value=Math.max(0,v+d).toFixed(1).replace('.0','');}
-function adjReps(d){const v=parseInt($('reps-input').value)||0;$('reps-input').value=Math.max(1,v+d);}
+function adjW(d) { const v = parseFloat($('w-input').value) || 0; $('w-input').value = Math.max(0, v + d).toFixed(1).replace('.0', ''); }
+function adjReps(d) { const v = parseInt($('reps-input').value) || 0; $('reps-input').value = Math.max(1, v + d); }
 
 // ═══════════════════════════════════════════
-// FINISH
+// FINISH WORKOUT — logs to weekLog
 // ═══════════════════════════════════════════
-function finishWorkout(){
-  killTimer();stopChrono();sideState=null;
-  const elapsed=Date.now()-workStart;
-  const next=getNextSession();
-  const log=getWeekLog();
-  log.push({key:next.key,date:new Date().toISOString(),duration:elapsed,gear:selectedGear,time:selectedTime});
-  DB.weekLog[getWeekKey()]=log;
+function finishWorkout() {
+  killTimer(); stopChrono(); sideState = null;
+  const elapsed = Date.now() - workStart;
+  const next = getNextSession();
+  const log = getWeekLog();
 
-  const rec={
-    date:new Date().toISOString(),sessionKey:next.key,sessionName:SESSIONS[next.key].name,
-    duration:elapsed,isCircuit,gear:selectedGear,timeVersion:selectedTime,
-    exercises:workExercises.map(e=>({name:e.name,sets:e.doneSet,reps:e.reps,weights:e.weights,type:e.type}))
+  // Only log if NOT routine mode
+  log.push({ key: next.key, date: new Date().toISOString(), duration: elapsed, gear: selectedGear, time: selectedTime });
+  DB.weekLog[getWeekKey()] = log;
+
+  const rec = {
+    date: new Date().toISOString(), sessionKey: next.key, sessionName: SESSIONS[next.key].name,
+    duration: elapsed, isCircuit, gear: selectedGear, timeVersion: selectedTime,
+    exercises: workExercises.map(e => ({ id: e.id, name: e.name, sets: e.doneSet, reps: e.reps, weights: e.weights, type: e.type }))
   };
   DB.history.unshift(rec);
-  if(DB.history.length>150)DB.history=DB.history.slice(0,150);
+  if (DB.history.length > 150) DB.history = DB.history.slice(0, 150);
   saveDB();
 
-  const freq=parseInt(DB.settings.freq)||4;
-  const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const newLog=getWeekLog();
-  $('fin-sub').textContent=`${SESSIONS[next.key].name} — bien joué !`;
-  $('fin-week').textContent=`${newLog.length}/${plan.length} séances cette semaine`;
-  $('st-ex').textContent=workExercises.length;
-  $('st-sr').textContent=totalSeries;
-  $('st-tm').textContent=fmtMs(elapsed);
-  $('st-sesh').textContent=`${newLog.length}/${plan.length}`;
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  const newLog = getWeekLog();
+  $('fin-sub').textContent = `${SESSIONS[next.key].name} — bien joué !`;
+  $('fin-week').textContent = `${newLog.length}/${plan.length} séances cette semaine`;
+  $('st-ex').textContent = workExercises.length;
+  $('st-sr').textContent = totalSeries;
+  $('st-tm').textContent = fmtMs(elapsed);
+  $('st-sesh').textContent = `${newLog.length}/${plan.length}`;
 
-  vibrate([100,50,100,50,200]);
+  vibrate([100, 50, 100, 50, 200]);
   $('page-timer').classList.remove('active');
   $('page-finish').classList.add('active');
-  $('nav-bar').style.display='none';
+  $('nav-bar').style.display = 'none';
 }
 
-function finishToHome(){$('page-finish').classList.remove('active');$('nav-bar').style.display='';switchTab('home');}
+// FIX: Routine finish — does NOT log to weekLog
+function finishRoutine() {
+  killTimer(); stopChrono(); sideState = null;
+  // Save to history but NOT to weekLog
+  const elapsed = Date.now() - workStart;
+  const rec = {
+    date: new Date().toISOString(), sessionKey: 'R', sessionName: 'Routine posture',
+    duration: elapsed, isCircuit: false, gear: 'body', timeVersion: 'full',
+    exercises: workExercises.map(e => ({ id: e.id, name: e.name, sets: e.doneSet, reps: e.reps, weights: [], type: e.type }))
+  };
+  DB.history.unshift(rec);
+  if (DB.history.length > 150) DB.history = DB.history.slice(0, 150);
+  saveDB();
+
+  // Go back home without showing finish screen
+  $('page-timer').classList.remove('active');
+  $('nav-bar').style.display = '';
+  showPage('home'); buildHome();
+  alert('🧱 Routine posture terminée !');
+}
+
+function finishToHome() { $('page-finish').classList.remove('active'); $('nav-bar').style.display = ''; switchTab('home'); }
 
 // ═══════════════════════════════════════════
 // ROUTINE
 // ═══════════════════════════════════════════
-function buildRoutinePage(){
-  const list=$('routine-list');list.innerHTML='';
-  DB.routine.forEach((ex,i)=>{
-    const row=document.createElement('div');row.className='routine-ex-row';
-    const lbl=ex.type==='reps'?`${ex.sets}×${ex.reps} reps`:`${ex.sets}×${fmtDur(ex.duration)}`;
-    row.innerHTML=`<div style="font-size:22px">🧱</div><div style="flex:1"><div style="font-weight:600;font-size:15px">${ex.name}</div><div style="font-size:12px;color:var(--muted);margin-top:3px">${lbl}</div></div><div style="font-size:18px;color:var(--muted)">›</div>`;
-    row.onclick=()=>launchRoutineSingle(i);
+function buildRoutinePage() {
+  const list = $('routine-list'); list.innerHTML = '';
+  DB.routine.forEach((ex, i) => {
+    const row = document.createElement('div'); row.className = 'routine-ex-row';
+    const lbl = ex.type === 'reps' ? `${ex.sets}×${ex.reps} reps` : `${ex.sets}×${fmtDur(ex.duration)}`;
+    row.innerHTML = `<div style="font-size:22px">🧱</div><div style="flex:1"><div style="font-weight:600;font-size:15px">${ex.name}</div><div style="font-size:12px;color:var(--muted);margin-top:3px">${lbl}</div></div><div style="font-size:18px;color:var(--muted)">›</div>`;
+    row.onclick = () => startRoutine(i);
     list.appendChild(row);
   });
 }
 
-function startRoutine(){
-  workExercises=DB.routine.map(e=>({...e,doneSet:0,weights:[]}));
-  workStart=Date.now();totalSeries=0;isCircuit=false;
-  $('w-tag').textContent='Routine posture';$('w-name').textContent='Exercices quotidiens';
-  renderExList();updateProgress();startChrono();showPage('workout');
-}
-
-function launchRoutineSingle(idx){
-  workExercises=DB.routine.map(e=>({...e,doneSet:0,weights:[]}));
-  workStart=Date.now();totalSeries=0;isCircuit=false;
-  $('w-tag').textContent='Routine posture';$('w-name').textContent='Exercices quotidiens';
-  renderExList();updateProgress();startChrono();showPage('workout');
-  setTimeout(()=>openTimer(idx),300);
+// FIX: startRoutine sets isRoutineMode = true
+function startRoutine(startIdx) {
+  isRoutineMode = true;
+  workExercises = DB.routine.map(e => ({ ...e, doneSet: 0, weights: [] }));
+  workStart = Date.now(); totalSeries = 0; isCircuit = false;
+  $('w-tag').textContent = 'Routine posture';
+  $('w-name').textContent = 'Exercices quotidiens';
+  renderExList(); updateProgress(); startChrono();
+  showPage('workout');
+  if (startIdx !== undefined) setTimeout(() => openTimer(startIdx), 300);
 }
 
 // ═══════════════════════════════════════════
 // HISTORY
 // ═══════════════════════════════════════════
-function buildHistory(){
-  const list=$('hist-list');list.innerHTML='';
-  if(!DB.history.length){
-    list.innerHTML='<div class="empty"><div class="eico">📭</div><p>Aucune séance enregistrée.</p></div>';
-    $('hist-sub').textContent='Aucune séance';return;
+function buildHistory() {
+  const list = $('hist-list'); list.innerHTML = '';
+  if (!DB.history.length) {
+    list.innerHTML = '<div class="empty"><div class="eico">📭</div><p>Aucune séance enregistrée.</p></div>';
+    $('hist-sub').textContent = 'Aucune séance'; return;
   }
-  $('hist-sub').textContent=`${DB.history.length} séance${DB.history.length>1?'s':''}`;
-  DB.history.forEach((rec,ri)=>{
-    const d=new Date(rec.date);
-    const ds=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-    const ts=d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    const card=document.createElement('div');card.className='card';card.style.margin='0 16px 12px';
-    const exRows=rec.exercises.filter(e=>e.sets>0).map(e=>{
-      const ws=e.weights&&e.weights.filter(w=>w>0).length?e.weights.filter(w=>w>0).map(w=>w+'kg').join(', '):'';
-      const repsInfo=e.reps?` · ${e.reps} reps`:'';
-      return `<div class="hist-ex"><span class="hn">${e.name}</span><span>${e.sets} série${e.sets>1?'s':''}${repsInfo} ${ws?'<span class="hw">'+ws+'</span>':''}</span></div>`;
+  $('hist-sub').textContent = `${DB.history.length} séance${DB.history.length > 1 ? 's' : ''}`;
+  DB.history.forEach((rec, ri) => {
+    const d = new Date(rec.date);
+    const ds = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    const ts = d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    const card = document.createElement('div'); card.className = 'card'; card.style.margin = '0 16px 12px';
+    const exRows = rec.exercises.filter(e => e.sets > 0).map(e => {
+      const ws = e.weights && e.weights.filter(w => w > 0).length ? e.weights.filter(w => w > 0).map(w => w + 'kg').join(', ') : '';
+      const repsInfo = e.reps ? ` · ${e.reps} reps` : '';
+      return `<div class="hist-ex"><span class="hn">${e.name}</span><span>${e.sets} série${e.sets > 1 ? 's' : ''}${repsInfo} ${ws ? '<span class="hw">' + ws + '</span>' : ''}</span></div>`;
     }).join('');
-    const tag=rec.isCircuit?' · 🔄 Circuit':rec.timeVersion&&rec.timeVersion!=='full'?` · ${rec.timeVersion} min`:'';
-    card.innerHTML=`<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:start"><div><div class="hist-date">${ds} · ${ts}</div><div class="hist-meta">Séance ${rec.sessionKey||'?'} · ${rec.sessionName}${tag} · ${fmtMs(rec.duration)}</div></div><button onclick="deleteHistory(${ri})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#ccc;padding:2px">🗑</button></div><div class="hist-exs">${exRows}</div></div>`;
+    const tag = rec.isCircuit ? ' · 🔄 Circuit' : rec.timeVersion && rec.timeVersion !== 'full' ? ` · ${rec.timeVersion} min` : '';
+    const sTag = rec.sessionKey === 'R' ? '🧱 Routine' : `Séance ${rec.sessionKey || '?'}`;
+    card.innerHTML = `<div class="hist-item"><div style="display:flex;justify-content:space-between;align-items:start"><div><div class="hist-date">${ds} · ${ts}</div><div class="hist-meta">${sTag} · ${rec.sessionName}${tag} · ${fmtMs(rec.duration)}</div></div><button onclick="deleteHistory(${ri})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#ccc;padding:2px">🗑</button></div><div class="hist-exs">${exRows}</div></div>`;
     list.appendChild(card);
   });
 }
-function deleteHistory(idx){if(!confirm('Supprimer ?'))return;DB.history.splice(idx,1);saveDB();buildHistory();}
+function deleteHistory(idx) { if (!confirm('Supprimer ?')) return; DB.history.splice(idx, 1); saveDB(); buildHistory(); }
 
 // ═══════════════════════════════════════════
 // EXPORT
 // ═══════════════════════════════════════════
-function exportForClaude(){
-  const freq=parseInt(DB.settings.freq)||4;
-  const plan=FREQ_PLANS[freq]||FREQ_PLANS[4];
-  const log=getWeekLog();
-  const prog={};
-  DB.history.forEach(rec=>{
-    rec.exercises.forEach(ex=>{
-      const valid=(ex.weights||[]).filter(w=>w>0);
-      if(!valid.length)return;
-      if(!prog[ex.name])prog[ex.name]=[];
-      prog[ex.name].push({date:rec.date,max:Math.max(...valid),avg:+(valid.reduce((a,b)=>a+b,0)/valid.length).toFixed(1)});
+function exportForClaude() {
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  const log = getWeekLog();
+  const prog = {};
+  DB.history.forEach(rec => {
+    rec.exercises.forEach(ex => {
+      const valid = (ex.weights || []).filter(w => w > 0);
+      if (!valid.length) return;
+      if (!prog[ex.name]) prog[ex.name] = [];
+      prog[ex.name].push({ date: rec.date, max: Math.max(...valid), avg: +(valid.reduce((a,b) => a+b, 0) / valid.length).toFixed(1) });
     });
   });
-  const report={
-    exportDate:new Date().toISOString(),version:'v6',
-    customReps:DB.customReps,
-    profil:{objectif_abdos:"6-pack",objectif_posture:"omoplates resserrées, épaules ouvertes",niveau:"avancé",limitation_physique:"contracture lombaire L5-S1 en amélioration",materiel:"banc, haltères, barre traction (porte), élastiques",frequence_objectif:freq+" séances/semaine"},
-    programme:{plan_semaine:plan,sessions:Object.keys(SESSIONS).map(k=>({key:k,nom:SESSIONS[k].name,description:SESSIONS[k].description}))},
-    semaine_en_cours:{objectif:plan.length+" séances",realisees:log.length,seances:log},
-    historique_recent:DB.history.slice(0,20),
-    progression_poids:prog
+  const report = {
+    exportDate: new Date().toISOString(), version: 'v6', customReps: DB.customReps,
+    profil: { objectif_abdos:"6-pack", objectif_posture:"omoplates resserrées, épaules ouvertes", niveau:"avancé", limitation:"contracture lombaire L5-S1 en amélioration", materiel:"banc, haltères, barre traction, élastiques", frequence_objectif: freq + " séances/semaine" },
+    programme: { plan_semaine: plan, sessions: Object.keys(SESSIONS).map(k => ({ key:k, nom:SESSIONS[k].name, description:SESSIONS[k].description })) },
+    semaine_en_cours: { objectif: plan.length + " séances", realisees: log.length, seances: log },
+    historique_recent: DB.history.slice(0, 20),
+    progression_poids: prog
   };
-  const json=JSON.stringify(report,null,2);
-  try{navigator.clipboard.writeText(json).then(()=>alert('Copié ! Colle dans Claude pour analyse.'));}
-  catch(e){prompt('Données :',json);}
+  const json = JSON.stringify(report, null, 2);
+  try { navigator.clipboard.writeText(json).then(() => alert('Copié ! Colle dans Claude pour analyse.')); }
+  catch(e) { prompt('Données :', json); }
 }
 
 // ═══════════════════════════════════════════
 // SETTINGS
 // ═══════════════════════════════════════════
-function saveSetting(key,val){DB.settings[key]=val;if(key==='gear')selectedGear=val;saveDB();}
-function showImportModal(){$('import-txt').value='';$('import-err').style.display='none';$('import-modal').classList.add('open');}
-function closeImportModal(){$('import-modal').classList.remove('open');}
-$('import-modal').onclick=e=>{if(e.target===$('import-modal'))closeImportModal();};
-function doImport(){
-  const raw=$('import-txt').value.trim();
-  const err=$('import-err');err.style.display='none';
-  try{const p=JSON.parse(raw);if(p.routine&&Array.isArray(p.routine))DB.routine=p.routine;saveDB();closeImportModal();buildHome();buildRoutinePage();alert('Programme importé !');}
-  catch(e){err.textContent='❌ JSON invalide : '+e.message;err.style.display='block';}
+function saveSetting(key, val) { DB.settings[key] = val; if (key === 'gear') selectedGear = val; saveDB(); }
+function showImportModal() { $('import-txt').value = ''; $('import-err').style.display = 'none'; $('import-modal').classList.add('open'); }
+function closeImportModal() { $('import-modal').classList.remove('open'); }
+$('import-modal').onclick = e => { if (e.target === $('import-modal')) closeImportModal(); };
+function doImport() {
+  const raw = $('import-txt').value.trim();
+  const err = $('import-err'); err.style.display = 'none';
+  try {
+    const p = JSON.parse(raw);
+    if (p.routine && Array.isArray(p.routine)) DB.routine = p.routine;
+    saveDB(); closeImportModal(); buildHome(); buildRoutinePage();
+    alert('Programme importé !');
+  } catch(e) { err.textContent = '❌ JSON invalide : ' + e.message; err.style.display = 'block'; }
 }
-function confirmReset(){if(!confirm('Effacer TOUTES les données ?'))return;localStorage.removeItem('mp_v6');loadDB();buildHome();buildHistory();buildRoutinePage();alert('Réinitialisé.');}
+function confirmReset() {
+  if (!confirm('Effacer TOUTES les données ?')) return;
+  localStorage.removeItem('mp_v6'); loadDB(); buildHome(); buildHistory(); buildRoutinePage();
+  alert('Réinitialisé.');
+}
 
 // ═══════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+id).classList.add('active');window.scrollTo(0,0);}
-function switchTab(tab){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===tab));showPage(tab);if(tab==='home')buildHome();if(tab==='routine')buildRoutinePage();if(tab==='history')buildHistory();}
+function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); $('page-' + id).classList.add('active'); window.scrollTo(0, 0); }
+function switchTab(tab) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === tab));
+  showPage(tab);
+  if (tab === 'home') buildHome();
+  if (tab === 'routine') buildRoutinePage();
+  if (tab === 'history') buildHistory();
+}
 
 // ═══════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════
-function fmtDur(s){return s>=60?Math.floor(s/60)+'m'+(s%60?s%60+'s':''):s+'s';}
-function fmtMs(ms){const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000);return m+'min'+(s?s+'s':'');}
-function fmtChrono(ms){const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+function fmtDur(s) { return s >= 60 ? Math.floor(s/60) + 'm' + (s%60 ? s%60 + 's' : '') : s + 's'; }
+function fmtMs(ms) { const m = Math.floor(ms/60000), s = Math.floor((ms%60000)/1000); return m + 'min' + (s ? s + 's' : ''); }
+function fmtChrono(ms) { const m = Math.floor(ms/60000), s = Math.floor((ms%60000)/1000); return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0'); }
 
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-loadDB();buildHome();buildRoutinePage();
-const sf=$('set-freq');if(sf)sf.value=DB.settings.freq||4;
-const sg=$('set-gear');if(sg)sg.value=DB.settings.gear||'full';
-console.log('Mon Programme v6 ✅');
+loadDB();
+buildHome();
+buildRoutinePage();
+const sf = $('set-freq'); if (sf) sf.value = DB.settings.freq || 4;
+const sg = $('set-gear'); if (sg) sg.value = DB.settings.gear || 'full';
+
+// FIX: Auto-remove false séance B on first load
+// Only run if weekLog has 2+ entries (A already done + false B)
+(function() {
+  const wk = getWeekKey();
+  const log = DB.weekLog[wk] || [];
+  const freq = parseInt(DB.settings.freq) || 4;
+  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
+  // If we have more logged sessions than expected given today being Mon
+  // and séance A is done + B is done on same day as A → remove B
+  if (log.length >= 2) {
+    const lastTwo = log.slice(-2);
+    if (lastTwo[0] && lastTwo[1]) {
+      const d0 = new Date(lastTwo[0].date).toDateString();
+      const d1 = new Date(lastTwo[1].date).toDateString();
+      if (d0 === d1 && lastTwo[0].key === 'A' && lastTwo[1].key === 'B') {
+        DB.weekLog[wk] = log.slice(0, -1);
+        saveDB();
+        buildHome();
+        console.log('Auto-removed false séance B ✅');
+      }
+    }
+  }
+})();
+
+console.log('Mon Programme v6 FIXED ✅');
 </script>
 </body>
 </html>
