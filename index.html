@@ -1340,7 +1340,8 @@ function showRepsReady(ex) {
   $('ring-lbl').textContent = 'REPS';
   $('ring-fg').style.stroke = TCOL.work;
   setRing(1, TCOL.work);
-  $('t-desc').textContent = `Fais tes ${ex.reps} répétitions`;
+  const _prevR = getPrevWeightByName(ex.name);
+  $('t-desc').textContent = `Fais tes ${ex.reps} reps${_prevR && ex.askWeight ? ' · Dernier: ' + _prevR + ' kg' : ''}`;
   $('reps-edit-panel').style.display = 'block';
   $('reps-input').value = ex.reps === 'max' ? '' : ex.reps;
   setMainBtn('✅ Série terminée', false);
@@ -1496,15 +1497,18 @@ function onMainBtn() {
 }
 
 function beginWork() {
+  const _ex = workExercises[activeIdx];
+  const _prevW = _ex.askWeight ? getPrevWeightByName(_ex.name) : null;
   setMainBtn('⏸ Pause', false);
-  $('t-desc').textContent = 'Tiens la position !';
-  startPhase('work', workExercises[activeIdx].duration, () => confirmWork());
+  $('t-desc').textContent = `Tiens la position !${_prevW ? ' · Dernier: ' + _prevW + ' kg' : ''}`;
+  startPhase('work', _ex.duration, () => confirmWork());
 }
 
 function beginWorkBilateral(side) {
-  setMainBtn('⏸ Pause', false);
-  $('t-desc').textContent = `Tiens — Côté ${side === 'left' ? 'GAUCHE' : 'DROIT'}`;
   const ex = workExercises[activeIdx];
+  const _prevW = ex.askWeight ? getPrevWeightByName(ex.name) : null;
+  setMainBtn('⏸ Pause', false);
+  $('t-desc').textContent = `Tiens — Côté ${side === 'left' ? 'GAUCHE' : 'DROIT'}${_prevW ? ' · Dernier: ' + _prevW + ' kg' : ''}`;
   if (side === 'left') {
     startPhase('work', ex.duration, () => finishLeftSide());
   } else {
