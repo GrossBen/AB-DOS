@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mon Programme">
 <meta name="theme-color" content="#2d6a4f">
-<title>Mon Programme v6</title>
+<title>Mon Programme v7</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <style>
@@ -531,360 +531,222 @@ document.addEventListener('click', unlockAudio, { passive: true, once: false });
 // PROGRAM DATA
 // ═══════════════════════════════════════════
 const DEFAULT_ROUTINE = [
-  { id:'r1', name:'Dos contre le mur',        type:'duration', sets:1, duration:60, rest:0,  prep:5, bodyweight:true },
-  { id:'r2', name:'Wall W / Wall Angels',     type:'reps',     sets:2, reps:'10',   rest:20, prep:0, bodyweight:true },
-  { id:'r3', name:'Menton rentré contre mur', type:'duration', sets:1, duration:30, rest:0,  prep:5, bodyweight:true },
+  { id:'r1', name:'Dos contre le mur',          type:'duration', sets:1, duration:60, rest:0,  prep:0, bodyweight:true },
+  { id:'r2', name:'Menton rentré contre mur',   type:'duration', sets:1, duration:30, rest:0,  prep:0, bodyweight:true },
+  { id:'r3', name:'Over-and-Backs (élastique)', type:'duration', sets:1, duration:60, rest:0,  prep:0, bodyweight:true },
+  { id:'r4', name:'Quadruped Back Rotations',   type:'duration', sets:2, duration:30, rest:0,  prep:0, bilateral:true, bodyweight:true },
+  { id:'r5', name:'Wall W / Wall Angels',       type:'reps',     sets:2, reps:'10',   rest:15, prep:0, bodyweight:true },
+  { id:'r6', name:'Glute Bridge (5s tenu)',     type:'duration', sets:1, duration:60, rest:0,  prep:0, bodyweight:true },
+  { id:'r7', name:'Couch Stretch',              type:'duration', sets:2, duration:30, rest:0,  prep:0, bilateral:true, bodyweight:true },
 ];
 
 const SESSIONS = {
   A: {
-    name:'Abdos profonds + Gainage', tag:'Séance A',
-    description:'Transverse, stabilisation, protection L5-S1', color:'#2d6a4f',
+    name:'Bas abdos + Transverse', tag:'Séance A',
+    description:'Travail profond, protection L5-S1, zéro appui épaule', color:'#2d6a4f',
     versions:{
       '5':{ full:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:2,duration:20,rest:30,askWeight:false,restAfter:0},
-        {id:'dbug',name:'Dead bug',           type:'reps',    sets:2,reps:'8',  rest:30,askWeight:false,restAfter:0},
+        {id:'a_vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:30,askWeight:false,bodyweight:true,restAfter:0},
+        {id:'a_dbug',name:'Dead bug',           type:'reps',    sets:1,reps:'10', rest:30,askWeight:false,bodyweight:true,restAfter:0},
+        {id:'a_rc',  name:'Reverse crunch',     type:'reps',    sets:1,reps:'12', rest:30,askWeight:false,bodyweight:true,restAfter:0},
       ], elastic:'full', body:'full'},
       '10':{ full:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:2,duration:25,rest:45,askWeight:false,restAfter:30},
-        {id:'dbug',name:'Dead bug',           type:'reps',    sets:2,reps:'10', rest:30,askWeight:false,restAfter:30},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:2,duration:30,rest:30,askWeight:false,restAfter:0},
+        {id:'a_vac', name:'Vacuum debout',      type:'duration',sets:2,duration:30,rest:45,askWeight:false,bodyweight:true,restAfter:30},
+        {id:'a_dbug',name:'Dead bug',           type:'reps',    sets:2,reps:'12', rest:30,askWeight:false,bodyweight:true,restAfter:30},
+        {id:'a_rc',  name:'Reverse crunch',     type:'reps',    sets:2,reps:'15', rest:30,askWeight:false,bodyweight:true,restAfter:30},
+        {id:'a_hh',  name:'Hollow hold',        type:'duration',sets:2,duration:20,rest:30,askWeight:false,bodyweight:true,restAfter:0},
       ], elastic:'full', body:'full'},
       '15':{ full:[
-        {id:'vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
-        {id:'dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'10', rest:30,askWeight:false,restAfter:45},
-        {id:'plk',   name:'Planche avant-bras', type:'duration',sets:3,duration:35,rest:30,askWeight:false,restAfter:45},
-        {id:'crunch',name:'Crunch lesté banc',  type:'reps',    sets:3,reps:'12', rest:60,askWeight:true, weight:'8–12 kg',restAfter:0},
-      ],
-      elastic:[
-        {id:'vac',     name:'Vacuum debout',      type:'duration',sets:3,duration:25,rest:60,askWeight:false,restAfter:45},
-        {id:'dbug',    name:'Dead bug',           type:'reps',    sets:3,reps:'10', rest:30,askWeight:false,restAfter:45},
-        {id:'plk',     name:'Planche avant-bras', type:'duration',sets:3,duration:35,rest:30,askWeight:false,restAfter:45},
-        {id:'crunchbw',name:'Crunch pieds levés', type:'reps',    sets:3,reps:'15', rest:60,askWeight:false,restAfter:0},
-      ], body:'elastic'},
-      '20':{ full:[
-        {id:'vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
-        {id:'dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:45},
-        {id:'plk',   name:'Planche avant-bras', type:'duration',sets:3,duration:40,rest:30,askWeight:false,restAfter:45},
-        {id:'crunch',name:'Crunch lesté banc',  type:'reps',    sets:3,reps:'12', rest:60,askWeight:true, weight:'8–12 kg',restAfter:45},
-        {id:'retro', name:'Rétroversion bassin', type:'reps',   sets:3,reps:'12', rest:45,askWeight:false,restAfter:0},
-      ],
-      elastic:[
-        {id:'vac',     name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:45},
-        {id:'dbug',    name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:45},
-        {id:'plk',     name:'Planche avant-bras', type:'duration',sets:3,duration:40,rest:30,askWeight:false,restAfter:45},
-        {id:'crunchbw',name:'Crunch pieds levés', type:'reps',    sets:3,reps:'15', rest:60,askWeight:false,restAfter:45},
-        {id:'retro',   name:'Rétroversion bassin',type:'reps',    sets:3,reps:'12', rest:45,askWeight:false,restAfter:0},
-      ], body:'elastic'},
+        {id:'a_vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:45,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'a_dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'a_rc',    name:'Reverse crunch',     type:'reps',    sets:3,reps:'15', rest:30,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'a_retro', name:'Rétroversion bassin',type:'reps',    sets:3,reps:'15', rest:30,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'a_hh',    name:'Hollow hold',        type:'duration',sets:3,duration:20,rest:30,askWeight:false,bodyweight:true,restAfter:0},
+      ], elastic:'full', body:'full'},
       'full':{ full:[
-        {id:'vac',   name:'Vacuum debout',        type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
-        {id:'dbug',  name:'Dead bug',             type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:60},
-        {id:'plk',   name:'Planche avant-bras',   type:'duration',sets:3,duration:45,rest:30,askWeight:false,restAfter:60},
-        {id:'crunch',name:'Crunch lesté banc',    type:'reps',    sets:3,reps:'15', rest:60,askWeight:true, weight:'8–12 kg',restAfter:60},
-        {id:'retro', name:'Rétroversion bassin',  type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,restAfter:45},
-        {id:'fin',   name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0, askWeight:false,restAfter:0},
-      ],
-      elastic:[
-        {id:'vac',     name:'Vacuum debout',        type:'duration',sets:3,duration:30,rest:60,askWeight:false,restAfter:60},
-        {id:'dbug',    name:'Dead bug',             type:'reps',    sets:3,reps:'12', rest:30,askWeight:false,restAfter:60},
-        {id:'plk',     name:'Planche avant-bras',   type:'duration',sets:3,duration:45,rest:30,askWeight:false,restAfter:60},
-        {id:'crunchbw',name:'Crunch pieds levés',   type:'reps',    sets:3,reps:'20', rest:60,askWeight:false,restAfter:60},
-        {id:'retro',   name:'Rétroversion bassin',  type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,restAfter:45},
-        {id:'fin',     name:'Planche max (finisher)',type:'duration',sets:1,duration:60,rest:0, askWeight:false,restAfter:0},
-      ], body:'elastic'},
+        {id:'a_vac',   name:'Vacuum debout',      type:'duration',sets:3,duration:30,rest:60,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'a_dbug',  name:'Dead bug',           type:'reps',    sets:3,reps:'12', rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'a_rc',    name:'Reverse crunch',     type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'a_retro', name:'Rétroversion bassin',type:'reps',    sets:3,reps:'15', rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'a_hh',    name:'Hollow hold',        type:'duration',sets:3,duration:25,rest:45,askWeight:false,bodyweight:true,restAfter:0},
+      ], elastic:'full', body:'full'},
     }
   },
 
   B: {
-    name:'Posture + Dos haut', tag:'Séance B',
-    description:'Omoplates, rhomboïdes, deltoïdes postérieurs', color:'#457b9d',
+    name:'Force + Charge', tag:'Séance B',
+    description:'Rectus abdominis, bas abdos, charge progressive', color:'#e63946',
     versions:{
       '5':{ full:[
-        {id:'fp', name:'Face pull élastique', type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-        {id:'yr', name:'Y-raise banc',        type:'reps',sets:2,reps:'12',rest:45,askWeight:true,weight:'2–4 kg',restAfter:0},
+        {id:'b_crb', name:'Crunch pieds levés', type:'reps',sets:2,reps:'15',rest:30,askWeight:false,bodyweight:true,restAfter:20},
+        {id:'b_bic', name:'Bicycle crunch',     type:'reps',sets:2,reps:'16',rest:30,askWeight:false,bodyweight:true,restAfter:0},
       ],
       elastic:[
-        {id:'fp',  name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
-      ],
-      body:[
-        {id:'sup', name:'Superman sol', type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-        {id:'ysol',name:'Y-raise sol',  type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:0},
-      ]},
+        {id:'b_crel',name:'Crunch élastique',       type:'reps',sets:2,reps:'15',rest:30,askWeight:false,bodyweight:false,restAfter:20},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:2,reps:'12',rest:30,askWeight:false,bodyweight:false,restAfter:0},
+      ], body:'full'},
       '10':{ full:[
-        {id:'fp', name:'Face pull élastique',   type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-        {id:'yr', name:'Y-raise banc',          type:'reps',sets:2,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:30},
-        {id:'rf', name:'Reverse fly banc 30°',  type:'reps',sets:2,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:0},
+        {id:'b_cr',  name:'Crunch lesté banc',      type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'8–12 kg',bodyweight:false,restAfter:40},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:3,reps:'10',rest:45,askWeight:false,bodyweight:true, restAfter:40},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:2,reps:'16',rest:30,askWeight:false,bodyweight:true, restAfter:0},
       ],
       elastic:[
-        {id:'fp',  name:'Face pull élastique',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:30},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-        {id:'rfsol',name:'Reverse fly sol',   type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+        {id:'b_crel',name:'Crunch élastique',       type:'reps',sets:3,reps:'15',rest:45,askWeight:false,bodyweight:false,restAfter:40},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:2,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:40},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:2,reps:'16',rest:30,askWeight:false,bodyweight:true, restAfter:0},
       ],
       body:[
-        {id:'sup', name:'Superman sol',    type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-        {id:'ysol',name:'Y-raise sol',     type:'reps',sets:2,reps:'12',rest:45,askWeight:false,restAfter:30},
-        {id:'rfsol',name:'Reverse fly sol',type:'reps',sets:2,reps:'15',rest:45,askWeight:false,restAfter:0},
+        {id:'b_crb', name:'Crunch pieds levés',     type:'reps',sets:3,reps:'15',rest:45,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:3,reps:'10',rest:45,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:2,reps:'16',rest:30,askWeight:false,bodyweight:true,restAfter:0},
       ]},
       '15':{ full:[
-        {id:'fp', name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'yr', name:'Y-raise banc',         type:'reps',sets:3,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:45},
-        {id:'rf', name:'Reverse fly banc 30°', type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:45},
-        {id:'row',name:'Rowing haltères',      type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:0},
+        {id:'b_cr',  name:'Crunch lesté banc',      type:'reps',sets:4,reps:'12',rest:60,askWeight:true, weight:'8–12 kg',bodyweight:false,restAfter:45},
+        {id:'b_lrb', name:'Leg raises barre',        type:'reps',sets:3,reps:'10',rest:60,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:3,reps:'16',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       elastic:[
-        {id:'fp',   name:'Face pull élastique', type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'ysol', name:'Y-raise sol',         type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-        {id:'rfsol',name:'Reverse fly sol',     type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'rowel',name:'Rowing élastique',    type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:0},
+        {id:'b_crel',name:'Crunch élastique',       type:'reps',sets:4,reps:'15',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:true, restAfter:45},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:3,reps:'16',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       body:[
-        {id:'sup',  name:'Superman sol',          type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'ysol', name:'Y-raise sol',           type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-        {id:'rfsol',name:'Reverse fly sol',       type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'rowbw',name:'Rowing serviette porte',type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:0},
-      ]},
-      '20':{ full:[
-        {id:'fp', name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'yr', name:'Y-raise banc',         type:'reps',sets:3,reps:'12',rest:45,askWeight:true, weight:'2–4 kg',restAfter:45},
-        {id:'rf', name:'Reverse fly banc 30°', type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:45},
-        {id:'row',name:'Rowing haltères',      type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:45},
-        {id:'ext',name:'Extension lombaire lente',type:'reps',sets:3,reps:'5',rest:60,askWeight:true,weight:'1–3 kg',restAfter:0},
-      ],
-      elastic:[
-        {id:'fp',   name:'Face pull élastique',  type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'ysol', name:'Y-raise sol',          type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-        {id:'rfsol',name:'Reverse fly sol',      type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'rowel',name:'Rowing élastique',     type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:45},
-        {id:'supH', name:'Superman tenu 5s',     type:'reps',sets:3,reps:'8', rest:60,askWeight:false,restAfter:0},
-      ],
-      body:[
-        {id:'sup',  name:'Superman sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'ysol', name:'Y-raise sol',            type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:45},
-        {id:'rfsol',name:'Reverse fly sol',        type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:45},
-        {id:'rowbw',name:'Rowing serviette porte', type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:45},
-        {id:'extbw',name:'Superman lent',          type:'reps',sets:3,reps:'8', rest:60,askWeight:false,restAfter:0},
+        {id:'b_crb', name:'Crunch pieds levés',     type:'reps',sets:4,reps:'15',rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'b_dbu', name:'Dead bug unilatéral',     type:'reps',sets:3,reps:'10',rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:3,reps:'16',rest:45,askWeight:false,bodyweight:true,restAfter:0},
       ]},
       'full':{ full:[
-        {id:'fp',   name:'Face pull élastique',      type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-        {id:'yr',   name:'Y-raise banc',             type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'2–4 kg',restAfter:60},
-        {id:'rf',   name:'Reverse fly banc 30°',     type:'reps',sets:3,reps:'15',rest:45,askWeight:true, weight:'4–6 kg',restAfter:60},
-        {id:'row',  name:'Rowing haltères',          type:'reps',sets:3,reps:'12',rest:60,askWeight:true, weight:'10–14 kg',restAfter:60},
-        {id:'ext',  name:'Extension lombaire lente', type:'reps',sets:3,reps:'5', rest:60,askWeight:true, weight:'1–3 kg',restAfter:45},
-        {id:'finfp',name:'Face pull lent (finisher)',type:'reps',sets:1,reps:'15',rest:0, askWeight:false,restAfter:0},
+        {id:'b_cr',  name:'Crunch lesté banc',      type:'reps',sets:4,reps:'12',rest:75,askWeight:true, weight:'8–12 kg',bodyweight:false,restAfter:60},
+        {id:'b_lrb', name:'Leg raises barre',        type:'reps',sets:4,reps:'10',rest:60,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'b_bicl',name:'Bicycle crunch lesté',    type:'reps',sets:3,reps:'16',rest:60,askWeight:true, weight:'4–6 kg',bodyweight:false,restAfter:60},
+        {id:'b_fin', name:'Crunch élastique max',    type:'reps',sets:1,reps:'max',rest:0,askWeight:false,bodyweight:false,restAfter:0},
       ],
       elastic:[
-        {id:'fp',   name:'Face pull élastique',       type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-        {id:'ysol', name:'Y-raise sol',               type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-        {id:'rfsol',name:'Reverse fly sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-        {id:'rowel',name:'Rowing élastique',          type:'reps',sets:3,reps:'15',rest:60,askWeight:false,restAfter:60},
-        {id:'supH', name:'Superman tenu 5s',          type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-        {id:'finbw',name:'Superman max (finisher)',   type:'reps',sets:1,reps:'max',rest:0,askWeight:false,restAfter:0},
+        {id:'b_crel',name:'Crunch élastique',       type:'reps',sets:4,reps:'15',rest:60,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:4,reps:'12',rest:45,askWeight:false,bodyweight:true, restAfter:60},
+        {id:'b_pal', name:'Pallof press élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:60},
+        {id:'b_fin', name:'Crunch élastique max',    type:'reps',sets:1,reps:'max',rest:0,askWeight:false,bodyweight:false,restAfter:0},
       ],
       body:[
-        {id:'sup',   name:'Superman sol',           type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-        {id:'ysol',  name:'Y-raise sol',            type:'reps',sets:3,reps:'12',rest:45,askWeight:false,restAfter:60},
-        {id:'rfsol', name:'Reverse fly sol',        type:'reps',sets:3,reps:'15',rest:45,askWeight:false,restAfter:60},
-        {id:'rowbw', name:'Rowing serviette porte', type:'reps',sets:3,reps:'12',rest:60,askWeight:false,restAfter:60},
-        {id:'extbw', name:'Superman lent',          type:'reps',sets:3,reps:'10',rest:60,askWeight:false,restAfter:45},
-        {id:'finbw2',name:'Superman max (finisher)',type:'reps',sets:1,reps:'max',rest:0, askWeight:false,restAfter:0},
+        {id:'b_crb', name:'Crunch pieds levés',     type:'reps',sets:4,reps:'15',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'b_lr',  name:'Leg raises sol',          type:'reps',sets:4,reps:'12',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'b_dbu', name:'Dead bug unilatéral',     type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'b_bic', name:'Bicycle crunch',          type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'b_fin', name:'Hollow hold finisher',    type:'duration',sets:1,duration:30,rest:0,askWeight:false,bodyweight:true,restAfter:0},
       ]},
     }
   },
 
   C: {
-    name:'Abdos dynamiques + Obliques', tag:'Séance C',
-    description:'Bas abdos, obliques, force fonctionnelle', color:'#e9a824',
+    name:'Obliques + Rotation', tag:'Séance C',
+    description:'Obliques, rotation, définition latérale', color:'#e9a824',
     versions:{
       '5':{ full:[
-        {id:'rc',name:'Reverse crunch banc',  type:'reps',    sets:2,reps:'12',   rest:30,askWeight:false,restAfter:20},
-        {id:'sp',name:'Side plank lesté',     type:'duration',sets:2,duration:25, rest:30,askWeight:true,bilateral:true,prep:10,restAfter:0},
+        {id:'c_rt', name:'Russian twist lesté', type:'reps',sets:2,reps:'20',rest:30,askWeight:true,weight:'4–6 kg',bodyweight:false,restAfter:20},
+        {id:'c_co', name:'Crunch oblique',      type:'reps',sets:2,reps:'12',rest:30,askWeight:false,bodyweight:true, restAfter:0},
       ],
       elastic:[
-        {id:'rc',name:'Reverse crunch', type:'reps',    sets:2,reps:'12',  rest:30,askWeight:false,restAfter:20},
-        {id:'sp',name:'Side plank',     type:'duration',sets:2,duration:25,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:0},
-      ], body:'elastic'},
-      '10':{ full:[
-        {id:'rc', name:'Reverse crunch banc', type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
-        {id:'sp', name:'Side plank lesté',    type:'duration',sets:2,duration:30,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:30},
-        {id:'kr', name:'Knee raises barre',   type:'reps',    sets:2,reps:'8',   rest:45,askWeight:false,restAfter:0},
-      ],
-      elastic:[
-        {id:'rc', name:'Reverse crunch',        type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
-        {id:'sp', name:'Side plank',            type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:30},
-        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:2,reps:'12',  rest:45,askWeight:false,restAfter:0},
+        {id:'c_wc', name:'Woodchop élastique',      type:'reps',sets:2,reps:'12',rest:30,askWeight:false,bodyweight:false,restAfter:20},
+        {id:'c_rt', name:'Russian twist',           type:'reps',sets:2,reps:'20',rest:30,askWeight:false,bodyweight:true, restAfter:0},
       ],
       body:[
-        {id:'rc', name:'Reverse crunch', type:'reps',    sets:2,reps:'15',  rest:45,askWeight:false,restAfter:30},
-        {id:'sp', name:'Side plank',     type:'duration',sets:2,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:30},
-        {id:'llr',name:'Leg raises sol', type:'reps',    sets:2,reps:'10',  rest:45,askWeight:false,restAfter:0},
+        {id:'c_rt', name:'Russian twist',           type:'reps',sets:2,reps:'20',rest:30,askWeight:false,bodyweight:true,restAfter:20},
+        {id:'c_co', name:'Crunch oblique',          type:'reps',sets:2,reps:'12',rest:30,askWeight:false,bodyweight:true,restAfter:0},
+      ]},
+      '10':{ full:[
+        {id:'c_rt', name:'Russian twist lesté', type:'reps',sets:3,reps:'20',rest:45,askWeight:true, weight:'4–6 kg',bodyweight:false,restAfter:40},
+        {id:'c_wc', name:'Woodchop élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:40},
+        {id:'c_bic',name:'Bicycle crunch',      type:'reps',sets:2,reps:'20',rest:30,askWeight:false,bodyweight:true, restAfter:0},
+      ],
+      elastic:[
+        {id:'c_wc', name:'Woodchop élastique',      type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:40},
+        {id:'c_pal',name:'Pallof press élastique',   type:'reps',sets:2,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:40},
+        {id:'c_bic',name:'Bicycle crunch',           type:'reps',sets:2,reps:'20',rest:30,askWeight:false,bodyweight:true, restAfter:0},
+      ],
+      body:[
+        {id:'c_rt', name:'Russian twist',           type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'c_co', name:'Crunch oblique',          type:'reps',sets:3,reps:'12',rest:30,askWeight:false,bodyweight:true,restAfter:40},
+        {id:'c_bic',name:'Bicycle crunch',          type:'reps',sets:2,reps:'20',rest:30,askWeight:false,bodyweight:true,restAfter:0},
       ]},
       '15':{ full:[
-        {id:'rc', name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp', name:'Side plank lesté',      type:'duration',sets:3,duration:30,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:45},
-        {id:'kr', name:'Knee raises barre',     type:'reps',    sets:3,reps:'10',  rest:60,askWeight:false,restAfter:45},
-        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:0},
+        {id:'c_rt', name:'Russian twist lesté', type:'reps',sets:3,reps:'20',rest:60,askWeight:true, weight:'4–6 kg',bodyweight:false,restAfter:45},
+        {id:'c_wc', name:'Woodchop élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'c_pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'c_bic',name:'Bicycle crunch',      type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       elastic:[
-        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
-        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
-        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'10',  rest:45,askWeight:false,restAfter:0},
+        {id:'c_wc', name:'Woodchop élastique',      type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'c_pal',name:'Pallof press élastique',   type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:45},
+        {id:'c_co', name:'Crunch oblique',           type:'reps',sets:3,reps:'15',rest:30,askWeight:false,bodyweight:true, restAfter:45},
+        {id:'c_bic',name:'Bicycle crunch',           type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       body:[
-        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:30,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
-        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:45},
-        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'10',  rest:45,askWeight:false,restAfter:0},
-      ]},
-      '20':{ full:[
-        {id:'rc', name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp', name:'Side plank lesté',      type:'duration',sets:3,duration:35,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:45},
-        {id:'kr', name:'Knee raises barre',     type:'reps',    sets:3,reps:'10',  rest:60,askWeight:false,restAfter:45},
-        {id:'pal',name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
-        {id:'bic',name:'Bicycle crunch',        type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
-      ],
-      elastic:[
-        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
-        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
-        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
-        {id:'bic',  name:'Bicycle crunch',          type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
-      ],
-      body:[
-        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:45},
-        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:35,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:45},
-        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:45},
-        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:45},
-        {id:'bic',  name:'Bicycle crunch',     type:'reps',    sets:3,reps:'16',  rest:60,askWeight:false,restAfter:0},
+        {id:'c_rt', name:'Russian twist',           type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'c_co', name:'Crunch oblique',          type:'reps',sets:3,reps:'15',rest:30,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'c_dbu',name:'Dead bug unilatéral',     type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:true,restAfter:45},
+        {id:'c_bic',name:'Bicycle crunch',          type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:0},
       ]},
       'full':{ full:[
-        {id:'rc',  name:'Reverse crunch banc',   type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
-        {id:'sp',  name:'Side plank lesté',      type:'duration',sets:3,duration:40,rest:30,askWeight:true, bilateral:true,prep:10,restAfter:60},
-        {id:'kr',  name:'Knee raises barre',     type:'reps',    sets:3,reps:'12',  rest:60,askWeight:false,restAfter:60},
-        {id:'pal', name:'Pallof press élastique',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
-        {id:'bic', name:'Bicycle crunch',        type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
-        {id:'finkr',name:'Knee raises max',      type:'reps',    sets:1,reps:'max', rest:0, askWeight:false,restAfter:0},
+        {id:'c_rt', name:'Russian twist lesté', type:'reps',sets:3,reps:'20',rest:60,askWeight:true, weight:'4–6 kg',bodyweight:false,restAfter:60},
+        {id:'c_wc', name:'Woodchop élastique',  type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'c_pal',name:'Pallof press élastique',type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'c_co', name:'Crunch oblique',      type:'reps',sets:3,reps:'15',rest:45,askWeight:false,bodyweight:true, restAfter:60},
+        {id:'c_bic',name:'Bicycle crunch',      type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       elastic:[
-        {id:'rc',   name:'Reverse crunch',          type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
-        {id:'sp',   name:'Side plank',              type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:60},
-        {id:'pal',  name:'Pallof press élastique',  type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
-        {id:'dbuni',name:'Dead bug unilatéral',     type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
-        {id:'bic',  name:'Bicycle crunch',          type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
-        {id:'finsp',name:'Side plank max',          type:'duration',sets:1,duration:60,rest:0, askWeight:false,bilateral:true,prep:10,restAfter:0},
+        {id:'c_wc', name:'Woodchop élastique',      type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'c_pal',name:'Pallof press élastique',   type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:false,restAfter:60},
+        {id:'c_co', name:'Crunch oblique',           type:'reps',sets:3,reps:'15',rest:30,askWeight:false,bodyweight:true, restAfter:60},
+        {id:'c_rt', name:'Russian twist',            type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:60},
+        {id:'c_bic',name:'Bicycle crunch',           type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true, restAfter:0},
       ],
       body:[
-        {id:'rc',   name:'Reverse crunch',     type:'reps',    sets:3,reps:'15',  rest:45,askWeight:false,restAfter:60},
-        {id:'sp',   name:'Side plank',         type:'duration',sets:3,duration:40,rest:30,askWeight:false,bilateral:true,prep:10,restAfter:60},
-        {id:'llr',  name:'Leg raises sol',     type:'reps',    sets:3,reps:'15',  rest:60,askWeight:false,restAfter:60},
-        {id:'dbuni',name:'Dead bug unilatéral',type:'reps',    sets:3,reps:'12',  rest:45,askWeight:false,restAfter:60},
-        {id:'bic',  name:'Bicycle crunch',     type:'reps',    sets:3,reps:'20',  rest:60,askWeight:false,restAfter:45},
-        {id:'finsp',name:'Side plank max',     type:'duration',sets:1,duration:60,rest:0, askWeight:false,bilateral:true,prep:10,restAfter:0},
+        {id:'c_rt', name:'Russian twist',           type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'c_co', name:'Crunch oblique',          type:'reps',sets:3,reps:'15',rest:30,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'c_dbu',name:'Dead bug unilatéral',     type:'reps',sets:3,reps:'12',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'c_bic',name:'Bicycle crunch',          type:'reps',sets:3,reps:'20',rest:45,askWeight:false,bodyweight:true,restAfter:60},
+        {id:'c_fin',name:'Bicycle crunch max',      type:'reps',sets:1,reps:'max',rest:0,askWeight:false,bodyweight:true,restAfter:0},
       ]},
     }
   },
 
   D: {
-    name:'Circuit intégral', tag:'Séance D',
-    description:'Tout en une fois — finir épuisé', color:'#e63946',
+    name:'Circuit intégral abdos', tag:'Séance D',
+    description:'Tout enchaîné — finir épuisé', color:'#457b9d',
     isCircuit: true,
     versions:{
       '5':{ full:[
-        {id:'vac',name:'Vacuum debout',     type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch banc',type:'reps',  sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique',type:'reps',  sets:1,reps:'12',  rest:0,askWeight:false},
-      ], elastic:[
-        {id:'vac',name:'Vacuum debout',     type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',    type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique',type:'reps',  sets:1,reps:'12',  rest:0,askWeight:false},
-      ], body:[
-        {id:'vac',name:'Vacuum debout', type:'duration',sets:1,duration:20,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',type:'reps',    sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'sup',name:'Superman sol',  type:'reps',    sets:1,reps:'10',  rest:0,askWeight:false},
-      ]},
+        {id:'d_vac', name:'Vacuum debout',  type:'duration',sets:1,duration:20,rest:0,askWeight:false},
+        {id:'d_rc',  name:'Reverse crunch', type:'reps',    sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'d_bic', name:'Bicycle crunch', type:'reps',    sets:1,reps:'16',  rest:0,askWeight:false},
+      ], elastic:'full', body:'full'},
       '10':{ full:[
-        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch banc', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-      ], elastic:[
-        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',      type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-      ], body:[
-        {id:'vac',name:'Vacuum debout',      type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'sup',name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras', type:'duration',sets:1,duration:25,rest:0,askWeight:false},
-      ]},
+        {id:'d_vac', name:'Vacuum debout',      type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+        {id:'d_dbug',name:'Dead bug',           type:'reps',    sets:1,reps:'10',  rest:0,askWeight:false},
+        {id:'d_rc',  name:'Reverse crunch',     type:'reps',    sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'d_bic', name:'Bicycle crunch',     type:'reps',    sets:1,reps:'16',  rest:0,askWeight:false},
+      ], elastic:'full', body:'full'},
       '15':{ full:[
-        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch banc', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'sp', name:'Side plank lesté',    type:'duration',sets:1,duration:25,rest:0,askWeight:true,bilateral:true,prep:10},
-      ], elastic:[
-        {id:'vac',name:'Vacuum debout',       type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',      type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp', name:'Face pull élastique', type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras',  type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'sp', name:'Side plank',          type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:10},
-      ], body:[
-        {id:'vac',name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'rc', name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'sup',name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk',name:'Planche avant-bras', type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'sp', name:'Side plank',         type:'duration',sets:1,duration:25,rest:0,askWeight:false,bilateral:true,prep:10},
-      ]},
-      '20':{ full:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch banc',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'yr',  name:'Y-raise banc',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:true,weight:'2–4 kg'},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-      ], elastic:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-      ], body:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'10',  rest:0,askWeight:false},
-        {id:'sup', name:'Superman sol',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:35,rest:0,askWeight:false},
-      ]},
+        {id:'d_vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'d_dbug',name:'Dead bug',           type:'reps',    sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'d_rc',  name:'Reverse crunch',     type:'reps',    sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'d_co',  name:'Crunch oblique',     type:'reps',    sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'d_bic', name:'Bicycle crunch',     type:'reps',    sets:1,reps:'20',  rest:0,askWeight:false},
+      ], elastic:'full', body:'full'},
       'full':{ full:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch banc',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'yr',  name:'Y-raise banc',       type:'reps',   sets:1,reps:'12',  rest:0,askWeight:true,weight:'2–4 kg'},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-        {id:'sp',  name:'Side plank lesté',   type:'duration',sets:1,duration:30,rest:0,askWeight:true,bilateral:true,prep:10},
-      ], elastic:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'fp',  name:'Face pull élastique',type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-        {id:'sp',  name:'Side plank',         type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:10},
-      ], body:[
-        {id:'vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
-        {id:'dbug',name:'Dead bug',           type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'sup', name:'Superman sol',       type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'rc',  name:'Reverse crunch',     type:'reps',   sets:1,reps:'15',  rest:0,askWeight:false},
-        {id:'ysol',name:'Y-raise sol',        type:'reps',   sets:1,reps:'12',  rest:0,askWeight:false},
-        {id:'plk', name:'Planche avant-bras', type:'duration',sets:1,duration:40,rest:0,askWeight:false},
-        {id:'sp',  name:'Side plank',         type:'duration',sets:1,duration:30,rest:0,askWeight:false,bilateral:true,prep:10},
-      ]},
+        {id:'d_vac', name:'Vacuum debout',      type:'duration',sets:1,duration:30,rest:0,askWeight:false},
+        {id:'d_dbug',name:'Dead bug',           type:'reps',    sets:1,reps:'12',  rest:0,askWeight:false},
+        {id:'d_rc',  name:'Reverse crunch',     type:'reps',    sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'d_co',  name:'Crunch oblique',     type:'reps',    sets:1,reps:'15',  rest:0,askWeight:false},
+        {id:'d_rt',  name:'Russian twist',      type:'reps',    sets:1,reps:'20',  rest:0,askWeight:false},
+        {id:'d_bic', name:'Bicycle crunch',     type:'reps',    sets:1,reps:'20',  rest:0,askWeight:false},
+        {id:'d_hh',  name:'Hollow hold',        type:'duration',sets:1,duration:25,rest:0,askWeight:false},
+      ], elastic:'full', body:'full'},
     }
   }
 };
@@ -899,10 +761,9 @@ function resolveVersion(sesh, timeKey, gearKey) {
   return exs || ver['full'] || null;
 }
 
-const FREQ_PLANS = { 1:['D'], 2:['A','B'], 3:['A','B','C'], 4:['A','B','C','D'], 5:['A','B','C','B','D'], 6:['A','B','C','D','B','A'] };
+const FREQ_PLANS = { 1:['A'], 2:['A','B'], 3:['A','B','C'], 4:['A','B','C','D'], 5:['A','B','C','A','D'], 6:['A','B','C','D','A','C'] };
 const TIME_OPTIONS = [
-  {key:'5',label:'5 min'},{key:'10',label:'10 min'},{key:'15',label:'15 min'},
-  {key:'20',label:'20 min'},{key:'full',label:'Complet'}
+  {key:'5',label:'5 min'},{key:'10',label:'10 min'},{key:'15',label:'15 min'},{key:'full',label:'Complet'}
 ];
 
 // ═══════════════════════════════════════════
@@ -1880,31 +1741,9 @@ buildRoutinePage();
 const sf = $('set-freq'); if (sf) sf.value = DB.settings.freq || 4;
 const sg = $('set-gear'); if (sg) sg.value = DB.settings.gear || 'full';
 
-// FIX: Auto-remove false séance B on first load
-// Only run if weekLog has 2+ entries (A already done + false B)
-(function() {
-  const wk = getWeekKey();
-  const log = DB.weekLog[wk] || [];
-  const freq = parseInt(DB.settings.freq) || 4;
-  const plan = FREQ_PLANS[freq] || FREQ_PLANS[4];
-  // If we have more logged sessions than expected given today being Mon
-  // and séance A is done + B is done on same day as A → remove B
-  if (log.length >= 2) {
-    const lastTwo = log.slice(-2);
-    if (lastTwo[0] && lastTwo[1]) {
-      const d0 = new Date(lastTwo[0].date).toDateString();
-      const d1 = new Date(lastTwo[1].date).toDateString();
-      if (d0 === d1 && lastTwo[0].key === 'A' && lastTwo[1].key === 'B') {
-        DB.weekLog[wk] = log.slice(0, -1);
-        saveDB();
-        buildHome();
-        console.log('Auto-removed false séance B ✅');
-      }
-    }
-  }
-})();
+// v7: programme abdos
 
-console.log('Mon Programme v6 FIXED ✅');
+console.log('Mon Programme v7 ✅');
 </script>
 </body>
 </html>
